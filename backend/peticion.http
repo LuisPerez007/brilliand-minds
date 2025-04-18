@@ -1,0 +1,24 @@
+GET http://localhost:5000
+
+### APLICANDO REGISTRO
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+    "nombre": "luis",
+    "gmail": "lpz@gmail.com",
+    "password": "luis"
+}
+
+### APLICANDO LOGIN
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "gmail": "lpz@gmail.com",
+    "password": "luis"
+}
+
+### APLICANDO VERIFICACION CON TOKEN
+GET http://localhost:5000/perfil
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZ21haWwiOiJscHpAZ21haWwuY29tIiwiaWF0IjoxNzQ1MDEzMTM3LCJleHAiOjE3NDUwMTY3Mzd9.2GP2YyV_B3FdAiazXzw8Vgel9OgD9HgfMa7Wu3eOCxg
