@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+.title-main {
+  @apply text-5xl md:text-6xl font-extrabold text-center text-cyan-300 tracking-wider drop-shadow-lg mb-6;
+}
+
+.title-text-gradient {
+  @apply text-center font-extrabold text-transparent bg-clip-text bg-gradient-to-tr from-blue-950 via-violet-500 to-pink-300;
+}
+
+.message {
+  @apply text-base text-gray-100 opacity-95 text-center;
+}
+
+.message-text-gradient {
+  @apply text-center font-extrabold text-transparent bg-clip-text bg-gradient-to-tr from-cyan-400 via-sky-200 to-blue-900;
+}
+
+.message-animate-blue {
+  @apply text-lg font-bold text-sky-400 text-center animate-pulse;
+  text-shadow: 0 1px 2px blue;
+}
+
+.message-normal {
+  @apply text-blue-200 font-light text-center italic;
+}
+
+.message-container {
+  @apply text-base text-blue-300 text-center bg-blue-800/20 rounded px-4 py-2;
+}
+
+.message-violet-animate {
+  @apply text-lg text-violet-400 font-semibold text-center;
+}

@@ -1,6 +1,7 @@
 {
   "name": "academia",
   "version": "1.0.0",
+  "type": "module",
   "description": "SISTEMA DE LA ACADEMIA",
   "main": "server.js",
   "scripts": {
@@ -33,13 +34,20 @@
     "cors": "2.8.5",
     "dotenv": "16.4.7",
     "express": "5.1.0",
+    "express-validator": "^7.3.1",
     "jsonwebtoken": "9.0.2",
-    "pg": "8.14.1",
+    "pg": "^8.20.0",
     "pg-hstore": "2.3.4",
-    "sequelize": "6.37.7",
+    "sequelize": "^6.37.8",
     "standard": "17.1.2"
   },
   "eslintConfig": {
-    "extends": "standard"
+    "extends": "standard",
+    "rules": {
+      "quotes": [
+        "error",
+        "single"
+      ]
+    }
   }
 }

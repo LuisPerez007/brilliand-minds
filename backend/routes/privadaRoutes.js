@@ -1,5 +1,5 @@
 import express from 'express'
-import { verificarToken } from '../middlewares/authMiddleware.js'
+import { verificarToken } from '../middlewares/veriificarToken.js'
 
 const route = express.Router()
 

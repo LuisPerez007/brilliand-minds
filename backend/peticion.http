@@ -1,13 +1,140 @@
-GET http://localhost:5000
+### ELIMINANDO POR ID ESTUDIANTE
+DELETE http://localhost:5000/inscripciones/43
 
-### APLICANDO REGISTRO
-POST http://localhost:5000/register
+### ELIMINANDO POR ID ESTUDIANTE
+DELETE http://localhost:5000/inscripciones/estudiante/27
+
+
+### CREAR INSCRIPCION
+POST http://localhost:5000/inscripciones
 Content-Type: application/json
 
 {
-    "nombre": "luis",
-    "gmail": "lpz@gmail.com",
-    "password": "luis"
+  "idEstudiante": "",
+  "idCurso": "  "
+}
+
+### MOSTRANDO INSCRIPCIONES 
+GET  http://localhost:5000/inscripciones/profesor/1
+
+### MOSTRANDO INSCRIPCIONES 
+
+GET  http://localhost:5000/inscripciones
+
+### MOSTRANDO INSCRIPCIONES POR CURSO
+GET  http://localhost:5000/inscripciones/curso/23
+
+### APLICANDO ELIMINACION DE UN PROFESOR
+DELETE  http://localhost:5000/profesor/14
+
+
+###ACTUALIZAR PROFESOR
+PUT http://localhost:5000/profesor/13
+Content-Type: application/json
+
+{
+  "nombre": "uil",
+  "apellidoPaterno": "perez",
+  "apellidoMaterno": "",
+  "ci": "1010&",
+  "telefono": "67677676-t",
+  "email": "algoo@",
+  "especialidad": "topografo"
+}
+
+### CREAR PROFESOR
+POST http://localhost:5000/profesor
+Content-Type: application/json
+
+{
+  "nombre": "sera",
+  "apellidoPaterno": "perez",
+  "apellidoMaterno": "",
+  "ci": "1010",
+  "telefono": "67677676",
+  "email": "algoo@gmail.com",
+  "especialidad": "topografo"
+}
+
+### APLICANDO ELIMINACION DE UN CURSO
+DELETE  http://localhost:5000/cursos/6
+
+### APLICANDO postCURSOS 
+PUT   http://localhost:5000/cursos/10
+Content-Type: application/json
+
+{
+  
+  "nombre": "",
+  "descripcion": "calculosss",
+  "duracion": "20",
+  "unidad": "days",
+  "precio": "200",
+  "cupos": "15"
+
+}
+
+### APLICANDO postCURSOS 
+POST  http://localhost:5000/cursos
+Content-Type: application/json
+
+{
+  
+  "nombre": "matematicas",
+  "descripcion": "calculos sin problemas",
+  "duracion": "20",
+  "unidad": "das",
+  "precio": "200",
+  "cupos": "15"
+
+}
+
+
+### APLICANDO GET CURSOS
+GET http://localhost:5000/cursos
+
+
+### APLICANDO ELIMINACION DE UN ESTUDIANTE
+DELETE  http://localhost:5000/estudiantes/23
+
+### APLICANDO ACTUALIZACION DE UN ESTUDIANTE
+PUT http://localhost:5000/estudiantes/27
+Content-Type: application/json
+
+{
+  
+  "nombre": "",
+  "apellidoPaterno": "Perez",
+  "apellidoMaterno": "Gomez",
+  "ci": "777777",
+  "direccion": "La Paz",
+  "telefono": "99999",
+  "email": "serafino@gmail.com"
+
+}
+
+### APLICANDO GET ESTUDIANTES
+GET http://localhost:5000/estudiantes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzc4MTczMzE0LCJleHAiOjE3NzgxNzY5MTR9.OkuKhtWaGGhMNRDdT6qaOShWm5hZ9O0ftQEx1garq58
+
+
+### APLICANDO web
+GET http://localhost:5000
+
+### APLICANDO REGISTRO
+POST http://localhost:5000/estudiantes
+Content-Type: application/json
+
+{
+  
+  "nombre": "serafin",
+  "apellidoPaterno": "Perez",
+  "apellidoMaterno": "Gomez",
+  "ci": "777777",
+  "direccion": "La Paz",
+  "telefono": "99999",
+  "email": "serafino@gmail.com"
+
 }
 
 ### APLICANDO LOGIN
@@ -15,10 +142,171 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "gmail": "lpz@gmail.com",
+    "email": "administrador@gmail.com",
     "password": "luis"
 }
 
 ### APLICANDO VERIFICACION CON TOKEN
 GET http://localhost:5000/perfil
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZ21haWwiOiJscHpAZ21haWwuY29tIiwiaWF0IjoxNzQ1MDEzMTM3LCJleHAiOjE3NDUwMTY3Mzd9.2GP2YyV_B3FdAiazXzw8Vgel9OgD9HgfMa7Wu3eOCxg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzgzNTI3MzA5LCJleHAiOjE3ODM1MzA5MDl9.o3TNLCHHqIqKOMleKWU7ZVC9rHmInqaqK16G2yg6L3A
+### MOSTRANDO INSCRIPCIONES POR CURSO
+GET  http://localhost:5000/inscripciones/estudiante/26
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzgzNTMzMzIzLCJleHAiOjE3ODM1MzY5MjN9.dXRZ5HaXU_g3MncWIzdlDlwoIMfnM1etKTj-6v2gGeY
+
+
+### MOSTRANDO INSCRIPCIONES POR CURSO
+DELETE  http://localhost:5000/inscripciones/0/estudiante
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzgzODY1MzIwLCJleHAiOjE3ODM4Njg5MjB9.nAdH5CIg_FsMpf-QX_LVp-nQ0bkI1TWh7Ii4VwRO5Q0
+
+
+### CREAR INSCRIPCION
+POST http://localhost:5000/inscripciones
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzgzODY1MzIwLCJleHAiOjE3ODM4Njg5MjB9.nAdH5CIg_FsMpf-QX_LVp-nQ0bkI1TWh7Ii4VwRO5Q0
+
+{
+  "idEstudiante": ,
+  "idCurso": 
+}
+
+### APLICANDO REGISTRO
+POST http://localhost:5000/preinscripcion/estudiante
+Content-Type: application/json
+
+{
+  
+  "nombre": "luisi",
+  "apellidoPaterno": "Perez",
+  "apellidoMaterno": "Gomez",
+  "ci": "7769977",
+  "direccion": "La Paz",
+  "telefono": "9823599",
+  "email": "lupeis@gmail.com"
+
+}
+
+
+### 
+GET  http://localhost:5000/preinscripcion/lista
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg1ODEwNjY0LCJleHAiOjE3ODU4MTQyNjR9.KWgKSe_-UHTjcoKvwaxKw0ZnmtMbzZas5TpCQlk5D4Q
+
+### PREINSCRIPCION RECHAZADO
+POST http://localhost:5000/preinscripcion/rechazado/27
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg1Nzk3NzgxLCJleHAiOjE3ODU4MDEzODF9.bXmm3hgTwzGwa6I00w39LGghw-n1lQNm_1hWCfmfJGk
+
+### PREINSCRIPCION ACEPTADA
+POST http://localhost:5000/preinscripcion/aceptada/0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg2MjAwNDQ2LCJleHAiOjE3ODYyMDQwNDZ9.Vi7niBmhaGPTOphsHUiVamn1a4J3zbHyRpN7TulLsZg
+
+
+### APLICANDO LOGIN PROFESOR
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "loayza@gmail.com",
+    "password": "9898989"
+}
+
+
+### APLICANDO mostrar cursos para PROFESOR
+GET  http://localhost:5000/docente/cursos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzQxMDczNywiZXhwIjoxNzg3NDE0MzM3fQ.CN8Lk9sKtAjgJASrU7A8fqp74-wkQ0vol4JEiv_pWRQ
+
+### APLICANDO mostrar estudiantes para PROFESOR
+GET  http://localhost:5000/docente/estudiantes/51
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzM1MDUwMSwiZXhwIjoxNzg3MzU0MTAxfQ.8cHJBRLb1jWSsAU5g2PveJwb4NGIzJrWF4sg1j5GzLk
+
+
+### APLICANDO mostrar cursos para evalacion
+GET  http://localhost:5000/docente/cursos/evaluacion/51
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzM1MDUwMSwiZXhwIjoxNzg3MzU0MTAxfQ.8cHJBRLb1jWSsAU5g2PveJwb4NGIzJrWF4sg1j5GzLk
+
+### APLICANDO mostrar evaluacion de cada curso
+GET  http://localhost:5000/docente/cursos/evaluacion/examen/51/19
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzM2MTM4OCwiZXhwIjoxNzg3MzY0OTg4fQ.IslsSbUeO12aFrV1BNzRQ8W2gzgH1TMSXkUMyzBevDc
+
+### APLICANDO listar calificaciones para PROFESOR
+GET  http://localhost:5000/docente/cursos/evaluacion/examen/listarCalificaciones/22/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzQxMDczNywiZXhwIjoxNzg3NDE0MzM3fQ.CN8Lk9sKtAjgJASrU7A8fqp74-wkQ0vol4JEiv_pWRQ
+
+### APLICANDO insertar calificacion
+POST http://localhost:5000/docente/cursos/evaluacion/examen/listarCalificaciones/calificarExamen
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzYxNzg0MiwiZXhwIjoxNzg3NjIxNDQyfQ.YjAvWH1zDe7rsuiU17jAiHuUqWP7AN6sIgcVknBjSX8
+
+{
+    "idEvaluacion": "2",
+    "idInscripcion": "90",
+    "nota": "67.00",
+    "observacion": "Esto es de prueba",
+    "idEstudiante": "27"
+}
+
+### APLICANDO Editar calificacion
+PUT http://localhost:5000/docente/cursos/evaluacion/examen/listarCalificaciones/editarExamen
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzYxNzg0MiwiZXhwIjoxNzg3NjIxNDQyfQ.YjAvWH1zDe7rsuiU17jAiHuUqWP7AN6sIgcVknBjSX8
+
+{
+    "idEvaluacion": "2",
+    "idInscripcion": "90",
+    "idCalificacion": "23",
+    "nota": "77",
+    "observacion": "Esto es de 2da prueba con actualizaion",
+    "idEstudiante": "27"
+}
+
+/cursos/evaluacion/examen/crearEvaluacion
+
+### APLICANDO Editar calificacion
+POST  http://localhost:5000/docente/cursos/evaluacion/examen/crearEvaluacion
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzcxNTAyNCwiZXhwIjoxNzg3NzE4NjI0fQ.q46taIiz3i4ts6WTcvtxq5L9WXqr6QEnxLmEuwiytLY
+
+{
+    "idCurso": "19",
+    "nombreEvaluacion": "Examen final",
+    "descripcion": "Este examen incluye todos los temas",
+    "fechaEvaluacion": "2026-09-24",
+    "porcentaje": "50"
+}
+
+### APLICANDO Editar evaluacion
+PUT   http://localhost:5000/docente/cursos/evaluacion/examen/editarEvaluacion
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc4NzcyODgzMiwiZXhwIjoxNzg3NzMyNDMyfQ.hUqBPSq9QycGqi_2Yv1NpunbxO-oc8FoakWF4btbhmY
+
+{
+    "idEvaluacion": "2",
+    "idCurso": "19",
+    "nombreEvaluacion": "Examen final prueba",
+    "descripcion": "Este examen incluye todos los temas",
+    "fechaEvaluacion": "2026-09-24",
+    "porcentaje": "50"
+}
+/cursos/evaluacion/examen/eliminarEvaluacion/:idEvaluacion
+
+### APLICANDO eliminar evaluacion
+DELETE   http://localhost:5000/docente/cursos/evaluacion/examen/eliminarEvaluacion/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJzZXJhZmlub0BnbWFpbC5jb20iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlhdCI6MTc4Nzg1NTgxMSwiZXhwIjoxNzg3ODU5NDExfQ.f_Fncp00FE3-JhNwltWlbtcFlT4dn8LQH6itJxiqjKw
+
+
+###login para estudiante
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "serafino@gmail.com",
+    "password": "777777"
+}
+
+### aplicando mostrar curso par estudiantes
+GET http://localhost:5000/estudiante/curso
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJzZXJhZmlub0BnbWFpbC5jb20iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlhdCI6MTc4Nzg1OTkxMCwiZXhwIjoxNzg3ODYzNTEwfQ.IG7s4C2SykyallepY23CyQL4u7wOxZp4_gtGH0QO4kU
+
+### aplicando mostrar calificacion del estudiantes
+GET http://localhost:5000/estudiante/curso/calificaciones/19
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJzZXJhZmlub0BnbWFpbC5jb20iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlhdCI6MTc4Nzg2Nzk5NCwiZXhwIjoxNzg3ODcxNTk0fQ.CicZGrW2hcsKwPzzKCUKWzXhb4P195QBI6DWEbMsEeY
+
+
