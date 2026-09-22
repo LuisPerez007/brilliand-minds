@@ -1,0 +1,38 @@
+@use "@coreui/coreui/scss/variables" as * with (
+  $enable-deprecation-messages: false
+);
+@use "@coreui/coreui/scss/mixins/breakpoints" as *;
+@use "@coreui/coreui/scss/mixins/color-mode" as *;
+
+.boton {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.boton-cierre-eliminar {
+  background: #b71717;
+  color: white;
+}
+
+.boton-cierre-eliminar:hover {
+  background: #861111;
+}
+
+.boton-guardar {
+  background: #333;
+  color: white;
+}
+
+.boton-guardar:hover {
+  background: #555;
+}
+
+.botones-modal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

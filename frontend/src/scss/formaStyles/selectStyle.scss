@@ -1,0 +1,15 @@
+@use "@coreui/coreui/scss/variables" as * with (
+  $enable-deprecation-messages: false
+);
+@use "@coreui/coreui/scss/mixins/breakpoints" as *;
+@use "@coreui/coreui/scss/mixins/color-mode" as *;
+
+.select-cursos {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+}

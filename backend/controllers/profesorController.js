@@ -70,19 +70,50 @@ export const putProfesor = async (req, res) => {
 }
 
 export const deleteProfesor = async (req, res) => {
+  const client = await dataBase.connect()
+
   try {
     const { id } = req.params
     const idProfesor = parseInt(id)
-    const eliminarProfesor = await dataBase.query(`
-    DELETE FROM profesor
-    WHERE id_profesor = $1 RETURNING *`, [idProfesor]
+
+    await client.query('BEGIN')
+
+    const profesor = await client.query(
+      `SELECT id_usuario
+       FROM profesor
+       WHERE id_profesor = $1`,
+      [idProfesor]
     )
-    if (eliminarProfesor.rowCount === 0) {
+
+    if (profesor.rowCount === 0) {
+      await client.query('ROLLBACK')
       return res.status(404).json({ message: 'Profesor no existe' })
     }
-    res.status(200).json({ message: 'Profesor eliminado correctamente' })
+
+    const idUsuario = profesor.rows[0].id_usuario
+
+    await client.query(
+      `DELETE FROM profesor
+       WHERE id_profesor = $1`,
+      [idProfesor]
+    )
+
+    if (idUsuario) {
+      await client.query(
+        `DELETE FROM usuarios
+         WHERE id_usuarios = $1`,
+        [idUsuario]
+      )
+    }
+
+    await client.query('COMMIT')
+
+    res.status(200).json({ message: 'Profesor y usuario eliminado correctamente' })
   } catch (error) {
+    await client.query('ROLLBACK').catch(() => {})
     console.error(error)
     res.status(500).json({ error: 'Error al eliminar profesor' })
+  } finally {
+    client.release()
   }
 }

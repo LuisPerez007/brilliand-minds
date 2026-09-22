@@ -8,13 +8,12 @@ export const verificarToken = (req, res, next) => {
   }
 
   const token = header.split(' ')[1]
-  console.log(`mostrando token en verificar token backen: ${token}`)
 
   try {
     const usuario = jwt.verify(token, process.env.JWT_SECRET)
     req.user = usuario
     next()
   } catch (err) {
-    res.status(401).json({ message: 'token no  valido o expirado ' })
+    return res.status(401).json({ message: 'token no  valido o expirado ' })
   }
 }

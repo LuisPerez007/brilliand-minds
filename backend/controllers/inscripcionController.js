@@ -3,7 +3,7 @@ import { mostrarInscripcionPorCurso } from '../models/modelsInscripcion/mostrarI
 import { mostrarInscripcionesPorProfesor } from '../models/modelsInscripcion/mostrarInscripcionesPorProfesor.js'
 import { crearInscripcion } from '../models/modelsInscripcion/crearInscripcion.js'
 import { mostrarInscripcionesPorEstudiante } from '../models/modelsInscripcion/mostrarPorIdEstudiante.js'
-import { eliminarInscripcionPorId } from '../models/modelsInscripcion/eliminarInscripcionPorId.js'
+import { eliminarInscripcionPorId, eliminarTodasInscripcionesDelCurso } from '../models/modelsInscripcion/eliminarInscripcionPorId.js'
 import { eliminarInscripcionPorEstudiante } from '../models/modelsInscripcion/eliminarInscripcionPorEstudiante.js'
 import dataBase from '../db/dataBase.js'
 
@@ -88,19 +88,8 @@ export const postInscripciones = async (req, res) => {
       message: ' No se pudieron actualizar las inscripicones del estudiante'
     })
   }
-
-  /* try {
-    const result = await crearInscripcion(req.body)
-    console.log(result)
-    res.status(201).json(result)
-  } catch (error) {
-    console.error(error)
-    if (error.code === '23505') {
-      return res.status(409).json({ error: 'Inscripcion duplicada', message: 'El estudiante ya esta inscrito en este curso' })
-    }
-    return res.status(500).json({ error: 'Error al registrar inscripcion' })
-  } */
 }
+
 /// hacer inscripcion duplicado
 export const mostrarInscripcionPorEstudiante = async (req, res) => {
   try {
@@ -147,5 +136,22 @@ export const deleteinscripcionPorEstudiante = async (req, res) => {
     res.status(500).json({
       message: 'Error al eliminar inscripciones'
     })
+  }
+}
+
+export const deleteEliminarTodasInscripcionesDelCurso = async (req, res) => {
+  try {
+    if (!req.user || req.user.role !== 'administrador') {
+      return res.status(403).json({ message: 'Acceso denegado. Solo los administradores pueden eliminar inscripciones de un curso.' })
+    }
+    const { idCurso } = req.params
+    const result = await eliminarTodasInscripcionesDelCurso(idCurso)
+    if (result.rowCount === 0) {
+      return res.status(200).json({ message: 'No hay inscripciones que eliminar para este curso' })
+    }
+    return res.status(200).json({ message: `Se eliminaron ${result.rowCount} inscripciones del curso correctamente` })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Error al eliminar inscripciones del curso' })
   }
 }

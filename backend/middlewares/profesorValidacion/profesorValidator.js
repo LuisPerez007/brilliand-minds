@@ -7,6 +7,6 @@ export const validarProfesor = [
   body('apellidoMaterno').optional().trim().escape(),
   body('ci').trim().notEmpty().withMessage('CI es obligatorio').matches(/^[0-9\- ]+$/).withMessage('CI inválido'),
   body('telefono').trim().notEmpty().withMessage('Teléfono es obligatorio').isNumeric().withMessage('El telefono solo debe contener número'),
-  body('email').optional().trim().isEmail().withMessage('Debe ser un email válido').normalizeEmail(),
+  body('email').optional({ checkFalsy: true }).trim().isEmail().withMessage('Debe ser un email válido').normalizeEmail(),
   body('especialidad').trim().notEmpty().withMessage('Especialidad es obligatoria').escape()
 ]

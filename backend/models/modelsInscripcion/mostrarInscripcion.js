@@ -12,6 +12,5 @@ export const mostrarInscripcion = async () => {
     join estudiante es on es.id_estudiante = ins.id_estudiante
     join profesor pro on pro.id_profesor = cu.id_profesor
  `)
-  console.log('MOSTRANDO INSCRIPCION', datosInscripcion.rows)
   return datosInscripcion.rows
 }

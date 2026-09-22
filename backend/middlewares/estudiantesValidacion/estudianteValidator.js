@@ -7,5 +7,6 @@ export const validarEstudiante = [
   body('ci').trim().notEmpty().withMessage('CI es obligatorio').escape(),
   body('direccion').trim().notEmpty().withMessage('Dirección es obligatorio').escape(),
   body('telefono').trim().notEmpty().withMessage('Teléfono es obligatorio').isNumeric().withMessage('Teléfono debe ser numérico').escape(),
-  body('email').optional({ checkFalsy: true }).isEmail().withMessage('Email inválido').escape()
+  body('email').optional({ checkFalsy: true }).isEmail().withMessage('Email inválido').escape(),
+  body('colegio').optional({ checkFalsy: true }).trim().escape()
 ]

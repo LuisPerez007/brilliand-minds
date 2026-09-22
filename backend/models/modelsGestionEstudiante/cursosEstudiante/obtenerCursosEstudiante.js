@@ -1,5 +1,18 @@
 import dataBase from '../../../db/dataBase.js'
 
+export const obtenerDeudasEstudiante = async (idUsuario) => {
+  const informe = await dataBase.query(`
+        SELECT est.id_estudiante, (est.nombre || ' ' || est.a_paterno || ' ' || est.a_materno) AS estudiante, cur.id_curso, cur.nombre AS materia, ins.fecha_inscripcion,
+        EXTRACT(YEAR FROM ins.fecha_inscripcion) as periodo,
+        cur.costo, ins.estado_pago
+        FROM inscripcion ins
+        JOIN estudiante est ON est.id_estudiante = ins.id_estudiante
+        JOIN curso cur ON cur.id_curso = ins.id_curso
+        WHERE est.id_usuario = $1
+        `, [idUsuario])
+  return informe
+}
+
 export const obtenerCursosParaEstudiante = async (idUsuario) => {
   const informe = await dataBase.query(`
         SELECT cur.id_curso, cur.nombre AS materia, ins.fecha_inscripcion,

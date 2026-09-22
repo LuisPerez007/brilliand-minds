@@ -98,20 +98,23 @@ GET http://localhost:5000/cursos
 DELETE  http://localhost:5000/estudiantes/23
 
 ### APLICANDO ACTUALIZACION DE UN ESTUDIANTE
-PUT http://localhost:5000/estudiantes/27
+PUT http://localhost:5000/admin/estudiantes/26
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5MDYxNzg5LCJleHAiOjE3ODkwNjUzODl9.a3Inm4OugSn9EaAJKSQCp75ZtHavfWBzrQKo0KmNuPs
 
 {
   
-  "nombre": "",
+  "nombre": "nosenose",
   "apellidoPaterno": "Perez",
   "apellidoMaterno": "Gomez",
-  "ci": "777777",
+  "ci": "777799",
   "direccion": "La Paz",
   "telefono": "99999",
-  "email": "serafino@gmail.com"
+  "email": "nosenose@gmail.com",
+  "colegio": "colegio de la litoral"
 
 }
+
 
 ### APLICANDO GET ESTUDIANTES
 GET http://localhost:5000/estudiantes
@@ -122,18 +125,21 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
 GET http://localhost:5000
 
 ### APLICANDO REGISTRO
-POST http://localhost:5000/estudiantes
+POST http://localhost:5000/admin/estudiantes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5MDYxNzg5LCJleHAiOjE3ODkwNjUzODl9.a3Inm4OugSn9EaAJKSQCp75ZtHavfWBzrQKo0KmNuPs
 
 {
   
-  "nombre": "serafin",
-  "apellidoPaterno": "Perez",
-  "apellidoMaterno": "Gomez",
-  "ci": "777777",
+  "nombre": "prueba 2",
+  "apellidoPaterno": "prueba 2",
+  "apellidoMaterno": "prueba 2",
+  "ci": "7980787",
   "direccion": "La Paz",
   "telefono": "99999",
-  "email": "serafino@gmail.com"
+  "email": "prueba2@gmail.com",
+  "colegio": "colegio de la paz"
+
 
 }
 
@@ -175,13 +181,14 @@ Content-Type: application/json
 
 {
   
-  "nombre": "luisi",
+  "nombre": "luisifon",
   "apellidoPaterno": "Perez",
   "apellidoMaterno": "Gomez",
-  "ci": "7769977",
+  "ci": "787878967",
   "direccion": "La Paz",
   "telefono": "9823599",
-  "email": "lupeis@gmail.com"
+  "email": "lupsifon@gmail.com",
+  "colegio": "colegio de la paz"
 
 }
 
@@ -308,5 +315,85 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiO
 ### aplicando mostrar calificacion del estudiantes
 GET http://localhost:5000/estudiante/curso/calificaciones/19
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJzZXJhZmlub0BnbWFpbC5jb20iLCJyb2xlIjoiZXN0dWRpYW50ZSIsImlhdCI6MTc4Nzg2Nzk5NCwiZXhwIjoxNzg3ODcxNTk0fQ.CicZGrW2hcsKwPzzKCUKWzXhb4P195QBI6DWEbMsEeY
+
+
+### APLICANDO LOGIN
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "administrador@gmail.com",
+    "password": "luis"
+}
+
+### aplicando mostrar padres y tutores
+GET http://localhost:5000/admin/padres-tutores
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5NTA0Mjg2LCJleHAiOjE3ODk1MDc4ODZ9.g3XyiCdTxRLuWm0kVvQl_dmBsOYVUsoKOSi161ztvHw
+
+### Crear un nuevo Padre/Tutor (Como Administrador)
+PUT http://localhost:5000/admin/padres-tutores/actualizar/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5MDgxMTM4LCJleHAiOjE3ODkwODQ3Mzh9.GzF32TEO-t4wPsbTO416Jj1GBPL89JFNEFNB2ZdJHwM
+
+{
+  "nombre": "",
+  "apellidoPaterno": "Vargas",
+  "apellidoMaterno": "Mamani",
+  "ci": "7654321",
+  "telefono": "78945612",
+  "direccion": "Av. Murillo #123"
+}
+
+### Eliminar un Padre/Tutor por ID (Como Administrador)
+DELETE http://localhost:5000/admin/padres-tutores/eliminar/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5MDgxMTM4LCJleHAiOjE3ODkwODQ3Mzh9.GzF32TEO-t4wPsbTO416Jj1GBPL89JFNEFNB2ZdJHwM
+
+
+### APLICANDO REGISTRO
+POST http://localhost:5000/admin/estudiantes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5MDkyOTk0LCJleHAiOjE3ODkwOTY1OTR9.goSLt6MIHh_ey7vSNZQXT6QxSTvkcfTXrXeBBtD_8a8
+
+{
+  
+  "nombre": "bbbb",
+  "apellidoPaterno": "Perez",
+  "apellidoMaterno": "Gomez",
+  "ci": "78778967",
+  "direccion": "La Paz",
+  "telefono": "9823599",
+  "email": "bb@gmail.com",
+  "colegio": "colegio de la paz",
+  "idTutor": 1
+
+}
+
+### ruts publicas
+GET http://localhost:5000/public/cursos-disponibles
+
+### mostrando recibos
+GET http://localhost:5000/admin/inscripciones/mostrar-recibos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5NTA0Mjg2LCJleHAiOjE3ODk1MDc4ODZ9.g3XyiCdTxRLuWm0kVvQl_dmBsOYVUsoKOSi161ztvHw
+
+### registrar recibos
+POST http://localhost:5000/admin/inscripciones/registrar-recibos
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5NjgzMDY3LCJleHAiOjE3ODk2ODY2Njd9.V1zHAxI9nniPPs-RVx4rSBq-TIhvF41F7twm-xpqg1E
+
+{
+    "idInscripcion": 108,
+    "padreTutor": "Juan Pérez",
+    "padreCi": "123456789",
+    "montoPagado": 250.00,
+    "idPadre": 1,
+    "idEstudiante": 29,
+    "estudiante": "Juan Pérez",
+    "idCurso": 21,
+    "curso": "Matemáticas"
+}
+
+### ELIMINAR INSCRIPCIONES POR CURSO
+DELETE http://localhost:5000/admin/inscripciones/eliminar-por-curso/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5Njk2ODUyLCJleHAiOjE3ODk3MDA0NTJ9.KzbkQ5IlkctXFKDIW_OyRQ3B2DsRbhuqWp26p0uyJfY
 
 

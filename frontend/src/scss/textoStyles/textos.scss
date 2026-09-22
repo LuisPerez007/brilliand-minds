@@ -1,0 +1,20 @@
+@use "@coreui/coreui/scss/variables" as * with (
+  $enable-deprecation-messages: false
+);
+@use "@coreui/coreui/scss/mixins/breakpoints" as *;
+@use "@coreui/coreui/scss/mixins/color-mode" as *;
+
+
+
+.text-base {
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  color: #333;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.text-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+}

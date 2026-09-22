@@ -5,10 +5,11 @@ import { validarCampos } from '../middlewares/validarCampos/validarCampos.js'
 
 import { verificarToken } from '../middlewares/veriificarToken.js'
 import { requireRole } from '../middlewares/requireRole.js'
+import { limitadorFormularioInscripcion } from '../middlewares/publicValidaciones/publicLimiter.js'
 
 const router = Router()
 
-router.post('/preinscripcion/estudiante', validarEstudiante, validarCampos, postPreinscripcionEstudiante)
+router.post('/preinscripcion/estudiante', limitadorFormularioInscripcion, validarEstudiante, validarCampos, postPreinscripcionEstudiante)
 router.get('/admin/preinscripcion/lista', verificarToken, requireRole('administrador'), getPreinscripcionEstudiante)
 router.post('/admin/preinscripcion/rechazado/:idSolicitud', verificarToken, requireRole('administrador'), posPreinscripcionRechazada)
 router.post('/admin/preinscripcion/aceptada/:idSolicitud', verificarToken, requireRole('administrador'), posPreinscripcionAprobada)

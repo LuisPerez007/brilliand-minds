@@ -1,4 +1,17 @@
-import { crearInscripcionAunCurso, obtenerCalificacionesDelEstudiante, obtenerCursosNoInscritosDelEstudiante, obtenerCursosParaEstudiante, obtenerEstudiante } from '../../models/modelsGestionEstudiante/cursosEstudiante/obtenerCursosEstudiante.js'
+import { obtenerDeudasEstudiante, crearInscripcionAunCurso, obtenerCalificacionesDelEstudiante, obtenerCursosNoInscritosDelEstudiante, obtenerCursosParaEstudiante, obtenerEstudiante } from '../../models/modelsGestionEstudiante/cursosEstudiante/obtenerCursosEstudiante.js'
+
+export const getMostrarDeudasEstudiante = async (req, res) => {
+  try {
+    if (!req.user || req.user.role !== 'estudiante') {
+      return res.status(403).json({ message: 'Acceso denegado. Solo los estudiantes pueden acceder a esta información.' })
+    }
+    const informe = await obtenerDeudasEstudiante(req.user.id)
+    return res.status(200).json({ datos: informe.rows })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Error interno servidor' })
+  }
+}
 
 export const getMostrarcursosParaEstudiantes = async (req, res) => {
   try {
