@@ -1,0 +1,119 @@
+.cursos-profesor__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.25rem 0;
+}
+
+.cursos-profesor__header {
+  padding: 0.5rem 0;
+}
+
+.cursos-profesor__title {
+  margin: 0;
+  font-size: clamp(1.55rem, 2vw, 2.15rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+}
+
+.table-profesor__wrapper {
+  width: 100%;
+  background: rgba(245, 250, 255, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.table-profesor__table {
+  width: 100%;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+.table-profesor__head {
+  padding: 0.9rem 1rem;
+  background: rgba(37, 99, 235, 0.05);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+}
+
+.table-profesor__head--center {
+  text-align: center;
+}
+
+.table-profesor__row {
+  transition: background-color 0.2s ease;
+}
+
+.table-profesor__row:hover {
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.table-profesor__cell {
+  padding: 1rem;
+  background-color: transparent !important;
+  color: var(--text-primary);
+  border-bottom: 1px solid #e5e7eb;
+  vertical-align: middle;
+  line-height: 1.6;
+}
+
+.table-profesor__cell--center {
+  text-align: center;
+  font-weight: 700;
+}
+
+.table-profesor__cell--empty {
+  text-align: center;
+  padding: 1.25rem 1rem;
+  font-weight: 600;
+}
+
+html[data-coreui-theme='dark'] .cursos-profesor__title {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+html[data-coreui-theme='dark'] .table-profesor__wrapper {
+  background: #1d1e2b;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.28);
+}
+
+html[data-coreui-theme='dark'] .table-profesor__head {
+  background: #14151f;
+  color: rgba(255, 255, 255, 0.9);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-coreui-theme='dark'] .table-profesor__row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-coreui-theme='dark'] .table-profesor__cell {
+  background-color: transparent !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 767.98px) {
+  .table-profesor__head {
+    padding: 0.75rem 0.7rem;
+    font-size: 0.68rem;
+  }
+
+  .table-profesor__cell {
+    padding: 0.8rem 0.7rem;
+    font-size: 0.81rem;
+  }
+}

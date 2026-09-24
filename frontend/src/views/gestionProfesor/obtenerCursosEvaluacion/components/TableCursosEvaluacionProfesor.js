@@ -78,18 +78,21 @@ const TableCursosEvaluacionProfesor = ({
     })
   }
   return (
-    <>
+    <div className="evaluacion-profesor__container">
       {cursoSeleccionado === null ? (
-        <div>
-          <h1>Calificaciones de los cursos</h1>
-          <ul>
+        <div className="evaluacion-profesor__panel">
+          <h1 className="evaluacion-profesor__title">Calificaciones de los cursos</h1>
+          <ul className="evaluacion-cursos__list">
             {cursoEvaluacionProfesor.length === 0 ? (
-              <p>No hay cursos asignados</p>
+              <p className="evaluacion-profesor__empty">No hay cursos asignados</p>
             ) : (
               cursoEvaluacionProfesor.map((curso) => (
-                <li key={curso.id_curso}>
-                  <span style={{ display: 'inline-block', width: '180px' }}>{curso.curso} </span>
-                  <button onClick={() => mostrarEvaluacionesDeunCurso(curso.id_curso)}>
+                <li key={curso.id_curso} className="evaluacion-cursos__item">
+                  <span className="evaluacion-cursos__course-name">{curso.curso}</span>
+                  <button
+                    className="btn btn-primary evaluacion-cursos__button"
+                    onClick={() => mostrarEvaluacionesDeunCurso(curso.id_curso)}
+                  >
                     Calificaciones
                   </button>
                 </li>
@@ -100,20 +103,26 @@ const TableCursosEvaluacionProfesor = ({
       ) : evaluacionSeleccionada === null ? (
         <>
           {editarExamenCursoSeleccionada ? (
-            <div>
-              <p>
-                <strong>Actualizar la evaluación:</strong>{' '}
-                {editarExamenCursoSeleccionada.nombre_evaluacion}
-                <br />
-                <strong>Del:</strong> {editarExamenCursoSeleccionada.curso}
-              </p>
-              <div>
+            <div className="evaluacion-form__panel">
+              <div className="mb-4 p-3 rounded-3 bg-light border border-light-subtle app-meta-box">
+                <p className="m-0 text-secondary fw-medium">
+                  <strong className="text-body d-block mb-1 fs-5">
+                    Actualizar la evaluación:{' '}
+                    <span className="text-primary">
+                      {editarExamenCursoSeleccionada.nombre_evaluacion}
+                    </span>
+                  </strong>
+                  <strong>Del curso:</strong> {editarExamenCursoSeleccionada.curso}
+                </p>
+              </div>
+
+              <div className="evaluacion-form__field">
                 <label htmlFor="editar-nombre-evaluacion">Nombre de evaluacion</label>
-                <br />
                 <input
                   type="text"
                   id="editar-nombre-evaluacion"
                   aria-label="Nombre de evaluación"
+                  className="evaluacion-form__input"
                   value={datosExamen.nombreEvaluacion}
                   onChange={(e) => {
                     setDatosExamen({
@@ -123,13 +132,13 @@ const TableCursosEvaluacionProfesor = ({
                   }}
                 />
               </div>
-              <div>
+
+              <div className="evaluacion-form__field">
                 <label htmlFor="editar-descripcion-evaluacion">Descripción</label>
-                <br />
                 <textarea
                   id="editar-descripcion-evaluacion"
                   aria-label="Descripción de evaluación"
-                  type="text"
+                  className="evaluacion-form__textarea evaluacion-form__input"
                   value={datosExamen.descripcion}
                   onChange={(e) => {
                     setDatosExamen({
@@ -139,13 +148,14 @@ const TableCursosEvaluacionProfesor = ({
                   }}
                 />
               </div>
-              <div>
+
+              <div className="evaluacion-form__field">
                 <label htmlFor="editar-fecha-evaluacion">Fecha de evaluacion</label>
-                <br />
                 <input
                   type="date"
                   id="editar-fecha-evaluacion"
                   aria-label="Fecha de evaluación"
+                  className="evaluacion-form__input"
                   value={datosExamen.fechaEvaluacion?.slice(0, 10)}
                   onChange={(e) => {
                     setDatosExamen({
@@ -155,13 +165,14 @@ const TableCursosEvaluacionProfesor = ({
                   }}
                 />
               </div>
-              <div>
+
+              <div className="evaluacion-form__field">
                 <label htmlFor="editar-porcentaje-evaluacion">Porcentaje de examen</label>
-                <br />
                 <input
                   type="text"
                   id="editar-porcentaje-evaluacion"
                   aria-label="Porcentaje de examen"
+                  className="evaluacion-form__input"
                   value={datosExamen.porcentaje}
                   onChange={(e) => {
                     setDatosExamen({
@@ -171,33 +182,45 @@ const TableCursosEvaluacionProfesor = ({
                   }}
                 />
               </div>
-              <br />
-              <button
-                onClick={async () =>
-                  editarEvaluacionDeunCurso(
-                    editarExamenCursoSeleccionada.id_evaluacion,
-                    cursoActual.id_curso,
-                    datosExamen.nombreEvaluacion,
-                    datosExamen.descripcion,
-                    datosExamen.fechaEvaluacion,
-                    datosExamen.porcentaje,
-                  )
-                }
-              >
-                Guardar
-              </button>
-              <button onClick={() => setEditarExamenCursoSeleccionada(null)}>Cancelar</button>
+
+              <div className="evaluacion-form__actions mt-4 pt-2">
+                <button
+                  className="btn btn-primary fw-bold"
+                  onClick={async () =>
+                    editarEvaluacionDeunCurso(
+                      editarExamenCursoSeleccionada.id_evaluacion,
+                      cursoActual.id_curso,
+                      datosExamen.nombreEvaluacion,
+                      datosExamen.descripcion,
+                      datosExamen.fechaEvaluacion,
+                      datosExamen.porcentaje,
+                    )
+                  }
+                >
+                  Guardar
+                </button>
+                <button
+                  className="btn btn-outline-secondary fw-semibold"
+                  onClick={() => setEditarExamenCursoSeleccionada(null)}
+                >
+                  Cancelar
+                </button>
+              </div>
             </div>
           ) : cursoCrearExamenSelecionado ? (
-            <>
-              <h1>Crear evaluación para el curso: {cursoActual.curso}</h1>
-              <div>
+            <div className="evaluacion-form__panel">
+              <h1 className="evaluacion-form__title mb-4">
+                Crear evaluación para el curso:{' '}
+                <span className="text-primary">{cursoActual.curso}</span>
+              </h1>
+
+              <div className="evaluacion-form__field">
                 <label htmlFor="crear-nombre-evaluacion">Nombre de evaluacion</label>
-                <br />
                 <input
                   type="text"
                   id="crear-nombre-evaluacion"
                   aria-label="Nombre de evaluación"
+                  className="evaluacion-form__input"
                   value={datosExamen.nombreEvaluacion}
                   placeholder={datosExamen.nombreEvaluacion}
                   onChange={(e) => {
@@ -208,13 +231,13 @@ const TableCursosEvaluacionProfesor = ({
                   }}
                 />
               </div>
-              <div>
+
+              <div className="evaluacion-form__field">
                 <label htmlFor="crear-descripcion-evaluacion">Descripción</label>
-                <br />
                 <textarea
-                  type="text"
                   id="crear-descripcion-evaluacion"
                   aria-label="Descripción de evaluación"
+                  className="evaluacion-form__textarea evaluacion-form__input"
                   value={datosExamen.descripcion}
                   placeholder={datosExamen.descripcion}
                   onChange={(e) => {
@@ -225,13 +248,14 @@ const TableCursosEvaluacionProfesor = ({
                   }}
                 />
               </div>
-              <div>
+
+              <div className="evaluacion-form__field">
                 <label htmlFor="crear-fecha-evaluacion">Fecha de evaluacion</label>
-                <br />
                 <input
                   type="date"
                   id="crear-fecha-evaluacion"
                   aria-label="Fecha de evaluación"
+                  className="evaluacion-form__input"
                   value={datosExamen.fechaEvaluacion}
                   placeholder={datosExamen.fechaEvaluacion}
                   onChange={(e) => {
@@ -242,13 +266,14 @@ const TableCursosEvaluacionProfesor = ({
                   }}
                 />
               </div>
-              <div>
+
+              <div className="evaluacion-form__field">
                 <label htmlFor="crear-porcentaje-evaluacion">Porcentaje de examen</label>
-                <br />
                 <input
                   type="text"
                   id="crear-porcentaje-evaluacion"
                   aria-label="Porcentaje de examen"
+                  className="evaluacion-form__input"
                   value={datosExamen.porcentaje}
                   placeholder={datosExamen.porcentaje}
                   onChange={(e) => {
@@ -259,146 +284,305 @@ const TableCursosEvaluacionProfesor = ({
                   }}
                 />
               </div>
-              <br />
-              <button
-                onClick={async () =>
-                  crearEvaluacionDeunCurso(
-                    cursoActual.id_curso,
-                    datosExamen.nombreEvaluacion,
-                    datosExamen.descripcion,
-                    datosExamen.fechaEvaluacion,
-                    datosExamen.porcentaje,
-                  )
-                }
-              >
-                Guardar
-              </button>
-              <button onClick={() => setCursoCrearExamenSeleccionado(null)}>Cancelar</button>
-            </>
+
+              <div className="evaluacion-form__actions mt-4 pt-2">
+                <button
+                  className="btn btn-primary fw-bold"
+                  onClick={async () =>
+                    crearEvaluacionDeunCurso(
+                      cursoActual.id_curso,
+                      datosExamen.nombreEvaluacion,
+                      datosExamen.descripcion,
+                      datosExamen.fechaEvaluacion,
+                      datosExamen.porcentaje,
+                    )
+                  }
+                >
+                  Guardar
+                </button>
+                <button
+                  className="btn btn-outline-secondary fw-semibold"
+                  onClick={() => setCursoCrearExamenSeleccionado(null)}
+                >
+                  Cancelar
+                </button>
+              </div>
+            </div>
           ) : (
-            <div>
-              <h1>Calificando curso: {cursoActual?.curso}</h1>
-              <button onClick={() => setCursoCrearExamenSeleccionado(cursoActual.id_curso)}>
-                Crear Examen
-              </button>
-              <ul>
+            <div className="evaluacion-form__panel">
+              {/* Cabecera y Botón de Acción Principal */}
+              <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                <h1 className="evaluacion-form__title m-0">
+                  Calificando curso: <span className="text-primary">{cursoActual?.curso}</span>
+                </h1>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => setCursoCrearExamenSeleccionado(cursoActual.id_curso)}
+                >
+                  Crear Examen
+                </button>
+              </div>
+
+              {/* Contenedor de la lista */}
+              <div className="evaluacion-form__section">
                 {evaluacionesCurso.length === 0 ? (
-                  <p>No hay exámenes para este curso.</p>
+                  <p className="evaluacion-profesor__empty text-center py-4 bg-light rounded-3 border border-dashed fw-medium m-0">
+                    No hay exámenes para este curso.
+                  </p>
                 ) : (
-                  evaluacionesCurso.map((evaCu) => (
-                    <li key={evaCu.id_evaluacion}>
-                      <span style={{ display: 'inline-block', width: '200px' }}>
-                        {evaCu.porcentaje}% {evaCu.nombre_evaluacion}{' '}
-                      </span>
-                      <button
-                        onClick={() =>
-                          cargarListaCalificaciones(cursoSeleccionado, evaCu.id_evaluacion)
-                        }
+                  <ul className="evaluacion-form__list list-unstyled m-0 d-flex flex-column gap-2">
+                    {evaluacionesCurso.map((evaCu) => (
+                      <li
+                        key={evaCu.id_evaluacion}
+                        className="evaluacion-form__item d-flex align-items-center justify-content-between p-3 rounded-3"
                       >
-                        Calificar
-                      </button>{' '}
-                      <button
-                        onClick={() => {
-                          setEditarExamenCursoSeleccionada(evaCu)
-                          setDatosExamen({
-                            nombreEvaluacion: evaCu.nombre_evaluacion ?? '',
-                            descripcion: evaCu.descripcion ?? '',
-                            fechaEvaluacion: evaCu.fecha_evaluacion
-                              ? evaCu.fecha_evaluacion.slice(0, 10)
-                              : '',
-                            porcentaje: evaCu.porcentaje ?? '',
-                          })
-                        }}
-                      >
-                        Editar
-                      </button>{' '}
-                      <button
-                        onClick={() =>
-                          eliminarEvaluacionDeunCurso(evaCu.id_curso, evaCu.id_evaluacion)
-                        }
-                      >
-                        Eliminar
-                      </button>
-                    </li>
-                  ))
+                        {/* Información del Examen */}
+                        <div className="evaluacion-form__item-info d-flex align-items-center gap-3">
+                          <span
+                            className="evaluacion-form__item-name fw-semibold"
+                            style={{ display: 'inline-block', minWidth: '200px' }}
+                          >
+                            <span className="badge bg-primary-soft text-primary me-2 px-2 py-1.5 rounded-pill fw-bold border border-primary-subtle">
+                              {evaCu.porcentaje}%
+                            </span>
+                            {evaCu.nombre_evaluacion}
+                          </span>
+                        </div>
+
+                        {/* Grupo de Botones de Control */}
+                        <div className="evaluacion-form__item-actions d-flex flex-wrap gap-2">
+                          <button
+                            className="btn btn-sm btn-primary fw-bold"
+                            onClick={() =>
+                              cargarListaCalificaciones(cursoSeleccionado, evaCu.id_evaluacion)
+                            }
+                          >
+                            Calificar
+                          </button>
+                          <button
+                            className="btn btn-sm btn-outline-secondary"
+                            onClick={() => {
+                              setEditarExamenCursoSeleccionada(evaCu)
+                              setDatosExamen({
+                                nombreEvaluacion: evaCu.nombre_evaluacion ?? '',
+                                descripcion: evaCu.descripcion ?? '',
+                                fechaEvaluacion: evaCu.fecha_evaluacion
+                                  ? evaCu.fecha_evaluacion.slice(0, 10)
+                                  : '',
+                                porcentaje: evaCu.porcentaje ?? '',
+                              })
+                            }}
+                          >
+                            Editar
+                          </button>
+                          <button
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() =>
+                              eliminarEvaluacionDeunCurso(evaCu.id_curso, evaCu.id_evaluacion)
+                            }
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 )}
-              </ul>
-              <button onClick={() => setCursoSeleccionado(null)}>Atras</button>
+              </div>
+
+              {/* Botón de Retorno Inferior */}
+              <div className="evaluacion-form__footer mt-4 pt-3 border-top">
+                <button
+                  className="btn btn-outline-secondary"
+                  onClick={() => setCursoSeleccionado(null)}
+                >
+                  Atras
+                </button>
+              </div>
             </div>
           )}
         </>
       ) : (
-        <div className="reporte">
-          <h1 style={{ textAlign: 'center' }}>CALIFICACIONES</h1>
-          <p>
-            <strong>Profesor:</strong>{' '}
-            {listaCalificacion?.[0]?.profesor || 'No hay estudiantes inscritos'}
-          </p>
-          <p>
-            <strong>Curso:</strong>{' '}
-            {listaCalificacion?.[0]?.curso || 'No hay estudiantes inscritos'}
-          </p>
-          <p>
-            <strong>Evaluación:</strong>{' '}
-            {listaCalificacion?.[0]?.evaluacion || 'No hay estudiantes inscritos'}
-          </p>
-          <p>
-            <strong> Aprobados:</strong> {estudiantesAprobados || '0'}
-            <strong> Reprobados:</strong> {estudiantesReprobados || '0'}
-          </p>
-          <p></p>
-          <p>
-            <strong>Descripción:</strong>{' '}
-            {listaCalificacion?.[0]?.descripcion || 'No hay estudiantes inscritos'}
-          </p>
-          <p>
-            <strong>Fecha de examen:</strong>
-            {listaCalificacion?.[0]?.fecha_evaluacion
-              ? new Date(listaCalificacion[0].fecha_evaluacion).toLocaleDateString()
-              : 'No hay estudiantes inscritos'}
-          </p>
-          <p>
-            <strong>Ponderación:</strong> {listaCalificacion?.[0]?.porcentaje}%
-          </p>
-          <button className="no-print" onClick={() => setEvaluacionSeleccionada(null)}>
-            atras
-          </button>
-          <button
-            className="no-print boton boton-cierre-eliminar"
-            onClick={imprimirReporteCalificaciones}
-            disabled={cargandoCalificaciones}
-          >
-            {cargandoCalificaciones ? 'Cargando...' : 'Imprimir reporte'}
-          </button>
-          <br />
-          <table border="1px" width="100%">
-            <thead>
-              <tr>
-                <th>N°</th>
-                <th>Estudiante</th>
-                <th>Nota</th>
-                <th>Observacion</th>
-                <th className="no-print">Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {listaCalificacion.length === 0 ? (
-                <>
-                  <tr>
-                    <td colSpan="5" style={{ textAlign: 'center' }}>
-                      No hay estudiantes inscritos
-                    </td>
-                  </tr>
-                </>
-              ) : (
-                listaCalificacion.map((lista, index) => (
-                  <tr key={lista.id_estudiante}>
-                    <td>#{index + 1}</td>
-                    <td>{lista.estudiante}</td>
-                    {lista.id_calificacion ? (
-                      calificacionEditando === lista.id_calificacion ? (
+        <div className="evaluacion-profesor__panel evaluacion-profesor__panel--report">
+          <h1 className="evaluacion-profesor__title evaluacion-profesor__title--center">
+            CALIFICACIONES
+          </h1>
+          <div className="evaluacion-profesor__panel mb-4">
+            <div className="row g-3 ">
+              <div className="col-12 col-md-6 d-flex flex-column gap-2">
+                <p className="m-0 text-secondary">
+                  <strong className="text-body">Profesor:</strong>{' '}
+                  {listaCalificacion?.[0]?.profesor || 'No hay estudiantes inscritos'}
+                </p>
+                <p className="m-0 text-secondary">
+                  <strong className="text-body">Curso:</strong>{' '}
+                  {listaCalificacion?.[0]?.curso || 'No hay estudiantes inscritos'}
+                </p>
+                <p className="m-0 text-secondary">
+                  <strong className="text-body">Evaluación:</strong>{' '}
+                  {listaCalificacion?.[0]?.evaluacion || 'No hay estudiantes inscritos'}
+                </p>
+                <p className="m-0 d-flex gap-2 align-items-center flex-wrap">
+                  <span className="badge bg-success-soft text-success border border-success-subtle px-2 py-1.5 rounded-pill fw-bold">
+                    Aprobados: {estudiantesAprobados || '0'}
+                  </span>
+                  <span className="badge bg-danger-soft text-danger border border-danger-subtle px-2 py-1.5 rounded-pill fw-bold">
+                    Reprobados: {estudiantesReprobados || '0'}
+                  </span>
+                </p>
+              </div>
+
+              <div className="col-12 col-md-6 d-flex flex-column gap-2 border-start-md">
+                <p className="m-0 text-secondary">
+                  <strong className="text-body">Descripción:</strong>{' '}
+                  {listaCalificacion?.[0]?.descripcion || 'No hay estudiantes inscritos'}
+                </p>
+                <p className="m-0 text-secondary">
+                  <strong className="text-body">Fecha de examen:</strong>{' '}
+                  {listaCalificacion?.[0]?.fecha_evaluacion
+                    ? new Date(listaCalificacion[0].fecha_evaluacion).toLocaleDateString()
+                    : 'No hay estudiantes inscritos'}
+                </p>
+                <p className="m-0 text-secondary">
+                  <strong className="text-body">Ponderación:</strong>{' '}
+                  <span className="fw-bold text-primary">
+                    {listaCalificacion?.[0]?.porcentaje}%
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div className="evaluacion-profesor__actions d-flex justify-content-between align-items-center mt-4 pt-3 border-top flex-wrap gap-2">
+              <button
+                className="btn btn-outline-secondary no-print fw-semibold"
+                onClick={() => setEvaluacionSeleccionada(null)}
+              >
+                atras
+              </button>
+              <button
+                className="btn btn-primary no-print fw-bold px-4 d-inline-flex align-items-center gap-2"
+                onClick={imprimirReporteCalificaciones}
+                disabled={cargandoCalificaciones}
+              >
+                {cargandoCalificaciones ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                    <span>Cargando...</span>
+                  </>
+                ) : (
+                  'Imprimir reporte'
+                )}
+              </button>
+            </div>
+          </div>
+          <div className="table-responsive table-evaluacion__wrapper">
+            <table className="table table-evaluacion__table">
+              <thead>
+                <tr>
+                  <th className="table-evaluacion__head">N°</th>
+                  <th className="table-evaluacion__head">Estudiante</th>
+                  <th className="table-evaluacion__head">Nota</th>
+                  <th className="table-evaluacion__head">Observacion</th>
+                  <th className="table-evaluacion__head no-print">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                {listaCalificacion.length === 0 ? (
+                  <>
+                    <tr>
+                      <td
+                        className="table-evaluacion__cell table-evaluacion__cell--empty"
+                        colSpan="5"
+                      >
+                        No hay estudiantes inscritos
+                      </td>
+                    </tr>
+                  </>
+                ) : (
+                  listaCalificacion.map((lista, index) => (
+                    <tr key={lista.id_estudiante} className="table-evaluacion__row">
+                      <td className="table-evaluacion__cell">#{index + 1}</td>
+                      <td className="table-evaluacion__cell">{lista.estudiante}</td>
+                      {lista.id_calificacion ? (
+                        calificacionEditando === lista.id_calificacion ? (
+                          <>
+                            <td className="table-evaluacion__cell">
+                              <input
+                                type="Number"
+                                aria-label={`Nota de ${lista.estudiante}`}
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                value={lista.nota ?? ''}
+                                className="evaluacion-form__input"
+                                onChange={(e) => {
+                                  const nuevaLista = [...listaCalificacion]
+                                  nuevaLista[index].nota =
+                                    e.target.value === '' ? null : Number(e.target.value)
+                                  setListaCalificacion(nuevaLista)
+                                }}
+                              />
+                            </td>
+                            <td className="table-evaluacion__cell">
+                              <input
+                                type="text"
+                                aria-label={`Observación de ${lista.estudiante}`}
+                                value={lista.observacion ?? ''}
+                                className="evaluacion-form__input"
+                                onChange={(e) => {
+                                  const nuevaLista = [...listaCalificacion]
+                                  nuevaLista[index].observacion = e.target.value
+                                  setListaCalificacion(nuevaLista)
+                                }}
+                              />
+                            </td>
+                            <td className="table-evaluacion__cell table-evaluacion__cell--action no-print">
+                              <div className="evaluacion-profesor__inline-actions">
+                                <button
+                                  className="btn btn-primary btn-sm"
+                                  onClick={() => {
+                                    editarCalificacion(
+                                      lista.id_curso,
+                                      lista.id_evaluacion,
+                                      lista.id_inscripcion,
+                                      lista.id_calificacion,
+                                      lista.nota,
+                                      lista.observacion?.trim(),
+                                      lista.id_estudiante,
+                                    )
+                                    setCalificacionEditando(null)
+                                  }}
+                                >
+                                  Guardar
+                                </button>
+                                <button
+                                  className="btn btn-outline-secondary btn-sm"
+                                  onClick={() => {
+                                    setCalificacionEditando(null)
+                                  }}
+                                >
+                                  Cancelar
+                                </button>
+                              </div>
+                            </td>
+                          </>
+                        ) : (
+                          <>
+                            <td className="table-evaluacion__cell">{lista.nota}</td>
+                            <td className="table-evaluacion__cell">{lista.observacion}</td>
+                            <td className="table-evaluacion__cell table-evaluacion__cell--action no-print">
+                              <button
+                                className="btn btn-outline-primary btn-sm"
+                                onClick={() => setCalificacionEditando(lista.id_calificacion)}
+                              >
+                                Editar
+                              </button>
+                            </td>
+                          </>
+                        )
+                      ) : (
                         <>
-                          <td>
+                          <td className="table-evaluacion__cell">
                             <input
                               type="Number"
                               aria-label={`Nota de ${lista.estudiante}`}
@@ -406,6 +590,7 @@ const TableCursosEvaluacionProfesor = ({
                               max="100"
                               step="0.01"
                               value={lista.nota ?? ''}
+                              className="evaluacion-form__input"
                               onChange={(e) => {
                                 const nuevaLista = [...listaCalificacion]
                                 nuevaLista[index].nota =
@@ -414,11 +599,12 @@ const TableCursosEvaluacionProfesor = ({
                               }}
                             />
                           </td>
-                          <td>
+                          <td className="table-evaluacion__cell">
                             <input
                               type="text"
                               aria-label={`Observación de ${lista.estudiante}`}
                               value={lista.observacion ?? ''}
+                              className="evaluacion-form__input"
                               onChange={(e) => {
                                 const nuevaLista = [...listaCalificacion]
                                 nuevaLista[index].observacion = e.target.value
@@ -426,96 +612,31 @@ const TableCursosEvaluacionProfesor = ({
                               }}
                             />
                           </td>
-                          <td className="no-print">
+                          <td className="table-evaluacion__cell table-evaluacion__cell--action no-print">
                             <button
+                              className="btn btn-primary btn-sm"
                               onClick={() => {
-                                editarCalificacion(
+                                registrarCalificacion(
                                   lista.id_curso,
                                   lista.id_evaluacion,
                                   lista.id_inscripcion,
-                                  lista.id_calificacion,
                                   lista.nota,
                                   lista.observacion?.trim(),
                                   lista.id_estudiante,
                                 )
-                                setCalificacionEditando(null)
                               }}
                             >
-                              Guardar
-                            </button>
-                            <button
-                              onClick={() => {
-                                setCalificacionEditando(null)
-                              }}
-                            >
-                              Cancelar
+                              calificar
                             </button>
                           </td>
                         </>
-                      ) : (
-                        <>
-                          <td>{lista.nota}</td>
-                          <td>{lista.observacion}</td>
-                          <td className="no-print">
-                            <button onClick={() => setCalificacionEditando(lista.id_calificacion)}>
-                              Editar
-                            </button>
-                          </td>
-                        </>
-                      )
-                    ) : (
-                      <>
-                        <td>
-                          <input
-                            type="Number"
-                            aria-label={`Nota de ${lista.estudiante}`}
-                            min="0"
-                            max="100"
-                            step="0.01"
-                            value={lista.nota ?? ''}
-                            onChange={(e) => {
-                              const nuevaLista = [...listaCalificacion]
-                              nuevaLista[index].nota =
-                                e.target.value === '' ? null : Number(e.target.value)
-                              setListaCalificacion(nuevaLista)
-                            }}
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="text"
-                            aria-label={`Observación de ${lista.estudiante}`}
-                            value={lista.observacion ?? ''}
-                            onChange={(e) => {
-                              const nuevaLista = [...listaCalificacion]
-                              nuevaLista[index].observacion = e.target.value
-                              setListaCalificacion(nuevaLista)
-                            }}
-                          />
-                        </td>
-                        <td className="no-print">
-                          <button
-                            onClick={() => {
-                              registrarCalificacion(
-                                lista.id_curso,
-                                lista.id_evaluacion,
-                                lista.id_inscripcion,
-                                lista.nota,
-                                lista.observacion?.trim(),
-                                lista.id_estudiante,
-                              )
-                            }}
-                          >
-                            calificar
-                          </button>
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                      )}
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
           <strong>Resumen académico:</strong>{' '}
           <p>
             De un total de {(listaCalificacion ?? []).length} estudiantes evaluados en la materia de{' '}
@@ -528,7 +649,7 @@ const TableCursosEvaluacionProfesor = ({
           </p>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

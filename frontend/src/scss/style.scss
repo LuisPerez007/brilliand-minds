@@ -180,6 +180,9 @@ $sidebar-width: 15rem;
 @import 'global/content';
 @import 'gestionEstudianteStyles/tableCursosResultados';
 @import 'gestionEstudianteStyles/preinscripcionCursos';
+@import 'gestionProfesoresStyles/mostrarCursosProfesor';
+@import 'gestionProfesoresStyles/mostrarEstudianteProfesor';
+@import 'gestionProfesoresStyles/evaluacionCursosProfesor';
 
 .wrapper {
   width: 100%;

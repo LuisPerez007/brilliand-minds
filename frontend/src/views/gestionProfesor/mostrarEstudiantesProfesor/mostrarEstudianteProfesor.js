@@ -4,10 +4,12 @@ import { useMostrarEstudianteProfesor } from './hooks/useMostrarEstudianteProfes
 const MostrarEstudianteProfesor = () => {
   const { estudianteProfesor } = useMostrarEstudianteProfesor()
   return (
-    <>
-      <h1>Mis estudiantes</h1>
+    <div className="estudiantes-profesor__container">
+      <div className="estudiantes-profesor__header">
+        <h1 className="estudiantes-profesor__title">Mis estudiantes</h1>
+      </div>
       <TableEstudianteProfesor estudianteProfesor={estudianteProfesor} />
-    </>
+    </div>
   )
 }
 

@@ -1,0 +1,275 @@
+.evaluacion-profesor__container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.evaluacion-profesor__panel {
+  width: 100%;
+  padding: 1.25rem;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.evaluacion-profesor__title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+}
+
+.evaluacion-profesor__title--center {
+  text-align: center;
+}
+
+.evaluacion-profesor__meta {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.evaluacion-profesor__meta p {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.evaluacion-profesor__empty {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.evaluacion-profesor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.evaluacion-profesor__inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.evaluacion-cursos__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.evaluacion-cursos__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.evaluacion-cursos__course-name {
+  display: inline-block;
+  min-width: 180px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.evaluacion-cursos__button {
+  min-width: 130px;
+}
+
+.evaluacion-form__panel {
+  width: 100%;
+  padding: 1.25rem;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.evaluacion-form__title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.evaluacion-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.evaluacion-form__field label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.evaluacion-form__input {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.evaluacion-form__input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+  outline: none;
+}
+
+.evaluacion-form__textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.evaluacion-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.table-evaluacion__wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-evaluacion__table {
+  width: 100%;
+  min-width: 700px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+.table-evaluacion__head {
+  padding: 0.9rem 1rem;
+  background: rgba(37, 99, 235, 0.05);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: left;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.4);
+}
+
+.table-evaluacion__row {
+  transition: background-color 0.2s ease;
+}
+
+.table-evaluacion__row:hover {
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.table-evaluacion__cell {
+  padding: 1rem;
+  background-color: transparent !important;
+  color: var(--text-primary);
+  border-bottom: 1px solid rgba(147, 197, 253, 0.25);
+  vertical-align: middle;
+  line-height: 1.6;
+}
+
+.table-evaluacion__cell--action {
+  width: 180px;
+}
+
+.table-evaluacion__cell--empty {
+  text-align: center;
+  padding: 1.25rem 1rem;
+}
+
+html[data-coreui-theme='dark'] .evaluacion-profesor__panel,
+html[data-coreui-theme='dark'] .evaluacion-form__panel {
+  background: linear-gradient(180deg, #111827 0%, #1d1e2b 100%);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.28);
+}
+
+html[data-coreui-theme='dark'] .evaluacion-profesor__title,
+html[data-coreui-theme='dark'] .evaluacion-form__title,
+html[data-coreui-theme='dark'] .evaluacion-cursos__course-name,
+html[data-coreui-theme='dark'] .evaluacion-profesor__meta p,
+html[data-coreui-theme='dark'] .evaluacion-form__field label,
+html[data-coreui-theme='dark'] .table-evaluacion__head,
+html[data-coreui-theme='dark'] .table-evaluacion__cell {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html[data-coreui-theme='dark'] .evaluacion-cursos__item {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-coreui-theme='dark'] .evaluacion-form__input {
+  background: #14151f;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .evaluacion-form__input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.18);
+}
+
+html[data-coreui-theme='dark'] .table-evaluacion__wrapper {
+  background: #1d1e2b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-coreui-theme='dark'] .table-evaluacion__head {
+  background: #14151f;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-coreui-theme='dark'] .table-evaluacion__row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-coreui-theme='dark'] .table-evaluacion__cell {
+  background-color: transparent !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 767.98px) {
+  .evaluacion-profesor__panel,
+  .evaluacion-form__panel {
+    padding: 1rem;
+  }
+
+  .evaluacion-cursos__item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .table-evaluacion__head {
+    padding: 0.75rem 0.7rem;
+    font-size: 0.68rem;
+  }
+
+  .table-evaluacion__cell {
+    padding: 0.8rem 0.7rem;
+    font-size: 0.8rem;
+  }
+}
+
