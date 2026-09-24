@@ -1,0 +1,153 @@
+.preinscripcion-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at top left, rgba(147, 197, 253, 0.2), transparent 28%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+}
+
+.preinscripcion-container {
+  padding-block: 3.5rem;
+}
+
+.preinscripcion-card {
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: var(--shadow-lg);
+}
+
+.preinscripcion-card__body {
+  padding: 2.25rem;
+}
+
+.preinscripcion-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.preinscripcion-header {
+  margin-bottom: 0.5rem;
+}
+
+.preinscripcion-header__eyebrow {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  color: var(--brand-primary);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.preinscripcion-header h1 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(2.1rem, 3vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.06em;
+  font-weight: 800;
+}
+
+.preinscripcion-header p {
+  margin: 0.65rem 0 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.preinscripcion-alert {
+  border-radius: var(--radius-md);
+}
+
+.preinscripcion-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.preinscripcion-input-group {
+  border: 1px solid rgba(147, 197, 253, 0.55);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: var(--shadow-xs);
+}
+
+.preinscripcion-input-icon,
+.preinscripcion-input-label {
+  background: #ffffff;
+  border: 0;
+  border-right: 1px solid rgba(147, 197, 253, 0.35);
+  color: var(--brand-primary);
+  min-width: 3rem;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.preinscripcion-input {
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  min-height: 3.15rem;
+  padding-inline: 1rem;
+  border-radius: 0;
+}
+
+.preinscripcion-input:focus {
+  box-shadow: none !important;
+  border: 0 !important;
+  background: #ffffff;
+}
+
+.preinscripcion-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.preinscripcion-submit,
+.preinscripcion-cancel {
+  min-height: 3.1rem;
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+}
+
+.preinscripcion-submit {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, #1d4ed8 100%);
+  border: 0;
+  color: #ffffff;
+  box-shadow: 0 16px 28px rgba(37, 99, 235, 0.24);
+}
+
+.preinscripcion-submit:hover,
+.preinscripcion-submit:focus {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  color: #ffffff;
+}
+
+.preinscripcion-cancel {
+  border: 1px solid rgba(147, 197, 253, 0.5);
+  background: rgba(239, 246, 255, 0.75);
+  color: var(--brand-primary);
+}
+
+.preinscripcion-cancel:hover,
+.preinscripcion-cancel:focus {
+  background: #eff6ff;
+  color: var(--brand-primary);
+  border-color: rgba(147, 197, 253, 0.8);
+}
+
+@media (max-width: 767.98px) {
+  .preinscripcion-card__body {
+    padding: 1.5rem;
+  }
+
+  .preinscripcion-actions {
+    grid-template-columns: 1fr;
+  }
+}

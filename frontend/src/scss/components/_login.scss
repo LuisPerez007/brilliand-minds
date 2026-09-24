@@ -1,0 +1,315 @@
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at top left, rgba(147, 197, 253, 0.22), transparent 28%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+}
+
+.login-container {
+  padding-block: 4rem;
+}
+
+.login-card-group {
+  overflow: hidden;
+  border-radius: 1.75rem;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  box-shadow: var(--shadow-lg);
+}
+
+.login-card {
+  border: 0;
+  border-radius: 0;
+}
+
+@media (max-width: 767.98px) {
+  .login-container {
+    padding-inline: 1rem;
+    padding-block: 2rem;
+  }
+
+  .login-card-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .login-card,
+  .login-card--form,
+  .login-card--feature {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.login-card--form {
+  background-color: #ffffff !important;
+  --cui-card-bg: #ffffff !important;
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.login-card--feature {
+  width: 100%;
+  background: transparent;
+}
+
+.login-card__body {
+  padding: 2.75rem;
+}
+
+.login-card__body--feature {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  background: linear-gradient(160deg, #1d4ed8 0%, #2563eb 38%, #0f172a 100%);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.login-card__body--feature::before,
+.login-card__body--feature::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.login-card__body--feature::before {
+  width: 17rem;
+  height: 17rem;
+  top: -5rem;
+  right: -4rem;
+}
+
+.login-card__body--feature::after {
+  width: 14rem;
+  height: 14rem;
+  bottom: -4.5rem;
+  left: -3rem;
+}
+
+.login-feature {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 22rem;
+}
+
+.login-feature__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #f8fbff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.login-feature h2 {
+  margin: 1.25rem 0 0.85rem;
+  color: #ffffff;
+  font-size: clamp(2rem, 2.5vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.05em;
+  font-weight: 800;
+}
+
+.login-feature p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.login-feature__link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  text-decoration: none;
+}
+
+.login-feature__btn {
+  min-height: 3rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 0;
+  background: #ffffff;
+  color: var(--brand-primary);
+  font-weight: 700;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.16);
+}
+
+@media (max-width: 767.98px) {
+  .login-card__body {
+    padding: 1.5rem 1.1rem;
+  }
+
+  .login-card__body--feature {
+    min-height: 16rem;
+    padding: 1.5rem 1.25rem;
+  }
+
+  .login-feature h2 {
+    font-size: 1.8rem;
+  }
+
+  .login-feature p {
+    font-size: 0.96rem;
+  }
+
+  .login-header h1 {
+    font-size: 2rem;
+  }
+
+  .login-input {
+    min-height: 3.4rem;
+    font-size: 1rem;
+  }
+
+  .login-submit {
+    min-height: 3.25rem;
+    font-size: 1rem;
+  }
+
+  .login-link {
+    font-size: 0.92rem;
+  }
+
+  .login-feature__btn {
+    width: 100%;
+    min-height: 3.2rem;
+  }
+}
+
+.login-feature__btn:hover,
+.login-feature__btn:focus {
+  background: #eef5ff;
+  color: var(--brand-primary);
+}
+
+.login-header {
+  margin-bottom: 1.5rem;
+}
+
+.login-header__eyebrow {
+  display: inline-block;
+  margin-bottom: 0.8rem;
+  color: var(--brand-primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.login-header h1 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(2.2rem, 2vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.06em;
+  font-weight: 800;
+}
+
+.login-subtitle {
+  margin: 0.75rem 0 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.login-alert {
+  margin-bottom: 1rem;
+  border-radius: var(--radius-md);
+}
+
+.login-input-group {
+  background-color: #ffffff !important;
+  --cui-input-bg: #ffffff !important;
+  border: 1px solid rgba(147, 197, 253, 0.55);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: var(--shadow-xs);
+}
+
+.login-input-icon {
+  background-color: #f8f9fa !important;
+  --cui-input-group-text-bg: #f8f9fa !important;
+  background: #ffffff;
+  border: 0;
+  border-right: 1px solid rgba(147, 197, 253, 0.35);
+  color: var(--brand-primary);
+  min-width: 3rem;
+  justify-content: center;
+}
+
+
+
+.login-input:focus {
+  box-shadow: none;
+  border: 0;
+  background: #ffffff;
+}
+
+.login-submit-col {
+  display: flex;
+  align-items: center;
+}
+
+.login-submit {
+  width: 100%;
+  min-height: 3.1rem;
+  border-radius: var(--radius-lg);
+  border: 0;
+  background: linear-gradient(135deg, var(--brand-primary) 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 16px 28px rgba(37, 99, 235, 0.24);
+}
+
+.login-submit:hover,
+.login-submit:focus {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  color: #ffffff;
+}
+
+.login-link {
+  color: var(--brand-primary) !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-link:hover,
+.login-link:focus {
+  color: #1d4ed8 !important;
+  text-decoration: underline;
+}
+
+.login-input {
+  border: 0;
+  color: var(--text-primary);
+  min-height: 3.2rem;
+  padding-inline: 1rem;
+  background-color: #ffffff !important;
+
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover, 
+  &:-webkit-autofill:focus, 
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+    -webkit-text-fill-color: #23282c !important;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+}
+

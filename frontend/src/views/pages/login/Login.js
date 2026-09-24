@@ -55,22 +55,30 @@ const Login = () => {
   }
 
   return (
-    <div className="bg-body-tertiary min-vh-100 d-flex flex-row align-items-center">
-      <CContainer>
+    <div className="login-page" data-coreui-theme="light">
+      <CContainer className="login-container">
         <CRow className="justify-content-center">
-          <CCol md={8}>
-            <CCardGroup>
-              <CCard className="p-4">
-                <CCardBody>
+          <CCol md={10} lg={9}>
+            <CCardGroup className="login-card-group">
+              <CCard className="login-card login-card--form">
+                <CCardBody className="login-card__body">
                   <CForm onSubmit={handleSubmit}>
-                    <h1>Iniciar sesión</h1>
-                    <p className="text-body-secondary">Ingresa a tu cuenta de la academia</p>
-                    {error && <CAlert color="danger">{error}</CAlert>}
-                    <CInputGroup className="mb-3">
-                      <CInputGroupText>
+                    <div className="login-header">
+                      <span className="login-header__eyebrow">Plataforma académica</span>
+                      <h1>Iniciar sesión</h1>
+                      <p className="login-subtitle">Ingresa a tu cuenta de la academia</p>
+                    </div>
+                    {error && (
+                      <CAlert className="login-alert" color="danger">
+                        {error}
+                      </CAlert>
+                    )}
+                    <CInputGroup className="login-input-group mb-3">
+                      <CInputGroupText className="login-input-icon">
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
                       <CFormInput
+                        className="login-input"
                         name="email"
                         value={formulario.email}
                         onChange={handleChange}
@@ -79,11 +87,12 @@ const Login = () => {
                         disabled={cargando}
                       />
                     </CInputGroup>
-                    <CInputGroup className="mb-4">
-                      <CInputGroupText>
+                    <CInputGroup className="login-input-group mb-4">
+                      <CInputGroupText className="login-input-icon">
                         <CIcon icon={cilLockLocked} />
                       </CInputGroupText>
                       <CFormInput
+                        className="login-input"
                         type="password"
                         name="password"
                         value={formulario.password}
@@ -93,14 +102,14 @@ const Login = () => {
                         disabled={cargando}
                       />
                     </CInputGroup>
-                    <CRow>
-                      <CCol xs={6}>
-                        <CButton color="primary" className="px-4" type="submit" disabled={cargando}>
+                    <CRow className="align-items-center">
+                      <CCol xs={6} className="login-submit-col">
+                        <CButton className="login-submit" type="submit" disabled={cargando}>
                           {cargando ? 'Ingresando...' : 'Iniciar sesión'}
                         </CButton>
                       </CCol>
-                      <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                      <CCol xs={6} className="text-end">
+                        <CButton color="link" className="login-link px-0">
                           ¿Olvidaste tu contraseña?
                         </CButton>
                       </CCol>
@@ -108,16 +117,18 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
-                <CCardBody className="text-center">
-                  <div>
+
+              <CCard className="login-card login-card--feature">
+                <CCardBody className="login-card__body login-card__body--feature">
+                  <div className="login-feature">
+                    <span className="login-feature__badge">Brilliant Minds</span>
                     <h2>Forma parte de nuestra academia</h2>
                     <p>
                       Da el siguiente paso en tu formación con acompañamiento docente, cursos
                       especializados y un espacio pensado para alcanzar tus metas.
                     </p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
+                    <Link to="/register" className="login-feature__link">
+                      <CButton className="login-feature__btn" active tabIndex={-1}>
                         Preinscribirme ahora
                       </CButton>
                     </Link>

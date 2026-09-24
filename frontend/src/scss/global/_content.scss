@@ -1,0 +1,23 @@
+.app-main-content {
+  min-height: 85vh;
+  padding-block: 2.5rem;
+  padding-inline: 1.5rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--cui-body-color);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+}
+
+html[data-coreui-theme='dark'] .app-main-content {
+  background: rgba(17, 24, 39, 0.88);
+  color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 26px rgba(2, 6, 23, 0.28);
+}
+
+@media (max-width: 767.98px) {
+  .app-main-content {
+    padding-block: 1.5rem;
+    padding-inline: 1rem;
+    min-height: 80vh;
+  }
+}

@@ -3,10 +3,183 @@
 );
 @use "@coreui/chartjs/scss/coreui-chartjs";
 @use "vendors/simplebar";
+@use "sass:color";
 
-body {
-  background-color: var(--cui-tertiary-bg);
+// Paleta institucional Academia
+$brand-primary: #2563EB;
+$brand-primary-soft: #EFF6FF;
+$brand-primary-border: #93C5FD;
+
+$text-primary: #111827;
+$text-secondary: #4B5563;
+
+$brand-warning-soft: #FEF3C7;
+$brand-warning: #F59E0B;
+
+$brand-bg: #FFFFFF;
+
+$brand-primary-50: #F8FBFF;
+$brand-primary-100: #EAF2FF;
+$brand-primary-200: #D5E6FF;
+$brand-primary-300: #B9D5FF;
+$brand-primary-400: #8DB9FF;
+$brand-primary-500: #2563EB;
+
+$brand-warning-50: #FFFBEB;
+$brand-warning-100: #FEF3C7;
+$brand-warning-400: #F59E0B;
+
+$brand-neutral-100: #F3F4F6;
+$brand-neutral-200: #E5E7EB;
+$brand-neutral-300: #D1D5DB;
+$brand-neutral-500: #6B7280;
+$brand-neutral-900: #111827;
+
+// Overrides de Bootstrap/CoreUI
+$primary: $brand-primary;
+$secondary: $text-secondary;
+$body-color: $text-primary;
+$body-bg: $brand-bg;
+$border-color: $brand-primary-border;
+$link-color: $brand-primary;
+$link-hover-color: color.adjust($brand-primary, $lightness: -8%);
+$component-active-bg: $brand-primary;
+$component-active-color: $brand-bg;
+
+$theme-colors: (
+  "primary": $brand-primary,
+  "primary-soft": $brand-primary-soft,
+  "primary-border": $brand-primary-border,
+  "warning-soft": $brand-warning-soft,
+  "warning": $brand-warning,
+  "text-primary": $text-primary,
+  "text-secondary": $text-secondary,
+  "light": #ffffff,
+  "dark": #111827,
+);
+
+// Radios y sombras
+$radius-xs: 0.375rem;
+$radius-sm: 0.5rem;
+$radius-md: 0.75rem;
+$radius-lg: 1rem;
+$radius-xl: 1.25rem;
+$radius-pill: 9999px;
+
+$shadow-xs: 0 1px 2px rgba(17, 24, 39, 0.04);
+$shadow-sm: 0 6px 18px rgba(37, 99, 235, 0.08);
+$shadow-md: 0 12px 30px rgba(17, 24, 39, 0.08);
+$shadow-lg: 0 22px 52px rgba(37, 99, 235, 0.12);
+$shadow-xl: 0 32px 80px rgba(17, 24, 39, 0.14);
+
+// Espaciados semánticos
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-5: 1.25rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+$space-10: 2.5rem;
+$space-12: 3rem;
+$space-16: 4rem;
+
+// Tokens reutilizables
+$card-bg: $brand-bg;
+$card-border: 1px solid rgba(147, 197, 253, 0.45);
+$card-border-radius: $radius-lg;
+$card-shadow: $shadow-sm;
+
+$btn-border-radius: $radius-md;
+$btn-padding-y: 0.75rem;
+$btn-padding-x: 1.25rem;
+$btn-font-weight: 600;
+
+$input-border-radius: $radius-md;
+$input-border-color: $brand-primary-border;
+$input-focus-border-color: $brand-primary;
+$input-focus-box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+
+$badge-border-radius: $radius-pill;
+$alert-border-radius: $radius-md;
+
+$header-height: 4.5rem;
+$sidebar-width: 15rem;
+
+:root {
+  --brand-primary: #{$brand-primary};
+  --brand-primary-soft: #{$brand-primary-soft};
+  --brand-primary-border: #{$brand-primary-border};
+  --brand-primary-50: #{$brand-primary-50};
+  --brand-primary-100: #{$brand-primary-100};
+  --brand-primary-200: #{$brand-primary-200};
+
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+
+  --brand-warning-soft: #{$brand-warning-soft};
+  --brand-warning: #{$brand-warning};
+
+  --brand-bg: #{$brand-bg};
+
+  --shadow-xs: #{$shadow-xs};
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+  --shadow-lg: #{$shadow-lg};
+  --shadow-xl: #{$shadow-xl};
+
+  --radius-xs: #{$radius-xs};
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+  --radius-xl: #{$radius-xl};
+  --radius-pill: #{$radius-pill};
+
+  --space-1: #{$space-1};
+  --space-2: #{$space-2};
+  --space-3: #{$space-3};
+  --space-4: #{$space-4};
+  --space-5: #{$space-5};
+  --space-6: #{$space-6};
+  --space-8: #{$space-8};
+  --space-10: #{$space-10};
+  --space-12: #{$space-12};
+  --space-16: #{$space-16};
+
+  --cui-primary: #{$brand-primary};
+  --cui-primary-rgb: 37, 99, 235;
+  --cui-primary-bg-subtle: #{$brand-primary-soft};
+  --cui-primary-border-subtle: #{$brand-primary-border};
+  --cui-secondary: #{$text-secondary};
+  --cui-body-bg: #{$brand-bg};
+  --cui-body-color: #{$text-primary};
+  --cui-border-color: #{$brand-primary-border};
+  --cui-border-radius: #{$radius-lg};
+  --cui-border-radius-sm: #{$radius-sm};
+  --cui-border-radius-lg: #{$radius-xl};
+  --cui-btn-border-radius: #{$radius-md};
+  --cui-card-border-radius: #{$radius-lg};
+  --cui-card-box-shadow: #{$shadow-sm};
+  --cui-box-shadow: #{$shadow-md};
+  --cui-box-shadow-sm: #{$shadow-xs};
+  --cui-box-shadow-lg: #{$shadow-lg};
+  --cui-link-color: #{$brand-primary};
+  --cui-link-hover-color: darken($brand-primary, 8%);
 }
+
+
+// Component imports
+@import 'components/home';
+@import 'components/login';
+@import 'components/register';
+@import 'components/verificarRecibo';
+@import 'global/header';
+@import 'global/sidebar';
+@import 'global/dropdown';
+@import 'global/footer';
+@import 'global/content';
+@import 'gestionEstudianteStyles/tableCursosResultados';
+@import 'gestionEstudianteStyles/preinscripcionCursos';
 
 .wrapper {
   width: 100%;

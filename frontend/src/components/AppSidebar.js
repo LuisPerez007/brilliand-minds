@@ -23,20 +23,15 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
-  CCloseButton,
   CSidebar,
   CSidebarBrand,
   CSidebarFooter,
   CSidebarHeader,
   CSidebarToggler,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-
 import { AppSidebarNav } from './AppSidebarNav'
 
-import { logo } from 'src/assets/brand/logo'
-import { sygnet } from 'src/assets/brand/sygnet'
-
+import logo0 from '../assets/images/logo0.svg'
 // sidebar nav config
 import navigation from '../_nav'
 
@@ -68,17 +63,23 @@ const AppSidebar = () => {
         dispatch({ type: 'set', sidebarShow: visible })
       }}
     >
-      <CSidebarHeader className="border-bottom">
-        <CSidebarBrand to="/">
-          <CIcon customClassName="sidebar-brand-full" icon={logo} height={32} />
-          <CIcon customClassName="sidebar-brand-narrow" icon={sygnet} height={32} />
-        </CSidebarBrand>
-        <CCloseButton
-          className="d-lg-none"
-          dark
-          onClick={() => dispatch({ type: 'set', sidebarShow: false })}
+      <CSidebarHeader className="border-bottom p-2 " style={{ height: '50px' }}>
+        <img
+          src={logo0}
+          className="sidebar-brand-full"
+          alt="Logo"
+          style={{
+            width: '100%',
+            height: '52px',
+            display: 'block',
+            objectFit: 'fill',
+            transform: 'scaleX(1.3)',
+            filter:
+              'invert(53%) sepia(87%) saturate(1814%) hue-rotate(360deg) brightness(102%) contrast(106%)',
+          }}
         />
       </CSidebarHeader>
+
       <AppSidebarNav items={navigation} />
       <CSidebarFooter className="border-top d-none d-lg-flex">
         <CSidebarToggler

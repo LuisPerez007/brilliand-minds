@@ -3,7 +3,7 @@ import { obtenerUsuario } from '../views/utils/usuario'
 
 const ProteccionRoute = ({ children }) => {
   if (!obtenerUsuario()) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/login" />
   }
 
   return children

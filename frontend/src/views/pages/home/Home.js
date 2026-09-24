@@ -2,6 +2,7 @@ import CIcon from '@coreui/icons-react'
 import { cilUser } from '@coreui/icons'
 import { CButton, CContainer, CHeader, CHeaderBrand, CHeaderNav, CNavLink } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
+import robotTech from '../../../assets/images/robot-tech-3d.png'
 import CursosDisponibles from './components/CursosDisponibles'
 import { useCursosDisponibles } from './hooks/useCursosDisponibles'
 
@@ -10,47 +11,75 @@ const Home = () => {
   const { cursos, loading, error } = useCursosDisponibles()
 
   return (
-    <div className="bg-body-tertiary min-vh-100">
-      <CHeader className="border-bottom bg-body px-3 px-md-5">
-        <CContainer fluid>
-          <CHeaderBrand className="fw-bold fs-4 text-primary">Brilliant Minds</CHeaderBrand>
+    <div className="home-page" data-coreui-theme="light">
+      <CHeader
+        className="home-header"
+        style={{ backgroundColor: '#ffffff', borderColor: '#d8dbe0' }}
+      >
+        <CContainer fluid className="home-header__container">
+          <CHeaderBrand className="home-brand" href="#">
+            <span className="home-brand__mark">BM</span>
+            <span className="home-brand__text">Brilliant Minds</span>
+          </CHeaderBrand>
           <CHeaderNav className="ms-auto">
             <CNavLink
               as="button"
               type="button"
-              className="text-primary d-flex align-items-center gap-2 fw-semibold border-0 bg-transparent"
+              className="home-login"
               onClick={() => navigate('/login')}
             >
-              <CIcon icon={cilUser} />
+              <span className="home-login__icon">
+                <CIcon icon={cilUser} />
+              </span>
               Iniciar Sesión
             </CNavLink>
           </CHeaderNav>
         </CContainer>
       </CHeader>
 
-      <main>
-        <section className="bg-primary text-white py-5">
-          <CContainer className="py-5 text-center">
-            <p className="text-uppercase fw-semibold mb-3">Aprender transforma</p>
-            <h1 className="display-4 fw-bold mx-auto" style={{ maxWidth: '900px' }}>
-              Brilliant Minds: Impulsa tu futuro con nuestros cursos especializados
-            </h1>
-            <p className="lead mx-auto my-4" style={{ maxWidth: '720px' }}>
-              Desarrolla tus habilidades, descubre nuevas pasiones y prepárate para los desafíos del
-              futuro con docentes que creen en tu potencial.
-            </p>
-            <CButton color="light" size="lg" onClick={() => navigate('/register')}>
-              Preinscribirse Ahora
-            </CButton>
+      <main className="home-main">
+        <section className="home-hero">
+          <CContainer className="home-hero__container">
+            <div className="home-hero__grid">
+              <div className="home-hero__content">
+                <p className="home-hero__eyebrow">Aprender transforma</p>
+                <h1 className="home-hero__title">
+                  Brilliant Minds: Impulsa tu futuro con nuestros cursos especializados
+                </h1>
+                <p className="home-hero__copy">
+                  Desarrolla tus habilidades, descubre nuevas pasiones y prepárate para los desafíos
+                  del futuro con docentes que creen en tu potencial.
+                </p>
+                <div className="home-hero__actions">
+                  <CButton
+                    className="home-cta home-cta--primary"
+                    size="lg"
+                    onClick={() => navigate('/register')}
+                  >
+                    Preinscribirse Ahora
+                  </CButton>
+                </div>
+              </div>
+
+              <div className="home-hero__visual">
+                <div className="home-robot-stage">
+                  <span className="home-robot-badge home-robot-badge--top">Future Skills</span>
+                  <span className="home-robot-badge home-robot-badge--bottom">
+                    Mentoría + innovación
+                  </span>
+                  <img src={robotTech} alt="Robot tecnológico 3D" className="home-robot__image" />
+                </div>
+              </div>
+            </div>
           </CContainer>
         </section>
 
-        <section className="py-5">
-          <CContainer>
-            <div className="mb-4">
-              <p className="text-primary fw-semibold mb-2">Nuestros cursos</p>
-              <h2 className="fw-bold">Aprendizaje que abre nuevas posibilidades</h2>
-              <p className="text-body-secondary mb-0">
+        <section className="home-courses">
+          <CContainer className="home-courses__container">
+            <div className="home-courses__header">
+              <p className="home-courses__eyebrow">Nuestros cursos</p>
+              <h2 className="home-courses__title">Aprendizaje que abre nuevas posibilidades</h2>
+              <p className="home-courses__copy">
                 Elige una experiencia formativa y comienza tu camino en Brilliant Minds.
               </p>
             </div>

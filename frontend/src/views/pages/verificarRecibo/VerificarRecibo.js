@@ -34,19 +34,27 @@ const VerificarRecibo = () => {
 
   if (estado.cargando) {
     return (
-      <CContainer className="py-5 text-center">
-        <CSpinner color="primary" />
-        <p className="mt-3">Verificando recibo...</p>
+      <CContainer
+        className="verificar-recibo-page verificar-recibo-page--loading bg-white"
+        data-coreui-theme="light"
+      >
+        <div className="verificar-recibo-loader">
+          <CSpinner color="primary" />
+          <p className="verificar-recibo-loader__text">Verificando recibo...</p>
+        </div>
       </CContainer>
     )
   }
 
   if (estado.error) {
     return (
-      <CContainer className="py-5">
-        <CRow className="justify-content-center">
+      <CContainer className="verificar-recibo-page bg-white" data-coreui-theme="light">
+        <CRow className="justify-content-center w-100">
           <CCol md={7} lg={6}>
-            <CAlert color="danger" className="mb-0">
+            <CAlert
+              color="danger"
+              className="verificar-recibo-alert verificar-recibo-alert--error mb-0"
+            >
               <h4 className="alert-heading">Recibo no válido</h4>
               <p className="mb-0">{estado.error}</p>
             </CAlert>
@@ -59,30 +67,33 @@ const VerificarRecibo = () => {
   const { recibo } = estado
 
   return (
-    <CContainer className="py-5">
-      <CRow className="justify-content-center">
+    <CContainer className="verificar-recibo-page bg-white" data-coreui-theme="light">
+      <CRow className="justify-content-center w-100">
         <CCol md={8} lg={7}>
-          <CCard>
-            <CCardBody>
-              <CAlert color="success">
+          <CCard className="verificar-recibo-card">
+            <CCardBody className="verificar-recibo-card__body">
+              <CAlert
+                color="success"
+                className="verificar-recibo-alert verificar-recibo-alert--success"
+              >
                 <h4 className="alert-heading">Recibo válido</h4>
                 <p className="mb-0">Este recibo está registrado en la Academia.</p>
               </CAlert>
-              <dl className="row mb-0">
-                <dt className="col-sm-5">Código de verificación</dt>
-                <dd className="col-sm-7">Recibo verificado</dd>
-                <dt className="col-sm-5">Padre o tutor</dt>
-                <dd className="col-sm-7">{recibo.padre_tutor || 'Sin información'}</dd>
-                <dt className="col-sm-5">CI</dt>
-                <dd className="col-sm-7">{recibo.padre_ci || 'Sin información'}</dd>
-                <dt className="col-sm-5">Estudiante</dt>
-                <dd className="col-sm-7">{recibo.estudiante || 'Sin información'}</dd>
-                <dt className="col-sm-5">Curso</dt>
-                <dd className="col-sm-7">{recibo.curso || 'Sin información'}</dd>
-                <dt className="col-sm-5">Monto pagado</dt>
-                <dd className="col-sm-7">Bs. {Number(recibo.monto_pagado || 0).toFixed(2)}</dd>
-                <dt className="col-sm-5">Fecha de pago</dt>
-                <dd className="col-sm-7">
+              <dl className="verificar-recibo-details">
+                <dt>Código de verificación</dt>
+                <dd>Recibo verificado</dd>
+                <dt>Padre o tutor</dt>
+                <dd>{recibo.padre_tutor || 'Sin información'}</dd>
+                <dt>CI</dt>
+                <dd>{recibo.padre_ci || 'Sin información'}</dd>
+                <dt>Estudiante</dt>
+                <dd>{recibo.estudiante || 'Sin información'}</dd>
+                <dt>Curso</dt>
+                <dd>{recibo.curso || 'Sin información'}</dd>
+                <dt>Monto pagado</dt>
+                <dd>Bs. {Number(recibo.monto_pagado || 0).toFixed(2)}</dd>
+                <dt>Fecha de pago</dt>
+                <dd>
                   {recibo.fecha_pago
                     ? new Date(recibo.fecha_pago).toLocaleString('es-BO')
                     : 'Sin información'}

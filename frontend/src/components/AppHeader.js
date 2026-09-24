@@ -36,15 +36,7 @@ import {
   useColorModes,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import {
-  cilBell,
-  cilContrast,
-  cilDescription,
-  cilList,
-  cilMenu,
-  cilMoon,
-  cilSun,
-} from '@coreui/icons'
+import { cilContrast, cilDescription, cilMenu, cilMoon, cilSun } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
@@ -110,50 +102,76 @@ const AppHeader = () => {
         <CHeaderToggler
           onClick={() => dispatch({ type: 'set', sidebarShow: !sidebarShow })}
           style={{ marginInlineStart: '-14px' }}
+          className="header-link"
         >
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
-        <CHeaderNav className="d-none d-md-flex">
-          <CNavItem>
-            <CNavLink to="/dashboard" as={NavLink}>
-              Dashboard
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">Users</CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">Settings</CNavLink>
-          </CNavItem>
-        </CHeaderNav>
-        <CHeaderNav className="ms-auto">
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
-            </CNavLink>
-          </CNavItem>
+        {rol === 'estudiante' && (
+          <CHeaderNav className="d-none d-md-flex header-nav">
+            <CNavItem>
+              <CNavLink to="/estudiante/preinscripciones" as={NavLink} className="header-link">
+                Inscribirme a cursos
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink to="/estudiante/cursos" as={NavLink} className="header-link">
+                Mis cursos y resultados
+              </CNavLink>
+            </CNavItem>
+          </CHeaderNav>
+        )}
+        {rol === 'profesor' && (
+          <CHeaderNav className="d-none d-md-flex header-nav">
+            <CNavItem>
+              <CNavLink to="/docente/cursos" as={NavLink} className="header-link">
+                Mis Cursos
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink to="/docente/estudiantes" as={NavLink} className="header-link">
+                Mis Estudiantes
+              </CNavLink>
+            </CNavItem>
+          </CHeaderNav>
+        )}
+        {rol === 'administrador' && (
+          <CHeaderNav className="d-none d-md-flex header-nav">
+            <CNavItem>
+              <CNavLink to="/admin/estudiantes" as={NavLink} className="header-link">
+                Estudiantes
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink to="/admin/cursos" as={NavLink} className="header-link">
+                Cursos
+              </CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink to="/admin/profesores" as={NavLink} className="header-link">
+                Profesores
+              </CNavLink>
+            </CNavItem>
+          </CHeaderNav>
+        )}
+        <CHeaderNav className="ms-auto align-items-center">
           {rol === 'administrador' && (
             <CNavItem>
               <CNavLink
                 as="button"
                 type="button"
-                onClick={() => navigate('/admin/estudiantes')}
+                onClick={() => navigate('/admin/preinscripciones')}
                 title="Ver preinscripciones"
+                className="header-preinscripciones"
               >
                 <CIcon icon={cilDescription} size="lg" />
-                <CBadge color="danger" shape="rounded-pill" className="ms-1">
+                <CBadge color="danger" shape="rounded-pill" className="header-badge">
                   {preinscripcionesPendientes}
                 </CBadge>
               </CNavLink>
             </CNavItem>
           )}
         </CHeaderNav>
-        <CHeaderNav>
+        <CHeaderNav className="align-items-center">
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>

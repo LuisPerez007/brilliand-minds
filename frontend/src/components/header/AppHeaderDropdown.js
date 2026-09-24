@@ -12,7 +12,7 @@ import {
 import { cilLockLocked, cilSettings, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 
-import avatar8 from './../../assets/images/avatars/8.jpg'
+import avatar0 from '../../assets/images/avatars/0.png'
 import { clearAccessToken } from '../../services/authSession'
 
 const AppHeaderDropdown = () => {
@@ -24,25 +24,37 @@ const AppHeaderDropdown = () => {
   }
 
   return (
-    <CDropdown variant="nav-item">
-      <CDropdownToggle placement="bottom-end" className="py-0 pe-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+    <CDropdown variant="nav-item" className="profile-dropdown">
+      <CDropdownToggle
+        placement="bottom-end"
+        className="profile-dropdown__toggle py-0 pe-0"
+        caret={false}
+      >
+        <CAvatar src={avatar0} size="md" className="profile-dropdown__avatar" />
       </CDropdownToggle>
-      <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-body-secondary fw-semibold mb-2">
+      <CDropdownMenu className="profile-dropdown__menu pt-0 shadow-sm" placement="bottom-end">
+        <CDropdownHeader className="profile-dropdown__header fw-semibold mb-2">
           Configuración
         </CDropdownHeader>
-        <CDropdownItem as="button" type="button" disabled>
-          <CIcon icon={cilUser} className="me-2" />
+        <CDropdownItem as="button" type="button" disabled className="profile-dropdown__item">
+          <CIcon icon={cilUser} className="me-2 profile-dropdown__icon" />
           Perfil
         </CDropdownItem>
-        <CDropdownItem as="button" type="button" disabled>
-          <CIcon icon={cilSettings} className="me-2" />
+        <CDropdownItem as="button" type="button" disabled className="profile-dropdown__item">
+          <CIcon icon={cilSettings} className="me-2 profile-dropdown__icon" />
           Ajustes
         </CDropdownItem>
-        <CDropdownDivider />
-        <CDropdownItem as="button" type="button" onClick={cerrarSesion}>
-          <CIcon icon={cilLockLocked} className="me-2" />
+        <CDropdownDivider className="profile-dropdown__divider" />
+        <CDropdownItem
+          as="button"
+          type="button"
+          onClick={cerrarSesion}
+          className="profile-dropdown__item profile-dropdown__item--danger"
+        >
+          <CIcon
+            icon={cilLockLocked}
+            className="me-2 profile-dropdown__icon profile-dropdown__icon--danger"
+          />
           Cerrar Sesión
         </CDropdownItem>
       </CDropdownMenu>

@@ -1,0 +1,247 @@
+.table-cursos-resultados {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.table-cursos-resultados__header {
+  margin-bottom: 1rem;
+}
+
+.table-cursos-resultados__header h1 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.table-cursos-resultados__header span {
+  color: var(--brand-primary);
+}
+
+.table-cursos-resultados__wrapper {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+
+.table-cursos-resultados__table {
+  margin: 0;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+.table-cursos-resultados__head {
+  padding: 0.9rem 1rem;
+  background: linear-gradient(180deg, rgba(239, 246, 255, 0.95), rgba(255, 255, 255, 0.9));
+  color: var(--text-primary);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.table-cursos-resultados__row {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.table-cursos-resultados__row:hover {
+  background: rgba(37, 99, 235, 0.03);
+}
+
+.table-cursos-resultados__cell {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.table-cursos-resultados__row:last-child .table-cursos-resultados__cell {
+  border-bottom: none;
+}
+
+.table-cursos-resultados__spacer {
+  background: transparent;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.table-cursos-resultados__total-label {
+  background: rgba(248, 250, 252, 0.8);
+  font-weight: 700;
+  text-align: right;
+}
+
+.table-cursos-resultados__total-score {
+  text-align: center;
+  font-weight: 700;
+  color: #fff;
+  min-width: 90px;
+}
+
+.table-cursos-resultados__total-score.is-pass {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border-color: rgba(34, 197, 94, 0.18);
+}
+
+.table-cursos-resultados__total-score.is-pending {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-color: rgba(245, 158, 11, 0.18);
+}
+
+.table-cursos-resultados__total-score.is-fail {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: rgba(239, 68, 68, 0.18);
+}
+
+.table-cursos-resultados__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
+}
+
+.table-cursos-resultados__empty-title,
+.table-cursos-resultados__title,
+.table-cursos-resultados__periodo {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.table-cursos-resultados__title-wrap {
+  margin-bottom: 1.5rem;
+}
+
+.table-cursos-resultados__title {
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  letter-spacing: -0.04em;
+}
+
+.table-cursos-resultados__subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--text-secondary);
+}
+
+.table-cursos-resultados__period-group {
+  margin-top: 1rem;
+}
+
+.table-cursos-resultados__periodo {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.table-cursos-resultados__periodo small {
+  color: var(--brand-primary);
+  font-weight: 700;
+}
+
+.table-cursos-resultados__period-item {
+  list-style: none;
+  padding: 0;
+}
+
+.table-cursos-resultados__course-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-xs);
+}
+
+.table-cursos-resultados__course-name {
+  min-width: 180px;
+  flex: 1 1 180px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.table-cursos-resultados__action-btn {
+  min-width: 120px;
+}
+
+.table-cursos-resultados__course-date {
+  margin: 0;
+  width: 100%;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__wrapper {
+  background: rgba(17, 24, 39, 0.82);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__head {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__cell{
+  color: rgba(255, 255, 255, 0.9) !important;           
+  background-color: transparent !important;  
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__course-name,
+html[data-coreui-theme='dark'] .table-cursos-resultados__empty-title,
+html[data-coreui-theme='dark'] .table-cursos-resultados__title,
+html[data-coreui-theme='dark'] .table-cursos-resultados__periodo,
+html[data-coreui-theme='dark'] .table-cursos-resultados__header h1 {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__row:hover {
+  background: rgba(148, 163, 184, 0.08);
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__cell,
+html[data-coreui-theme='dark'] .table-cursos-resultados__spacer,
+html[data-coreui-theme='dark'] .table-cursos-resultados__course-item {
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__total-label {
+  background: rgba(15, 23, 42, 0.72);
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__course-item {
+  background: rgba(15, 23, 42, 0.72);
+}
+
+html[data-coreui-theme='dark'] .table-cursos-resultados__course-date,
+html[data-coreui-theme='dark'] .table-cursos-resultados__subtitle {
+  color: rgba(148, 163, 184, 0.9);
+}
+
+@media (max-width: 767.98px) {
+  .table-cursos-resultados__head {
+    font-size: 0.68rem;
+    padding-inline: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .table-cursos-resultados__cell {
+    padding: 0.72rem 0.7rem;
+    font-size: 0.82rem;
+  }
+
+  .table-cursos-resultados__course-item {
+    align-items: flex-start;
+  }
+
+  .table-cursos-resultados__action-btn {
+    width: 100%;
+  }
+}

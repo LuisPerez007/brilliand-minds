@@ -1,0 +1,243 @@
+.preinscripcion-cursos__page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.preinscripcion-cursos__content {
+  width: 100%;
+}
+
+.preinscripcion-cursos__alert {
+  border: 1px solid rgba(185, 10, 10, 0.24);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+}
+
+.preinscripcion-cursos__alert--danger {
+  background: rgba(240, 178, 96, 0.95);
+  color: var(--text-primary);
+}
+
+.preinscripcion-cursos__alert--info {
+  background: rgba(239, 246, 255, 0.95);
+  color: var(--text-primary);
+}
+
+.preinscripcion-cursos__deuda-header {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.preinscripcion-cursos__deuda-text {
+  margin: 0 0 0.5rem;
+  color: var(--text-secondary);
+}
+
+.preinscripcion-cursos__deuda-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.45rem;
+  color: var(--text-primary);
+}
+
+.preinscripcion-cursos__deuda-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.preinscripcion-cursos__deuda-meta {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.preinscripcion-cursos__section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.preinscripcion-cursos__header {
+  text-align: center;
+  padding: 0 0 0.25rem;
+}
+
+.preinscripcion-cursos__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 2vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+}
+
+.preinscripcion-cursos__subtitle {
+  margin: 0.5rem 0 0;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.preinscripcion-cursos__table-wrapper {
+  width: 100%;
+}
+
+.preinscripcion-cursos__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.preinscripcion-cursos__card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem;
+  border: 1px solid rgba(18, 6, 122, 0.2);
+  border-radius: var(--radius-xl);
+  background: rgba(239, 252, 250, 0.9);
+  box-shadow: var(--shadow-xs);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.preinscripcion-cursos__card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: var(--shadow-sm);
+}
+
+.preinscripcion-cursos__card-header {
+  margin-bottom: 0.8rem;
+}
+
+.preinscripcion-cursos__course-title {
+  margin: 0;
+  font-size: 1.35rem;
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.preinscripcion-cursos__description {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  min-height: 4.8rem;
+}
+
+.preinscripcion-cursos__meta {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.preinscripcion-cursos__cell {
+  background-color: transparent !important;
+}
+
+.preinscripcion-cursos__meta-item {
+  display: flex;
+  align-items: center;
+  color: var(--text-primary);
+  font-size: 0.94rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--radius-md);
+  background: rgba(245, 250, 255, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.preinscripcion-cursos__modalidad {
+  margin: 1rem 0 0;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.preinscripcion-cursos__modalidad strong {
+  color: var(--text-primary);
+}
+
+.preinscripcion-cursos__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.preinscripcion-cursos__button {
+  min-width: 140px;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  box-shadow: none;
+}
+
+.preinscripcion-cursos__empty-state {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.preinscripcion-cursos__modal-alert {
+  border-radius: var(--radius-md);
+}
+
+.preinscripcion-cursos__modal-text {
+  color: var(--text-primary);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-cursos__alert--danger {
+  background: rgba(241, 149, 11, 0.18);
+  border-color: rgba(216, 28, 28, 0.32);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-cursos__alert--info {
+  background: rgba(30, 64, 175, 0.18);
+  border-color: rgba(96, 165, 250, 0.32);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-cursos__deuda-text,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__deuda-meta,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__subtitle,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__description,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__modal-text {
+  color: rgba(132, 156, 192, 0.92);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-cursos__title,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__course-title,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__modalidad,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__deuda-list,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__meta-item,
+html[data-coreui-theme='dark'] .preinscripcion-cursos__deuda-header {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-cursos__card {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-cursos__meta-item {
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(148, 163, 184, 0.15);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-cursos__cell {
+  background-color: transparent !important;
+  color: rgba(255, 255, 255, 0.92) !important;
+}
+
+@media (max-width: 767.98px) {
+  .preinscripcion-cursos__card {
+    padding: 1rem;
+  }
+
+  .preinscripcion-cursos__actions {
+    justify-content: stretch;
+  }
+
+  .preinscripcion-cursos__button {
+    width: 100%;
+  }
+}
