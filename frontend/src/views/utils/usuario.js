@@ -18,9 +18,9 @@ export const obtenerRol = () => obtenerUsuario()?.role || null
 
 export const obtenerRutaPrincipal = () => {
   const rutasPorRol = {
-    administrador: '/admin/estudiantes',
-    profesor: '/docente/cursos',
-    estudiante: '/estudiante/preinscripciones',
+    administrador: '/dashboard',
+    profesor: '/dashboard',
+    estudiante: '/dashboard',
   }
 
   return rutasPorRol[obtenerRol()] || null

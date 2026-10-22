@@ -2,7 +2,7 @@ import dataBase from '../../db/dataBase.js'
 
 export const mostrarRecibos = async () => {
   const informe = await dataBase.query(`
-    SELECT * FROM historial_inscripciones
+    SELECT * FROM historial_inscripciones ORDER BY fecha_pago DESC
   `)
   return informe
 }
@@ -34,6 +34,15 @@ export const registrarRecibos = async (datos) => {
   return informe
 }
 
+export const telefonoTutorActivo = async (idTutor) => {
+  const { rows } = await dataBase.query(
+    `SELECT telefono FROM padre_tutor
+     WHERE id_tutor = $1 AND estado = 'Activo'`,
+    [idTutor]
+  )
+  return rows[0]?.telefono ?? null
+}
+
 export const controlPagosDeEstudiantesACursos = async () => {
   const informe = await dataBase.query(`
     SELECT
@@ -51,7 +60,6 @@ export const controlPagosDeEstudiantesACursos = async () => {
     FROM inscripcion ins
     JOIN estudiante est ON est.id_estudiante = ins.id_estudiante
     JOIN curso cur ON cur.id_curso = ins.id_curso
-    WHERE ins.estado_pago = 'PENDIENTE'
     ORDER BY ins.fecha_inscripcion ASC`)
   return informe
 }

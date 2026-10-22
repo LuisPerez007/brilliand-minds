@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react'
+import { CAlert } from '@coreui/react'
 import '../../../../scss/contenedorStyles/contenedores.scss'
 import '../../../../scss/textoStyles/textos.scss'
 import '../../../../scss/formaStyles/selectStyle.scss'
@@ -29,7 +31,20 @@ const TableCursosEvaluacionProfesor = ({
   setEditarExamenCursoSeleccionada,
   editarEvaluacionDeunCurso,
   eliminarEvaluacionDeunCurso,
+  cargarExamenesYaCalificados,
+  examenesYaCalificados,
 }) => {
+  const [alerta, setAlerta] = useState(null)
+  const alertaRef = useRef(null)
+  const mostrarAlerta = (message, color = 'warning') => setAlerta({ message, color })
+  useEffect(() => {
+    if (!alerta) return undefined
+
+    alertaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    const timeout = setTimeout(() => setAlerta(null), 10000)
+
+    return () => clearTimeout(timeout)
+  }, [alerta])
   const cursoActual = (cursoEvaluacionProfesor ?? []).find(
     (curso) => curso.id_curso === cursoSeleccionado,
   )
@@ -50,24 +65,26 @@ const TableCursosEvaluacionProfesor = ({
   ).length
   const imprimirReporteCalificaciones = () => {
     if (cargandoCalificaciones) {
-      alert('La lista todavía está cargando. Espere un momento antes de imprimir.')
+      mostrarAlerta('La lista todavía está cargando. Espere un momento antes de imprimir.')
       return
     }
     if (listaCalificacion.length === 0) {
-      alert('No hay estudiantes inscritos para generar el reporte.')
+      mostrarAlerta('No hay estudiantes inscritos para generar el reporte.')
       return
     }
     if (calificacionEditando !== null) {
-      alert('Debe terminar o cancelar la calificación en edición antes de imprimir.')
+      mostrarAlerta('Debe terminar o cancelar la calificación en edición antes de imprimir.')
       return
     }
     const datosValidos = listaCalificacion[0]
     if (!datosValidos?.curso || !datosValidos?.profesor || !datosValidos?.evaluacion) {
-      alert('No hay datos válidos de curso, profesor o evaluación para generar el reporte.')
+      mostrarAlerta('No hay datos válidos de curso, profesor o evaluación para generar el reporte.')
       return
     }
     if (estudiantesSinCalificar > 0) {
-      alert('No se puede generar el reporte porque existen estudiantes sin calificación válida.')
+      mostrarAlerta(
+        'No se puede generar el reporte porque existen estudiantes sin calificación válida.',
+      )
       return
     }
 
@@ -79,6 +96,19 @@ const TableCursosEvaluacionProfesor = ({
   }
   return (
     <div className="evaluacion-profesor__container">
+      {alerta && (
+        <div ref={alertaRef}>
+          <CAlert
+            color={alerta.color}
+            dismissible
+            onClose={() => setAlerta(null)}
+            role="alert"
+            className="no-print"
+          >
+            <div style={{ whiteSpace: 'pre-line' }}>{alerta.message}</div>
+          </CAlert>
+        </div>
+      )}
       {cursoSeleccionado === null ? (
         <div className="evaluacion-profesor__panel">
           <h1 className="evaluacion-profesor__title">Calificaciones de los cursos</h1>
@@ -186,8 +216,35 @@ const TableCursosEvaluacionProfesor = ({
               <div className="evaluacion-form__actions mt-4 pt-2">
                 <button
                   className="btn btn-primary fw-bold"
-                  onClick={async () =>
-                    editarEvaluacionDeunCurso(
+                  onClick={async () => {
+                    const sumaExistente = evaluacionesCurso
+                      .filter(
+                        (examen) =>
+                          examen.id_evaluacion !== editarExamenCursoSeleccionada.id_evaluacion,
+                      )
+                      .reduce((acumulador, examen) => {
+                        return acumulador + parseFloat(examen.porcentaje || 0)
+                      }, 0)
+
+                    const nuevoPorcentaje = parseFloat(datosExamen.porcentaje || 0)
+                    const sumaTotal = sumaExistente + nuevoPorcentaje
+
+                    if (sumaTotal > 100) {
+                      const disponible = 100 - sumaExistente
+                      mostrarAlerta(
+                        `¡Error! La suma de las evaluaciones excede el 100%.\n\n` +
+                          `• Suma de los OTROS exámenes: ${sumaExistente}%\n` +
+                          `• Porcentaje que intentas asignar: ${nuevoPorcentaje}%\n` +
+                          `• Total si guardas: ${sumaTotal}%\n\n` +
+                          `Por favor, ajusta el valor. Solo tienes ${disponible}% disponible.`,
+                        'danger',
+                      )
+                      return
+                    }
+
+                    console.log('Validación correcta. La suma total es:', sumaTotal)
+
+                    return editarEvaluacionDeunCurso(
                       editarExamenCursoSeleccionada.id_evaluacion,
                       cursoActual.id_curso,
                       datosExamen.nombreEvaluacion,
@@ -195,10 +252,11 @@ const TableCursosEvaluacionProfesor = ({
                       datosExamen.fechaEvaluacion,
                       datosExamen.porcentaje,
                     )
-                  }
+                  }}
                 >
                   Guardar
                 </button>
+
                 <button
                   className="btn btn-outline-secondary fw-semibold"
                   onClick={() => setEditarExamenCursoSeleccionada(null)}
@@ -258,6 +316,7 @@ const TableCursosEvaluacionProfesor = ({
                   className="evaluacion-form__input"
                   value={datosExamen.fechaEvaluacion}
                   placeholder={datosExamen.fechaEvaluacion}
+                  min={new Date().toISOString().split('T')[0]}
                   onChange={(e) => {
                     setDatosExamen({
                       ...datosExamen,
@@ -288,18 +347,40 @@ const TableCursosEvaluacionProfesor = ({
               <div className="evaluacion-form__actions mt-4 pt-2">
                 <button
                   className="btn btn-primary fw-bold"
-                  onClick={async () =>
-                    crearEvaluacionDeunCurso(
+                  onClick={async () => {
+                    const sumaExistente = evaluacionesCurso.reduce((acumulador, examen) => {
+                      return acumulador + parseFloat(examen.porcentaje || 0)
+                    }, 0)
+
+                    const nuevoPorcentaje = parseFloat(datosExamen.porcentaje || 0)
+                    const sumaTotal = sumaExistente + nuevoPorcentaje
+
+                    if (sumaTotal > 100) {
+                      const disponible = 100 - sumaExistente
+                      mostrarAlerta(
+                        `¡Error! La suma de las evaluaciones excede el 100%.\n\n` +
+                          `• Suma actual del curso: ${sumaExistente}%\n` +
+                          `• Porcentaje que intentas agregar: ${nuevoPorcentaje}%\n` +
+                          `• Total si guardas: ${sumaTotal}%\n\n` +
+                          `Por favor, ajusta el valor. Solo tienes ${disponible}% disponible.`,
+                        'danger',
+                      )
+                      return
+                    }
+
+                    console.log('Validación correcta. La suma total es:', sumaTotal)
+                    return crearEvaluacionDeunCurso(
                       cursoActual.id_curso,
                       datosExamen.nombreEvaluacion,
                       datosExamen.descripcion,
                       datosExamen.fechaEvaluacion,
                       datosExamen.porcentaje,
                     )
-                  }
+                  }}
                 >
                   Guardar
                 </button>
+
                 <button
                   className="btn btn-outline-secondary fw-semibold"
                   onClick={() => setCursoCrearExamenSeleccionado(null)}
@@ -330,27 +411,40 @@ const TableCursosEvaluacionProfesor = ({
                     No hay exámenes para este curso.
                   </p>
                 ) : (
-                  <ul className="evaluacion-form__list list-unstyled m-0 d-flex flex-column gap-2">
+                  <ul className="evaluacion-form__list list-unstyled m-0">
                     {evaluacionesCurso.map((evaCu) => (
-                      <li
-                        key={evaCu.id_evaluacion}
-                        className="evaluacion-form__item d-flex align-items-center justify-content-between p-3 rounded-3"
-                      >
-                        {/* Información del Examen */}
-                        <div className="evaluacion-form__item-info d-flex align-items-center gap-3">
-                          <span
-                            className="evaluacion-form__item-name fw-semibold"
-                            style={{ display: 'inline-block', minWidth: '200px' }}
-                          >
-                            <span className="badge bg-primary-soft text-primary me-2 px-2 py-1.5 rounded-pill fw-bold border border-primary-subtle">
+                      <li key={evaCu.id_evaluacion} className="evaluacion-form__item">
+                        <div className="evaluacion-form__item-content">
+                          <div className="evaluacion-form__item-meta">
+                            <span className="evaluacion-form__item-percent">
                               {evaCu.porcentaje}%
                             </span>
-                            {evaCu.nombre_evaluacion}
-                          </span>
+
+                            <div className="evaluacion-form__item-copy">
+                              <span className="evaluacion-form__item-name">
+                                {evaCu.nombre_evaluacion}
+                              </span>
+                              {(() => {
+                                const examen = examenesYaCalificados?.find(
+                                  (e) => e.id_evaluacion === evaCu.id_evaluacion,
+                                )
+
+                                return examen ? (
+                                  <span className="evaluacion-form__item-status evaluacion-form__item-status--success">
+                                    Calificado aprobado: {examen.aprobados} reprobados:{' '}
+                                    {examen.reprobados}
+                                  </span>
+                                ) : (
+                                  <span className="evaluacion-form__item-status evaluacion-form__item-status--warning">
+                                    Sin calificar
+                                  </span>
+                                )
+                              })()}
+                            </div>
+                          </div>
                         </div>
 
-                        {/* Grupo de Botones de Control */}
-                        <div className="evaluacion-form__item-actions d-flex flex-wrap gap-2">
+                        <div className="evaluacion-form__item-actions">
                           <button
                             className="btn btn-sm btn-primary fw-bold"
                             onClick={() =>

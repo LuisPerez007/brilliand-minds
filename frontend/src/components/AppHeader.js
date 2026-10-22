@@ -84,7 +84,9 @@ const AppHeader = () => {
     getPreinscripcionEstudiante()
       .then((respuesta) => {
         if (componenteActivo) {
-          setPreinscripcionesPendientes(respuesta.data.length)
+          setPreinscripcionesPendientes(
+            respuesta.data.filter((preinscripcion) => preinscripcion.estado === 'Pendiente').length,
+          )
         }
       })
       .catch((error) => {

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
-import { CCol, CRow, CSpinner, CWidgetStatsA } from '@coreui/react'
+import { CAlert, CCol, CRow, CSpinner, CWidgetStatsA } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilBook, cilCash, cilPeople, cilTask } from '@coreui/icons'
+import { useNavigate } from 'react-router-dom'
+import { getCursosPorVencer } from '../../services/cursosService'
 import { getEstudiantes } from '../../services/estudiantesService'
 import { getPreinscripcionEstudiante } from '../../services/preInscripcionEstudianteRoutes'
 import { getControlDePagosParaLosEstudiante } from '../../services/controlPagosParaEstudiantes'
@@ -29,8 +31,31 @@ const mockMetricas = {
 
 const Dashboard = () => {
   const rol = obtenerRol()
+  const navigate = useNavigate()
   const [metricas, setMetricas] = useState([])
   const [cargando, setCargando] = useState(true)
+  const [cursosPorVencer, setCursosPorVencer] = useState([])
+
+  const rutasPorRol = {
+    administrador: {
+      'Total Estudiantes': '/admin/estudiantes',
+      'Ingresos del Mes': '/admin/recibos',
+      'Preinscripciones Pendientes': '/admin/preinscripciones',
+      'Pagos Vencidos': '/admin/control-pagos',
+    },
+    profesor: {
+      'Mis Cursos Asignados': '/docente/cursos',
+      'Total Alumnos a Cargo': '/docente/estudiantes',
+      'Evaluaciones Pendientes de Calificar': '/docente/evaluaciones',
+      'Promedio de Asistencia': '/docente/estudiantes',
+    },
+    estudiante: {
+      'Mis Cursos': '/estudiante/cursos',
+      'Mi Promedio General': '/estudiante/cursos',
+      'Próximos Exámenes': '/estudiante/cursos',
+      'Estado de Cuenta': '/estudiante/cursos',
+    },
+  }
 
   useEffect(() => {
     let componenteActivo = true
@@ -121,26 +146,84 @@ const Dashboard = () => {
     }
   }, [rol])
 
+  useEffect(() => {
+    if (rol !== 'administrador') return
+
+    let componenteActivo = true
+
+    const cargarCursosPorVencer = async () => {
+      try {
+        const respuesta = await getCursosPorVencer()
+        const cursos = respuesta?.data?.cursosPorVencer ?? []
+
+        if (componenteActivo) {
+          setCursosPorVencer(cursos)
+        }
+      } catch (error) {
+        console.error('Error al cargar cursos por vencer', error)
+        if (componenteActivo) {
+          setCursosPorVencer([])
+        }
+      }
+    }
+
+    cargarCursosPorVencer()
+
+    return () => {
+      componenteActivo = false
+    }
+  }, [rol])
+
   if (cargando) {
     return <CSpinner color="primary" />
   }
 
   return (
-    <CRow className="mb-4" xs={{ gutter: 4 }}>
-      {metricas.map((metrica, index) => (
-        <CCol key={metrica.title} sm={6} xl={4} xxl={3}>
-          <CWidgetStatsA
-            color={metrica.color}
-            value={
-              <>
-                {metrica.value} <CIcon icon={[cilPeople, cilCash, cilTask, cilBook][index]} />
-              </>
-            }
-            title={metrica.title}
-          />
-        </CCol>
-      ))}
-    </CRow>
+    <>
+      {rol === 'administrador' && cursosPorVencer.length > 0 && (
+        <div className="dashboard-alerts__section">
+          <div className="dashboard-alerts__header">
+            <h6 className="dashboard-alerts__title">Cursos próximos a vencer</h6>
+          </div>
+
+          <div className="dashboard-alerts__list">
+            {cursosPorVencer.map((curso) => (
+              <CAlert key={curso.id_curso} color="warning" className="dashboard-alert__item">
+                <div className="dashboard-alert__content">
+                  <strong className="text-body">{curso.nombre}</strong>
+                  <span>Vence en {curso.dias_restantes ?? 0} día(s)</span>
+                </div>
+                <small>{new Date(curso.fecha_fin).toLocaleDateString()}</small>
+              </CAlert>
+            ))}
+          </div>
+        </div>
+      )}
+      <br />
+      <CRow className="mb-4" xs={{ gutter: 4 }}>
+        {metricas.map((metrica, index) => {
+          const ruta = rutasPorRol[rol]?.[metrica.title]
+
+          return (
+            <CCol key={metrica.title} sm={6} xl={4} xxl={3}>
+              <CWidgetStatsA
+                color={metrica.color}
+                value={
+                  <>
+                    {metrica.value} <CIcon icon={[cilPeople, cilCash, cilTask, cilBook][index]} />
+                  </>
+                }
+                title={metrica.title}
+                onClick={() => {
+                  if (ruta) navigate(ruta)
+                }}
+                className={ruta ? 'dashboard-metric__card--clickable' : ''}
+              />
+            </CCol>
+          )
+        })}
+      </CRow>
+    </>
   )
 }
 

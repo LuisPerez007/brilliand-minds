@@ -1,7 +1,7 @@
 import express from 'express'
 import { getCursosAsignados, getEstudiantesAsignados } from '../../controllers/gestionProfesor/gestionProfesor.js'
 import { deleteEvaluacionDeunCurso, getCursosEvaluacion, getEvaluacionCurso, getListarCalificacionesEvaluacion, postCrearEvaluacionAunCurso, putActualizarEvaluacionDeunCurso } from '../../controllers/gestionProfesor/evaluacion.js'
-import { postCalificarEvaluacion, putCalificarEvaluacion } from '../../controllers/gestionProfesor/calificarEvaluacion.js'
+import { postCalificarEvaluacion, putCalificarEvaluacion, getMostrarExamenesCalificados } from '../../controllers/gestionProfesor/calificarEvaluacion.js'
 import { validarCalificacion } from '../../middlewares/gestionProfesor/calificacionValidacion/calificacionValidator.js'
 import { validarCampos } from '../../middlewares/validarCampos/validarCampos.js'
 import { validarEvaluacion } from '../../middlewares/gestionProfesor/evaluacionValidacion/evaluacionValidator.js'
@@ -18,5 +18,7 @@ router.delete('/cursos/evaluacion/examen/eliminarEvaluacion/:idEvaluacion', dele
 router.get('/cursos/evaluacion/examen/listarCalificaciones/:idCurso/:idEvaluacion', getListarCalificacionesEvaluacion)
 router.post('/cursos/evaluacion/examen/listarCalificaciones/calificarExamen', validarCalificacion, validarCampos, postCalificarEvaluacion)
 router.put('/cursos/evaluacion/examen/listarCalificaciones/editarExamen', validarCalificacion, validarCampos, putCalificarEvaluacion)
+
+router.get('/cursos/evaluacion/examen/ya-calificados/:idCurso', getMostrarExamenesCalificados)
 
 export default router

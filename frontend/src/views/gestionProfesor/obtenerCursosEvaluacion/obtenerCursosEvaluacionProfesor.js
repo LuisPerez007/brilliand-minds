@@ -27,6 +27,8 @@ const ObtenerCursosEvaluacionProfesor = () => {
     setEditarExamenCursoSeleccionada,
     editarEvaluacionDeunCurso,
     eliminarEvaluacionDeunCurso,
+    cargarExamenesYaCalificados,
+    examenesYaCalificados,
   } = useCursosEvaluacionProfesor()
   return (
     <>
@@ -55,6 +57,8 @@ const ObtenerCursosEvaluacionProfesor = () => {
         setEditarExamenCursoSeleccionada={setEditarExamenCursoSeleccionada}
         editarEvaluacionDeunCurso={editarEvaluacionDeunCurso}
         eliminarEvaluacionDeunCurso={eliminarEvaluacionDeunCurso}
+        cargarExamenesYaCalificados={cargarExamenesYaCalificados}
+        examenesYaCalificados={examenesYaCalificados}
       />
     </>
   )

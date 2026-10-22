@@ -1,0 +1,3 @@
+FROM n8nio/n8n:2.42.5
+
+EXPOSE 5679

@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { CModal, CModalBody, CModalFooter, CModalHeader, CModalTitle } from '@coreui/react'
 import {
   CButton,
@@ -10,6 +10,12 @@ import {
   CTableRow,
 } from '@coreui/react'
 import { SectionCard, LoadingState, EmptyState } from '../../../components'
+
+const normalizarTexto = (valor) =>
+  String(valor || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
 
 const TablaProfesores = ({
   inscripcionesPorProfesor,
@@ -24,9 +30,86 @@ const TablaProfesores = ({
   const datos = inscripcionesPorProfesor?.datos || []
   const cursosUnicos = [...new Set(datos.map((dat) => dat.curso || 'Sin curso'))]
   const totalEstudiantes = datos.filter((dat) => dat.estudiante !== null).length
+  const tieneDatosOriginales = datos.length > 0
+  const [filtroAbierto, setFiltroAbierto] = useState(null)
+  const [filtrosColumna, setFiltrosColumna] = useState({
+    curso: '',
+    fecha_inscripcion: '',
+    estudiante: '',
+    telefono: '',
+  })
+
+  const renderFilterHeader = (campo, etiqueta, tipo = 'text') => {
+    const isOpen = filtroAbierto === campo
+    const valorActual = filtrosColumna[campo] || ''
+
+    return (
+      <CTableHeaderCell scope="col" className="table-inscripcion__head-cell">
+        <div className="table-inscripcion__header">
+          <span>{etiqueta}</span>
+          <button
+            type="button"
+            className={`table-inscripcion__filter-toggle ${isOpen ? 'is-open' : ''}`}
+            onClick={() => setFiltroAbierto(isOpen ? null : campo)}
+            aria-label={`Filtrar por ${etiqueta}`}
+          >
+            {tipo === 'date' ? '🔽' : '🔍'}
+          </button>
+        </div>
+        {isOpen && (
+          <div className="table-inscripcion__filter-panel">
+            {tipo === 'date' ? (
+              <input
+                type="date"
+                className="table-inscripcion__filter-input"
+                value={valorActual}
+                onChange={(event) =>
+                  setFiltrosColumna((prev) => ({ ...prev, [campo]: event.target.value }))
+                }
+              />
+            ) : (
+              <input
+                type="text"
+                className="table-inscripcion__filter-input"
+                value={valorActual}
+                placeholder="Buscar"
+                onChange={(event) =>
+                  setFiltrosColumna((prev) => ({ ...prev, [campo]: event.target.value }))
+                }
+              />
+            )}
+          </div>
+        )}
+      </CTableHeaderCell>
+    )
+  }
+
+  const datosFiltrados = datos.filter((dat) => {
+    const cumpleCurso =
+      !filtrosColumna.curso ||
+      normalizarTexto(dat.curso || 'Sin curso').includes(normalizarTexto(filtrosColumna.curso))
+
+    const cumpleFecha =
+      !filtrosColumna.fecha_inscripcion ||
+      (dat.fecha_inscripcion &&
+        new Date(dat.fecha_inscripcion).toISOString().slice(0, 10) ===
+          filtrosColumna.fecha_inscripcion)
+
+    const cumpleEstudiante =
+      !filtrosColumna.estudiante ||
+      normalizarTexto(dat.estudiante || '').includes(normalizarTexto(filtrosColumna.estudiante))
+
+    const cumpleTelefono =
+      !filtrosColumna.telefono ||
+      normalizarTexto(dat.telefono_estudiante || '').includes(
+        normalizarTexto(filtrosColumna.telefono),
+      )
+
+    return cumpleCurso && cumpleFecha && cumpleEstudiante && cumpleTelefono
+  })
 
   return (
-    <div className="reporte">
+    <div className="inscripcion-reporte__wrapper">
       {cursoParaEliminar && (
         <CModal
           visible={Boolean(cursoParaEliminar)}
@@ -59,120 +142,143 @@ const TablaProfesores = ({
       <SectionCard
         title={`Profesor: ${datos.length > 0 ? datos[0].profesor : inscripcionesPorProfesor?.message || 'Sin datos'}`}
         description={`Teléfono: ${datos.length > 0 ? datos[0].telefono_profesor : 'Sin datos'} | Total de estudiantes: ${totalEstudiantes}`}
+        className="inscripcion-table__card text-body"
       >
         {cargando ? (
           <LoadingState label="Cargando inscripciones…" />
-        ) : datos.length === 0 ? (
+        ) : !tieneDatosOriginales ? (
           <EmptyState
             title="No hay inscripciones para este profesor"
             description="Selecciona otro profesor o revisa sus cursos asignados."
           />
         ) : (
           <>
-            <div className="bm-report-course-list">
+            <div className="inscripcion-course-list__chips">
               <span>Cursos asignados: </span>
               {cursosUnicos.map((curso, index) => (
-                <span className="bm-report-course-chip" key={`${curso}-${index}`}>
+                <span className="inscripcion-course-list__chip" key={`${curso}-${index}`}>
                   {curso}{' '}
                 </span>
               ))}
             </div>
-            <CTable
-              align="middle"
-              hover
-              responsive
-              className="bm-admin-table bm-teacher-report-table"
-            >
-              <CTableHead>
-                <CTableRow>
-                  <CTableHeaderCell scope="col" className="no-print">
-                    Curso
-                  </CTableHeaderCell>
-                  <CTableHeaderCell scope="col" className="no-print">
-                    Nro
-                  </CTableHeaderCell>
-                  <CTableHeaderCell scope="col">fecha de Inscripcion</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Estudiante</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Teléfono</CTableHeaderCell>
-                  <CTableHeaderCell scope="col" className="no-print text-end">
-                    Acciones
-                  </CTableHeaderCell>
-                </CTableRow>
-              </CTableHead>
-              <CTableBody>
-                {datos.map((dat, index) => {
-                  const esPrimeroDelCurso = index === 0 || dat.curso !== datos[index - 1].curso
-
-                  return (
-                    <Fragment
-                      key={
-                        dat.id_inscripcion ||
-                        `${dat.id_curso}-${dat.id_estudiante}-${dat.fecha_inscripcion}`
-                      }
+            <div className="table-responsive inscripcion-table__wrapper">
+              <CTable align="middle" hover className="table-inscripcion__table">
+                <CTableHead>
+                  <CTableRow>
+                    {renderFilterHeader('curso', 'Curso')}
+                    <CTableHeaderCell scope="col" className="no-print table-inscripcion__head-cell">
+                      Nro
+                    </CTableHeaderCell>
+                    {renderFilterHeader('fecha_inscripcion', 'Fecha de Inscripcion', 'date')}
+                    {renderFilterHeader('estudiante', 'Estudiante')}
+                    {renderFilterHeader('telefono', 'Teléfono')}
+                    <CTableHeaderCell
+                      scope="col"
+                      className="no-print text-end table-inscripcion__head-cell"
                     >
-                      {esPrimeroDelCurso && (
-                        <>
-                          <CTableRow className="bm-report-group-row">
-                            <CTableDataCell colSpan={5}>{dat.curso || 'Sin curso'}</CTableDataCell>
-                            <CTableDataCell className="text-end">
-                              <CButton
-                                color="danger"
-                                variant="outline"
-                                size="sm"
-                                onClick={() =>
-                                  eliminarInscripcionPorCurso(
-                                    dat.id_curso,
-                                    dat.curso,
-                                    idProfesorSeleccionado,
-                                  )
-                                }
+                      Acciones
+                    </CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {datosFiltrados.length === 0 ? (
+                    <CTableRow>
+                      <CTableDataCell colSpan={6} className="table-inscripcion__empty-results">
+                        No se encontraron resultados
+                      </CTableDataCell>
+                    </CTableRow>
+                  ) : (
+                    datosFiltrados.map((dat, index) => {
+                      const esPrimeroDelCurso =
+                        index === 0 || dat.curso !== datosFiltrados[index - 1].curso
+
+                      return (
+                        <Fragment
+                          key={
+                            dat.id_inscripcion ||
+                            `${dat.id_curso}-${dat.id_estudiante}-${dat.fecha_inscripcion}`
+                          }
+                        >
+                          {esPrimeroDelCurso && (
+                            <>
+                              <CTableRow className="table-inscripcion__group-row">
+                                <CTableDataCell
+                                  colSpan={5}
+                                  className="table-inscripcion__group-cell"
+                                >
+                                  {dat.curso || 'Sin curso'}
+                                </CTableDataCell>
+                                <CTableDataCell className="text-end table-inscripcion__group-cell">
+                                  <CButton
+                                    color="danger"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() =>
+                                      eliminarInscripcionPorCurso(
+                                        dat.id_curso,
+                                        dat.curso,
+                                        idProfesorSeleccionado,
+                                      )
+                                    }
+                                    className="inscripcion-action__button"
+                                  >
+                                    Finalizar curso
+                                  </CButton>
+                                </CTableDataCell>
+                              </CTableRow>
+                            </>
+                          )}
+                          {dat.estudiante ? (
+                            <CTableRow className="table-inscripcion__row">
+                              <CTableDataCell className="no-print table-inscripcion__cell"></CTableDataCell>
+                              <CTableDataCell className="no-print text-body-secondary table-inscripcion__cell">
+                                #{index + 1}
+                              </CTableDataCell>
+                              <CTableDataCell className="table-inscripcion__cell">
+                                {dat.fecha_inscripcion
+                                  ? new Date(dat.fecha_inscripcion).toLocaleDateString()
+                                  : '---'}
+                              </CTableDataCell>
+                              <CTableDataCell className="table-inscripcion__cell">
+                                <strong>{dat.estudiante}</strong>
+                              </CTableDataCell>
+                              <CTableDataCell className="table-inscripcion__cell">
+                                {dat.telefono_estudiante}
+                              </CTableDataCell>
+                              <CTableDataCell className="no-print text-end table-inscripcion__cell">
+                                <CButton
+                                  color="danger"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() =>
+                                    eliminarInscripcionId(
+                                      dat.id_inscripcion,
+                                      idProfesorSeleccionado,
+                                    )
+                                  }
+                                  className="inscripcion-action__button"
+                                >
+                                  Eliminar
+                                </CButton>
+                              </CTableDataCell>
+                            </CTableRow>
+                          ) : (
+                            <CTableRow>
+                              <CTableDataCell
+                                colSpan={6}
+                                className="bm-report-group-empty table-inscripcion__cell"
                               >
-                                Finalizar curso
-                              </CButton>
-                            </CTableDataCell>
-                          </CTableRow>
-                        </>
-                      )}
-                      {dat.estudiante ? (
-                        <CTableRow>
-                          <CTableDataCell className="no-print"></CTableDataCell>
-                          <CTableDataCell className="no-print text-body-secondary">
-                            #{index + 1}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            {dat.fecha_inscripcion
-                              ? new Date(dat.fecha_inscripcion).toLocaleDateString()
-                              : '---'}
-                          </CTableDataCell>
-                          <CTableDataCell>
-                            <strong>{dat.estudiante}</strong>
-                          </CTableDataCell>
-                          <CTableDataCell>{dat.telefono_estudiante}</CTableDataCell>
-                          <CTableDataCell className="no-print text-end">
-                            <CButton
-                              color="danger"
-                              variant="outline"
-                              size="sm"
-                              onClick={() =>
-                                eliminarInscripcionId(dat.id_inscripcion, idProfesorSeleccionado)
-                              }
-                            >
-                              Eliminar
-                            </CButton>
-                          </CTableDataCell>
-                        </CTableRow>
-                      ) : (
-                        <CTableRow>
-                          <CTableDataCell colSpan={6} className="bm-report-group-empty">
-                            Sin inscripciones en este curso
-                          </CTableDataCell>
-                        </CTableRow>
-                      )}
-                    </Fragment>
-                  )
-                })}
-              </CTableBody>
-            </CTable>
+                                Sin inscripciones en este curso
+                              </CTableDataCell>
+                            </CTableRow>
+                          )}
+                        </Fragment>
+                      )
+                    })
+                  )}
+                </CTableBody>
+              </CTable>
+            </div>
           </>
         )}
       </SectionCard>

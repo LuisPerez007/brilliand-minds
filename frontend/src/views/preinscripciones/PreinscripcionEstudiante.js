@@ -114,7 +114,7 @@ const PreinscripcionEstudiante = () => {
       .join(' ')
 
   return (
-    <>
+    <div className="preinscripciones-page__container">
       <PageHeader
         eyebrow="Admisiones"
         title="Preinscripciones"
@@ -137,49 +137,52 @@ const PreinscripcionEstudiante = () => {
         backdrop="static"
         alignment="center"
         size="lg"
+        className="preinscripcion-modal__dialog"
       >
-        <CModalHeader closeButton>
+        <CModalHeader closeButton className="preinscripcion-modal__header">
           <CModalTitle>
             {paso === 2 ? 'Registrar Padre o Tutor' : 'Asignar Padre/Tutor para Aprobación'}
           </CModalTitle>
         </CModalHeader>
-        <CModalBody>
+        <CModalBody className="preinscripcion-modal__body">
           <FeedbackAlert
             feedback={solicitudParaAprobar ? feedback : null}
             onClose={limpiarFeedback}
           />
           {paso === 1 ? (
             <>
-              <div
-                style={{
-                  backgroundColor: 'red',
-                  padding: '1rem',
-                  borderRadius: '2rem',
-                  marginBottom: '1rem',
-                }}
-              >
-                <p className="text-body-secondary">
+              <div className="preinscripcion-form__card">
+                <p className="preinscripcion-form__description">
                   Asigna un padre o tutor a <strong>{solicitudParaAprobar?.nombre}</strong> antes de
                   aprobar la solicitud.
                 </p>
-                <CFormLabel htmlFor="preinscripcion-padre-tutor-ci">
+                <CFormLabel
+                  htmlFor="preinscripcion-padre-tutor-ci"
+                  className="preinscripcion-form__label"
+                >
                   CI del padre o tutor
                 </CFormLabel>
-                <div className="d-flex gap-2">
+                <div className="preinscripcion-form__row">
                   <CFormInput
                     id="preinscripcion-padre-tutor-ci"
                     value={ciPadreTutor}
                     onChange={(event) => setCiPadreTutor(event.target.value)}
                     placeholder="Ingrese el CI del padre o tutor"
                     invalid={Boolean(errorPadreTutor)}
+                    className="preinscripcion-form__input"
                   />
-                  <CButton color="primary" variant="outline" onClick={buscarPadreTutor}>
+                  <CButton
+                    color="primary"
+                    variant="outline"
+                    onClick={buscarPadreTutor}
+                    className="preinscripcion-form__button"
+                  >
                     Buscar
                   </CButton>
                 </div>
                 {errorPadreTutor && <CFormFeedback invalid>{errorPadreTutor}</CFormFeedback>}
                 {padreTutorSeleccionado ? (
-                  <div className="mt-3 text-success">
+                  <div className="preinscripcion-form__selection">
                     <strong>Padre/tutor seleccionado:</strong>{' '}
                     {nombreCompletoPadreTutor(padreTutorSeleccionado)} (CI:{' '}
                     {padreTutorSeleccionado.ci})
@@ -188,7 +191,7 @@ const PreinscripcionEstudiante = () => {
                   <CButton
                     color="warning"
                     variant="ghost"
-                    className="px-0 mt-3"
+                    className="preinscripcion-form__link px-0 mt-3"
                     onClick={abrirRegistroPadreTutor}
                   >
                     No existe padre/tutor. Registrar primero
@@ -209,7 +212,7 @@ const PreinscripcionEstudiante = () => {
             />
           )}
         </CModalBody>
-        <CModalFooter>
+        <CModalFooter className="preinscripcion-modal__footer">
           <CButton
             color="secondary"
             variant="outline"
@@ -235,7 +238,7 @@ const PreinscripcionEstudiante = () => {
           )}
         </CModalFooter>
       </CModal>
-    </>
+    </div>
   )
 }
 

@@ -23,10 +23,13 @@ const PadreTutorFormulario = ({
   accionEnProceso,
 }) => {
   return (
-    <CAlert color="warning" className="mb-0">
-      <CForm onSubmit={editando ? actualizarPadreTutor : crearPadreTutor} className="bm-admin-form">
-        <CRow className="g-3">
-          <CCol md={4}>
+    <CAlert color="warning" className="tutor-form__card mb-0">
+      <CForm
+        onSubmit={editando ? actualizarPadreTutor : crearPadreTutor}
+        className="tutor-form__form bm-admin-form"
+      >
+        <CRow className="g-3 tutor-form__grid">
+          <CCol md={10} className="tutor-form__field">
             <CFormLabel htmlFor="padre-tutor-nombre">Nombre</CFormLabel>
             <CFormInput
               id="padre-tutor-nombre"
@@ -34,10 +37,11 @@ const PadreTutorFormulario = ({
               value={formulario.nombre}
               onChange={handleChange}
               invalid={Boolean(errores.nombre)}
+              className="tutor-form__input"
             />
             {errores.nombre && <CFormFeedback invalid>{errores.nombre}</CFormFeedback>}
           </CCol>
-          <CCol md={4}>
+          <CCol md={10} className="tutor-form__field">
             <CFormLabel htmlFor="padre-tutor-apellido-paterno">Apellido paterno</CFormLabel>
             <CFormInput
               id="padre-tutor-apellido-paterno"
@@ -45,32 +49,35 @@ const PadreTutorFormulario = ({
               value={formulario.apellidoPaterno}
               onChange={handleChange}
               invalid={Boolean(errores.apellidoPaterno)}
+              className="tutor-form__input"
             />
             {errores.apellidoPaterno && (
               <CFormFeedback invalid>{errores.apellidoPaterno}</CFormFeedback>
             )}
           </CCol>
-          <CCol md={4}>
+          <CCol md={10} className="tutor-form__field">
             <CFormLabel htmlFor="padre-tutor-apellido-materno">Apellido materno</CFormLabel>
             <CFormInput
               id="padre-tutor-apellido-materno"
               name="apellidoMaterno"
               value={formulario.apellidoMaterno}
               onChange={handleChange}
+              className="tutor-form__input"
             />
           </CCol>
-          <CCol md={4}>
-            <CFormLabel htmlFor="padre-tutor-ci">Carnet de identidad</CFormLabel>
+          <CCol md={6} className="tutor-form__field">
+            <CFormLabel htmlFor="padre-tutor-ci">Documento CI</CFormLabel>
             <CFormInput
               id="padre-tutor-ci"
               name="ci"
               value={formulario.ci}
               onChange={handleChange}
               invalid={Boolean(errores.ci)}
+              className="tutor-form__input"
             />
             {errores.ci && <CFormFeedback invalid>{errores.ci}</CFormFeedback>}
           </CCol>
-          <CCol md={4}>
+          <CCol md={6} className="tutor-form__field">
             <CFormLabel htmlFor="padre-tutor-telefono">Teléfono</CFormLabel>
             <CFormInput
               id="padre-tutor-telefono"
@@ -79,10 +86,11 @@ const PadreTutorFormulario = ({
               value={formulario.telefono}
               onChange={handleChange}
               invalid={Boolean(errores.telefono)}
+              className="tutor-form__input"
             />
             {errores.telefono && <CFormFeedback invalid>{errores.telefono}</CFormFeedback>}
           </CCol>
-          <CCol md={8}>
+          <CCol md={10} className="tutor-form__field tutor-form__field--wide">
             <CFormLabel htmlFor="padre-tutor-direccion">Dirección</CFormLabel>
             <CFormTextarea
               id="padre-tutor-direccion"
@@ -91,11 +99,12 @@ const PadreTutorFormulario = ({
               value={formulario.direccion}
               onChange={handleChange}
               invalid={Boolean(errores.direccion)}
+              className="tutor-form__input tutor-form__textarea"
             />
             {errores.direccion && <CFormFeedback invalid>{errores.direccion}</CFormFeedback>}
           </CCol>
         </CRow>
-        <div className="bm-form-actions">
+        <div className="tutor-form__actions bm-form-actions">
           <CButtonGroup>
             <CButton color="primary" type="submit" disabled={Boolean(accionEnProceso)}>
               {accionEnProceso === (editando ? 'actualizar' : 'guardar') ? (

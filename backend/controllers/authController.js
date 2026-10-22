@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { loginUsuario } from '../models/modelsUsuarios/loginUsuario.js'
+import { habilitarUsuario, loginUsuario } from '../models/modelsUsuarios/loginUsuario.js'
 
 dotenv.config({ path: './.env' })
 
@@ -63,6 +63,11 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: 'Usuario o contraseña incorrecta' })
     }
 
+    if (usuario.estado !== 'Activo') {
+      return res.status(403).json({ message: 'Tu cuenta se encuentra inactiva. Por favor, contacta al administrador.' }
+      )
+    }
+
     const token = crearAccessToken(usuario)
     const refreshToken = crearRefreshToken(usuario)
 
@@ -103,5 +108,22 @@ export const refreshToken = (req, res) => {
     return res.json({ token: nuevoAccessToken })
   } catch (error) {
     return res.status(401).json({ message: 'Refresh token inválido o expirado' })
+  }
+}
+
+export const putHabilitarUsuario = async (req, res) => {
+  try {
+    if (!req.user || req.user.role !== 'administrador') {
+      return res.status(403).json({ message: 'Acceso denegado. Solo los administradores pueden acceder a esta información.' })
+    }
+    const { idUsuario } = req.params
+    const informe = await habilitarUsuario(idUsuario)
+    if (informe.rowCount === 0) {
+      return res.status(200).json({ message: 'Usuario no habilitado ' })
+    }
+
+    return res.status(200).json({ message: 'Usuario habilitado correctamente' })
+  } catch (error) {
+    return res.status(401).json({ message: 'Error interno servidor' })
   }
 }

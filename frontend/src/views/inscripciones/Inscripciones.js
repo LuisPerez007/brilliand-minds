@@ -126,25 +126,43 @@ const Inscripciones = () => {
   }
 
   return (
-    <>
+    <div className="inscripciones-page__container">
       <FeedbackAlert feedback={feedback} onClose={limpiarFeedback} />
-      <h1>Lista de Consultas</h1>
 
-      <button onClick={() => handleVista('inscripciones')}>Inscripciones</button>
-      <button onClick={() => handleVista('curso')}>Cursos</button>
-      <button onClick={() => handleVista('profesores')}>Profesores</button>
-      <button
-        className="boton boton-cierre-eliminar"
-        onClick={imprimirReporte}
-        disabled={Boolean(cargando) || generandoReporte}
-      >
-        {generandoReporte ? 'Generando...' : 'Imprimir reporte'}
-      </button>
+      <div className="inscripciones-toolbar__panel">
+        <h1 className="inscripciones-page__title">Lista de Consultas</h1>
+
+        <div className="inscripciones-toolbar__actions">
+          <button
+            className="inscripcion-filter__button"
+            onClick={() => handleVista('inscripciones')}
+          >
+            Inscripciones
+          </button>
+          <button className="inscripcion-filter__button" onClick={() => handleVista('curso')}>
+            Cursos
+          </button>
+          <button className="inscripcion-filter__button" onClick={() => handleVista('profesores')}>
+            Profesores
+          </button>
+          <button
+            className="inscripcion-filter__button inscripcion-filter__button--primary"
+            onClick={imprimirReporte}
+            disabled={Boolean(cargando) || generandoReporte}
+          >
+            {generandoReporte ? 'Generando...' : 'Imprimir reporte'}
+          </button>
+        </div>
+      </div>
 
       {vista === 'profesores' && (
-        <>
-          <br />
+        <div className="inscripcion-filter__panel">
+          <label className="inscripcion-filter__label" htmlFor="inscripcion-profesor-select">
+            Seleccionar profesor
+          </label>
           <select
+            id="inscripcion-profesor-select"
+            className="inscripcion-form__input inscripcion-form__select selector-tipo__wrapper"
             aria-label="Seleccionar profesor"
             value={idProfesorSeleccionado || ''}
             onChange={(e) => {
@@ -155,11 +173,13 @@ const Inscripciones = () => {
             }}
           >
             <option value="">Seleccione un profesor</option>
-            {profes.map((prof) => (
-              <option key={prof.id_profesor} value={prof.id_profesor}>
-                {prof.nombre} {prof.a_paterno} {prof.a_materno}
-              </option>
-            ))}
+            {profes
+              .filter((pro) => pro.estado === 'Activo')
+              .map((prof) => (
+                <option key={prof.id_profesor} value={prof.id_profesor}>
+                  {prof.nombre} {prof.a_paterno} {prof.a_materno}
+                </option>
+              ))}
           </select>
           {idProfesorSeleccionado !== '' && (
             <TablaProfesores
@@ -174,7 +194,7 @@ const Inscripciones = () => {
               confirmarEliminacionCurso={confirmarEliminacionCurso}
             />
           )}
-        </>
+        </div>
       )}
 
       {vista === 'inscripciones' && (
@@ -185,9 +205,13 @@ const Inscripciones = () => {
       )}
 
       {vista === 'curso' && (
-        <>
-          <br />
+        <div className="inscripcion-filter__panel">
+          <label className="inscripcion-filter__label" htmlFor="inscripcion-curso-select">
+            Seleccionar curso
+          </label>
           <select
+            id="inscripcion-curso-select"
+            className="inscripcion-form__input inscripcion-form__select"
             aria-label="Seleccionar curso"
             value={idCursoSeleccionado || ''}
             onChange={(e) => {
@@ -200,11 +224,13 @@ const Inscripciones = () => {
           >
             <option value="">Seleccione un curso</option>
 
-            {cursos.map((cur) => (
-              <option key={cur.id_curso} value={cur.id_curso}>
-                {cur.nombre}
-              </option>
-            ))}
+            {cursos
+              .filter((cur) => cur.estado === 'Activo')
+              .map((cur) => (
+                <option key={cur.id_curso} value={cur.id_curso}>
+                  {cur.nombre}
+                </option>
+              ))}
           </select>
 
           {idCursoSeleccionado !== '' && (
@@ -213,7 +239,7 @@ const Inscripciones = () => {
               eliminarInscripcionId={eliminarInscripcionId}
             />
           )}
-        </>
+        </div>
       )}
       <CModal
         visible={Boolean(inscripcionParaEliminar)}
@@ -246,7 +272,7 @@ const Inscripciones = () => {
           </CButton>
         </CModalFooter>
       </CModal>
-    </>
+    </div>
   )
 }
 

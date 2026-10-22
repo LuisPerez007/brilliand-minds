@@ -11,3 +11,19 @@ export const mostrarCursos = async () => {
   console.log(dataBaseCursos.rows)
   return dataBaseCursos.rows
 }
+
+export const mostrarCursosPorVencer = async () => {
+  const informe = await dataBase.query(`
+        SELECT 
+          id_curso,
+          nombre,
+          fecha_creacion,
+          duracion AS duracion_registrada,
+          (fecha_creacion + duracion::INTERVAL)::DATE AS fecha_fin,
+          ((fecha_creacion + duracion::INTERVAL)::DATE - CURRENT_DATE) AS dias_restantes
+        FROM curso
+        WHERE 
+            ((fecha_creacion + duracion::INTERVAL)::DATE - CURRENT_DATE) BETWEEN 0 AND 7; 
+    `)
+  return informe.rows
+}

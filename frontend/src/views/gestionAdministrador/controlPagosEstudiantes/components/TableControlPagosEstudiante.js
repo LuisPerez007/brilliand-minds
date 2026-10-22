@@ -4,6 +4,7 @@ import {
   CButtonGroup,
   CCol,
   CFormInput,
+  CFormSelect,
   CRow,
   CModal,
   CModalBody,
@@ -18,6 +19,8 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilFilter, cilSearch } from '@coreui/icons'
 import { useState } from 'react'
 import { SectionCard, StatusBadge } from '../../../../components'
 
@@ -31,13 +34,111 @@ const TableControlPagosEstudiante = ({
   const pagosPendientes = listaEstudiantesNoPagados ?? []
   const [tutorSeleccionado, setTutorSeleccionado] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [filtroAbierto, setFiltroAbierto] = useState(null)
+  const [filtrosColumna, setFiltrosColumna] = useState({})
   const normalizarTexto = (texto) =>
     String(texto || '')
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
-  const pagosFiltrados = pagosPendientes.filter((pago) =>
-    normalizarTexto(pago.estudiante).includes(normalizarTexto(searchTerm)),
+  const estadosPago = [...new Set(pagosPendientes.map((pago) => pago.estado_pago || 'pendiente'))]
+  const pagosFiltrados = pagosPendientes.filter((pago) => {
+    const coincideBusquedaGlobal =
+      normalizarTexto(pago.estudiante).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(pago.ci).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(pago.telefono).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(pago.materia).includes(normalizarTexto(searchTerm))
+
+    const coincideFecha =
+      !filtrosColumna.inscripcion ||
+      (() => {
+        const fecha = new Date(pago.fecha_inscripcion)
+        if (Number.isNaN(fecha.getTime())) return false
+        const anio = fecha.getFullYear()
+        const mes = String(fecha.getMonth() + 1).padStart(2, '0')
+        const dia = String(fecha.getDate()).padStart(2, '0')
+        return `${anio}-${mes}-${dia}` === filtrosColumna.inscripcion
+      })()
+    const coincideEstudiante = normalizarTexto(pago.estudiante).includes(
+      normalizarTexto(filtrosColumna.estudiante),
+    )
+    const coincideCi = String(pago.ci ?? '').includes(filtrosColumna.ci || '')
+    const coincideDireccion = normalizarTexto(pago.direccion).includes(
+      normalizarTexto(filtrosColumna.direccion),
+    )
+    const coincideTelefono = normalizarTexto(pago.telefono).includes(
+      normalizarTexto(filtrosColumna.telefono),
+    )
+    const coincideCurso = normalizarTexto(pago.curso || pago.materia).includes(
+      normalizarTexto(filtrosColumna.curso),
+    )
+    const coincideCosto = String(pago.costo ?? '').includes(filtrosColumna.costo || '')
+    const coincideEstado =
+      !filtrosColumna.estado ||
+      normalizarTexto(pago.estado_pago || 'pendiente') === normalizarTexto(filtrosColumna.estado)
+
+    return (
+      coincideBusquedaGlobal &&
+      coincideFecha &&
+      coincideEstudiante &&
+      coincideCi &&
+      coincideDireccion &&
+      coincideTelefono &&
+      coincideCurso &&
+      coincideCosto &&
+      coincideEstado
+    )
+  })
+
+  const actualizarFiltroColumna = (columna, valor) => {
+    setFiltrosColumna((filtrosActuales) => ({ ...filtrosActuales, [columna]: valor }))
+  }
+
+  const renderEncabezadoFiltrable = (titulo, columna, tipo = 'text') => (
+    <CTableHeaderCell scope="col" className="table-pago__head">
+      <div className="table-pago__heading">
+        <span>{titulo}</span>
+        <button
+          type="button"
+          className={`table-pago__filter-toggle${filtrosColumna[columna] ? ' is-active' : ''}`}
+          onClick={() => setFiltroAbierto(filtroAbierto === columna ? null : columna)}
+          aria-label={`${filtroAbierto === columna ? 'Cerrar' : 'Abrir'} filtro de ${titulo}`}
+          aria-expanded={filtroAbierto === columna}
+          title={`Filtrar ${titulo}`}
+        >
+          <CIcon icon={tipo === 'select' ? cilFilter : cilSearch} />
+        </button>
+      </div>
+      {filtroAbierto === columna && (
+        <div className="table-pago__filter-control">
+          {tipo === 'select' ? (
+            <CFormSelect
+              value={filtrosColumna[columna] || ''}
+              onChange={(event) => actualizarFiltroColumna(columna, event.target.value)}
+              aria-label={`Filtrar por ${titulo}`}
+              size="sm"
+            >
+              <option value="">Todos los estados</option>
+              {estadosPago.map((estado) => (
+                <option key={estado} value={estado}>
+                  {String(estado).charAt(0).toLocaleUpperCase() + String(estado).slice(1)}
+                </option>
+              ))}
+            </CFormSelect>
+          ) : (
+            <CFormInput
+              type={tipo}
+              value={filtrosColumna[columna] || ''}
+              onChange={(event) => actualizarFiltroColumna(columna, event.target.value)}
+              aria-label={`Filtrar por ${titulo}`}
+              placeholder={`Filtrar ${titulo.toLocaleLowerCase()}`}
+              size="sm"
+              step={tipo === 'number' ? 'any' : undefined}
+            />
+          )}
+        </div>
+      )}
+    </CTableHeaderCell>
   )
 
   const obtenerTutor = (estudiante) => {
@@ -65,106 +166,120 @@ const TableControlPagosEstudiante = ({
     <SectionCard
       title="Pagos pendientes"
       description={`${pagosPendientes.length} inscripción${pagosPendientes.length === 1 ? '' : 'es'} pendiente${pagosPendientes.length === 1 ? '' : 's'}`}
+      className="pagos-card__wrapper text-body"
     >
-      <CRow className="mb-3">
-        <CCol md={5} lg={4} className="ms-auto">
+      <CRow className="mb-3 pagos-search__row">
+        <CCol md={5} className="ms-auto pagos-search__col">
           <CFormInput
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Buscar estudiante por nombre..."
+            placeholder="Buscar estudiante..."
             aria-label="Buscar estudiante por nombre"
+            className="pagos-search__input"
           />
         </CCol>
       </CRow>
-      {pagosFiltrados.length === 0 ? (
-        <div className="bm-table-empty">
-          <strong>
-            {pagosPendientes.length === 0
-              ? 'No hay pagos pendientes'
-              : 'No se encontraron coincidencias'}
-          </strong>
-          <span>
-            {pagosPendientes.length === 0
-              ? 'Las inscripciones pendientes de pago aparecerán aquí.'
-              : 'Prueba con otro nombre.'}
-          </span>
+      {pagosPendientes.length === 0 ? (
+        <div className="bm-table-empty pagos-table__empty">
+          <strong>No hay pagos pendientes</strong>
+          <span>Las inscripciones pendientes de pago aparecerán aquí.</span>
         </div>
       ) : (
-        <CTable align="middle" hover responsive className="bm-admin-table bm-payment-table">
-          <CTableHead color="dark">
-            <CTableRow>
-              <CTableHeaderCell scope="col">Inscripción</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Estudiante</CTableHeaderCell>
-              <CTableHeaderCell scope="col">CI</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Dirección</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Teléfono</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Curso</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Costo</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Estado</CTableHeaderCell>
-              <CTableHeaderCell scope="col" className="text-end">
-                Acciones
-              </CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-
-          <CTableBody>
-            {pagosFiltrados.map((noPagado) => (
-              <CTableRow key={noPagado.id_inscripcion}>
-                <CTableDataCell>
-                  {new Date(noPagado.fecha_inscripcion).toLocaleDateString()}
-                </CTableDataCell>
-
-                <CTableDataCell>
-                  <strong>{noPagado.estudiante}</strong>
-                </CTableDataCell>
-
-                <CTableDataCell>{noPagado.ci}</CTableDataCell>
-
-                <CTableDataCell className="bm-table-description">
-                  {noPagado.direccion}
-                </CTableDataCell>
-
-                <CTableDataCell>{noPagado.telefono}</CTableDataCell>
-
-                <CTableDataCell>{noPagado.curso || noPagado.materia}</CTableDataCell>
-
-                <CTableDataCell>Bs. {noPagado.costo}</CTableDataCell>
-
-                <CTableDataCell>
-                  <StatusBadge status={noPagado.estado_pago || 'pendiente'}>
-                    {noPagado.estado_pago || 'Pendiente'}
-                  </StatusBadge>
-                </CTableDataCell>
-
-                <CTableDataCell className="text-end">
-                  <CButtonGroup size="sm">
-                    <CButton
-                      color="info"
-                      variant="outline"
-                      onClick={() => abrirTutor(noPagado)}
-                      disabled={Boolean(pagoEnProceso)}
-                    >
-                      Ver tutor
-                    </CButton>
-                    <CButton
-                      color="success"
-                      disabled={Boolean(pagoEnProceso)}
-                      onClick={() => marcarInscripcionComoPagada(noPagado, obtenerTutor(noPagado))}
-                    >
-                      {pagoEnProceso === noPagado.id_inscripcion ? (
-                        <>
-                          <CSpinner size="sm" className="me-1" /> Procesando
-                        </>
-                      ) : (
-                        'Pagar'
-                      )}
-                    </CButton>
-                  </CButtonGroup>
-                </CTableDataCell>
+        <div className="table-responsive table-pago__wrapper">
+          <CTable align="middle" hover className="table-pago__table">
+            <CTableHead color="dark">
+              <CTableRow>
+                {renderEncabezadoFiltrable('Inscripción', 'inscripcion', 'date')}
+                {renderEncabezadoFiltrable('Estudiante', 'estudiante')}
+                {renderEncabezadoFiltrable('CI', 'ci', 'number')}
+                {renderEncabezadoFiltrable('Dirección', 'direccion')}
+                {renderEncabezadoFiltrable('Teléfono', 'telefono', 'search')}
+                {renderEncabezadoFiltrable('Curso', 'curso')}
+                {renderEncabezadoFiltrable('Costo', 'costo', 'number')}
+                {renderEncabezadoFiltrable('Estado', 'estado', 'select')}
+                <CTableHeaderCell scope="col" className="table-pago__head text-end">
+                  Acciones
+                </CTableHeaderCell>
               </CTableRow>
-            ))}
-          </CTableBody>
-        </CTable>
+            </CTableHead>
+
+            <CTableBody>
+              {pagosFiltrados.length === 0 ? (
+                <CTableRow>
+                  <CTableDataCell colSpan={9} className="table-pago__empty-results">
+                    No se encontraron coincidencias
+                  </CTableDataCell>
+                </CTableRow>
+              ) : (
+                pagosFiltrados.map((noPagado) => (
+                  <CTableRow key={noPagado.id_inscripcion} className="table-pago__row">
+                    <CTableDataCell className="table-pago__cell">
+                      {new Date(noPagado.fecha_inscripcion).toLocaleDateString()}
+                    </CTableDataCell>
+
+                    <CTableDataCell className="table-pago__cell">
+                      <strong>{noPagado.estudiante}</strong>
+                    </CTableDataCell>
+
+                    <CTableDataCell className="table-pago__cell">{noPagado.ci}</CTableDataCell>
+
+                    <CTableDataCell className="table-pago__cell bm-table-description">
+                      {noPagado.direccion}
+                    </CTableDataCell>
+
+                    <CTableDataCell className="table-pago__cell">
+                      {noPagado.telefono}
+                    </CTableDataCell>
+
+                    <CTableDataCell className="table-pago__cell">
+                      {noPagado.curso || noPagado.materia}
+                    </CTableDataCell>
+
+                    <CTableDataCell className="table-pago__cell">
+                      Bs. {noPagado.costo}
+                    </CTableDataCell>
+
+                    <CTableDataCell className="table-pago__cell">
+                      <StatusBadge status={noPagado.estado_pago || 'pendiente'}>
+                        {noPagado.estado_pago || 'Pendiente'}
+                      </StatusBadge>
+                    </CTableDataCell>
+
+                    <CTableDataCell className="table-pago__cell text-end">
+                      <CButtonGroup size="sm">
+                        <CButton
+                          color="info"
+                          variant="outline"
+                          onClick={() => abrirTutor(noPagado)}
+                          disabled={Boolean(pagoEnProceso)}
+                          className="pago-table__action"
+                        >
+                          Ver tutor
+                        </CButton>
+                        <CButton
+                          color="success"
+                          disabled={Boolean(pagoEnProceso)}
+                          onClick={() =>
+                            marcarInscripcionComoPagada(noPagado, obtenerTutor(noPagado))
+                          }
+                          className="pago-table__action"
+                        >
+                          {pagoEnProceso === noPagado.id_inscripcion ? (
+                            <>
+                              <CSpinner size="sm" className="me-1" /> Procesando
+                            </>
+                          ) : (
+                            'Pagar'
+                          )}
+                        </CButton>
+                      </CButtonGroup>
+                    </CTableDataCell>
+                  </CTableRow>
+                ))
+              )}
+            </CTableBody>
+          </CTable>
+        </div>
       )}
       <CModal
         visible={Boolean(tutorSeleccionado)}

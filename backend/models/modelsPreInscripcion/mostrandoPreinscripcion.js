@@ -7,7 +7,6 @@ export const mostrarPreinscripcionEstudiante = async () => {
     colegio, 
     ci, direccion, telefono, email, fecha_solicitud, estado, observacion 
     FROM pre_inscripcion_estudiante
-    WHERE estado = 'Pendiente'
     ORDER BY fecha_solicitud DESC
     `)
   return data.rows

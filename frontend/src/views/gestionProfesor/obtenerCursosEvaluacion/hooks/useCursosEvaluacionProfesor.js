@@ -8,9 +8,28 @@ import {
   postCrearEvaluacionAunCursoProfesor,
   putCalificarExamenEstudiante,
   putEditarEvaluacionAunCursoProfesor,
+  getExamenesYaCalificados,
 } from '../../../../services/gestionProfesor/gestionprofesCursos'
 
 export const useCursosEvaluacionProfesor = () => {
+  const [examenesYaCalificados, setExamenesYaCalificados] = useState([])
+
+  const cargarExamenesYaCalificados = async (idCurso) => {
+    try {
+      const datosExamenesYaCalificados = await getExamenesYaCalificados(idCurso)
+      console.log(
+        `Mostrando examenes ya calificados para profesor: ${JSON.stringify(datosExamenesYaCalificados.data.examenes, null, 2)}`,
+      )
+      setExamenesYaCalificados(datosExamenesYaCalificados.data.examenes ?? [])
+    } catch (error) {
+      console.error(error)
+      console.error(error.response)
+      const mensaje =
+        error.response?.data?.message || 'Error al mostrar examenes ya calificados para profesor'
+      alert(mensaje)
+    }
+  }
+
   const [cursoEvaluacionProfesor, setCursoEvaluacionProfesor] = useState([])
   const cargarCursosEvaluacionProfesor = async () => {
     try {
@@ -64,6 +83,7 @@ export const useCursosEvaluacionProfesor = () => {
       )
       setEvaluacionesCurso(datosEvaluacionPorCurso.data.datos ?? [])
       setCursoSeleccionado(idCurso)
+      cargarExamenesYaCalificados(idCurso)
       setEvaluacionSeleccionada(null)
     } catch (error) {
       console.error(error)
@@ -268,6 +288,8 @@ export const useCursosEvaluacionProfesor = () => {
     return true
   }
   return {
+    cargarExamenesYaCalificados,
+    examenesYaCalificados,
     cursoCrearExamenSelecionado,
     setCursoCrearExamenSeleccionado,
     crearEvaluacionDeunCurso,

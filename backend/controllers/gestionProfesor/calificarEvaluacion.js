@@ -1,7 +1,26 @@
-import { calificarExamen, EditarExamen } from '../../models/modelsGestionProfesor/cursosCalificacion/calificarExamen.js'
+import { calificarExamen, EditarExamen, examenesYaCalificados } from '../../models/modelsGestionProfesor/cursosCalificacion/calificarExamen.js'
+
+export const getMostrarExamenesCalificados = async (req, res) => {
+  try {
+    console.log('req.user:', req.user)
+    if (!req.user || req.user.role !== 'profesor') {
+      return res.status(403).json({ message: 'No tienes permiso para ver evaluaciones' })
+    }
+    const { idCurso } = req.params
+    const examenes = await examenesYaCalificados(idCurso)
+    return res.status(200).json({ examenes })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ message: 'Error interno servidor' })
+  }
+}
 
 export const postCalificarEvaluacion = async (req, res) => {
   try {
+    if (!req.user || req.user.role !== 'profesor') {
+      return res.status(403).json({ message: 'No tienes permiso para calificar evaluaciones' })
+    }
+
     const datos = { ...req.body, idUsuario: req.user.id }
     const informe = await calificarExamen(datos)
     if (informe === 0) {
@@ -21,6 +40,9 @@ export const postCalificarEvaluacion = async (req, res) => {
 
 export const putCalificarEvaluacion = async (req, res) => {
   try {
+    if (!req.user || req.user.role !== 'profesor') {
+      return res.status(403).json({ message: 'No tienes permiso para calificar evaluaciones' })
+    }
     const datos = { ...req.body, idUsuario: req.user.id }
     const informe = await EditarExamen(datos)
     if (informe === 0) {

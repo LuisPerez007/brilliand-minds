@@ -1,0 +1,350 @@
+.inscripciones-page__container {
+  width: 100%;
+}
+
+.inscripciones-toolbar__panel {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.inscripciones-page__title {
+  margin: 0 0 1rem;
+  color: var(--text-primary);
+  font-size: clamp(1.6rem, 2.2vw, 2.25rem);
+  font-weight: 700;
+}
+
+.inscripciones-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.inscripcion-filter__button {
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.inscripcion-filter__button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+
+.inscripcion-filter__button--primary {
+  background: linear-gradient(135deg, var(--brand-primary), #3b82f6);
+  color: #fff;
+  border-color: transparent;
+}
+
+.inscripcion-filter__panel {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.inscripcion-filter__label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.inscripcion-form__input,
+.inscripcion-form__select {
+  min-height: 2.9rem;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+
+  font-size: 0.85rem !important;        // Reduce el tamaño de la letra general
+  max-width: 100% !important;           // Evita que el contenedor sea más ancho que la pantalla
+  text-overflow: ellipsis !important;   // Corta textos excesivamente largos con "..."
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.inscripcion-form__input:focus,
+.inscripcion-form__select:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15) !important;
+}
+
+.inscripcion-reporte__wrapper {
+  width: 100%;
+}
+
+.inscripcion-table__card {
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  border-radius: var(--radius-lg) !important;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.inscripcion-table__wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-inscripcion__table {
+  width: 100%;
+  min-width: 980px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-inscripcion__head-cell {
+  padding: 0.9rem 1rem !important;
+  background: rgba(37, 99, 235, 0.06) !important;
+  color: var(--text-primary) !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.35) !important;
+  vertical-align: top;
+}
+
+.table-inscripcion__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  min-height: 1.5rem;
+}
+
+.table-inscripcion__filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text-primary);
+  font-size: 0.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.table-inscripcion__filter-toggle:hover,
+.table-inscripcion__filter-toggle.is-open {
+  border-color: var(--brand-primary);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.table-inscripcion__filter-panel {
+  margin-top: 0.55rem;
+}
+
+.table-inscripcion__filter-input {
+  width: 100%;
+  min-width: 7.5rem;
+  min-height: 2rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid rgba(147, 197, 253, 0.5);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  font-size: 0.72rem;
+}
+
+.table-inscripcion__filter-input:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+}
+
+.table-inscripcion__row {
+  transition: background-color 0.2s ease;
+}
+
+.table-inscripcion__row:hover {
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.table-inscripcion__cell {
+  padding: 1rem !important;
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.3) !important;
+  vertical-align: middle;
+}
+
+.table-inscripcion__empty-results {
+  padding: 1rem !important;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(148, 163, 184, 0.04);
+}
+
+.table-inscripcion__group-row {
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.table-inscripcion__group-cell {
+  padding: 0.9rem 1rem !important;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.inscripcion-action__button {
+  min-width: 5.2rem;
+}
+
+.inscripcion-course-list__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.inscripcion-course-list__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-pill);
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  color: var(--text-primary);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.inscripcion-table__empty {
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+html[data-coreui-theme='dark'] .inscripciones-toolbar__panel,
+html[data-coreui-theme='dark'] .inscripcion-filter__panel,
+html[data-coreui-theme='dark'] .inscripcion-table__card,
+html[data-coreui-theme='dark'] .inscripcion-table__wrapper {
+  background: linear-gradient(180deg, #111827 0%, #1d1e2b 100%) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.3) !important;
+}
+
+html[data-coreui-theme='dark'] .inscripciones-page__title,
+html[data-coreui-theme='dark'] .inscripcion-filter__label,
+html[data-coreui-theme='dark'] .inscripcion-course-list__chips,
+html[data-coreui-theme='dark'] .inscripcion-course-list__chip,
+html[data-coreui-theme='dark'] .table-inscripcion__head-cell,
+html[data-coreui-theme='dark'] .table-inscripcion__cell,
+html[data-coreui-theme='dark'] .table-inscripcion__group-cell,
+html[data-coreui-theme='dark'] .inscripcion-filter__button {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html[data-coreui-theme='dark'] .inscripcion-filter__button {
+  background: #14151f !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .inscripcion-filter__button--primary {
+  background: linear-gradient(135deg, var(--brand-primary), #3b82f6) !important;
+}
+
+html[data-coreui-theme='dark'] .inscripcion-form__input,
+html[data-coreui-theme='dark'] .inscripcion-form__select {
+  background: #14151f !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-coreui-theme='dark'] .inscripcion-form__input:focus,
+html[data-coreui-theme='dark'] .inscripcion-form__select:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.2) !important;
+}
+
+html[data-coreui-theme='dark'] .table-inscripcion__filter-toggle {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .table-inscripcion__filter-toggle:hover,
+html[data-coreui-theme='dark'] .table-inscripcion__filter-toggle.is-open {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+html[data-coreui-theme='dark'] .table-inscripcion__filter-input {
+  background: #14151f;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .table-inscripcion__head-cell {
+  background: #14151f !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .table-inscripcion__cell,
+html[data-coreui-theme='dark'] .table-inscripcion__group-cell {
+  background-color: transparent !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .table-inscripcion__empty-results {
+  color: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+html[data-coreui-theme='dark'] .table-inscripcion__row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-coreui-theme='dark'] .table-inscripcion__group-row {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+html[data-coreui-theme='dark'] .inscripcion-table__empty {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 767.98px) {
+  .inscripciones-toolbar__actions {
+    flex-direction: column;
+  }
+
+  .inscripcion-filter__button {
+    width: 100%;
+  }
+
+  .table-inscripcion__head-cell,
+  .table-inscripcion__cell,
+  .table-inscripcion__group-cell {
+    padding: 0.8rem 0.7rem !important;
+    font-size: 0.8rem;
+  }
+}

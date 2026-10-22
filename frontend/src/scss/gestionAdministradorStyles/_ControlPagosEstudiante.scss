@@ -1,0 +1,239 @@
+.pagos-page__container {
+  width: 100%;
+}
+
+.pagos-card__wrapper {
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  border-radius: var(--radius-lg) !important;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.pagos-search__row {
+  margin-bottom: 1rem !important;
+}
+
+.pagos-search__col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.pagos-search__input {
+  min-height: 2.9rem;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+.pagos-search__input:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15) !important;
+}
+
+.table-pago__wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-pago__table {
+  width: 100%;
+  min-width: 950px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-pago__head {
+  padding: 0.9rem 1rem !important;
+  background: rgba(37, 99, 235, 0.06) !important;
+  color: var(--text-primary) !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.35) !important;
+}
+
+.table-pago__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.table-pago__filter-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: rgba(71, 85, 105, 0.75);
+  cursor: pointer;
+}
+
+.table-pago__filter-toggle svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.table-pago__filter-toggle:hover,
+.table-pago__filter-toggle:focus-visible,
+.table-pago__filter-toggle.is-active {
+  color: var(--brand-primary);
+}
+
+.table-pago__filter-toggle:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+.table-pago__filter-control {
+  min-width: 7.5rem;
+  margin-top: 0.45rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.table-pago__filter-control .form-control,
+.table-pago__filter-control .form-select {
+  min-height: 2rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.table-pago__row {
+  transition: background-color 0.2s ease;
+}
+
+.table-pago__row:hover {
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.table-pago__cell {
+  padding: 1rem !important;
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.3) !important;
+  vertical-align: middle;
+}
+
+.table-pago__empty-results {
+  padding: 1rem !important;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(148, 163, 184, 0.04);
+}
+
+.pago-table__action {
+  min-width: 5.4rem;
+}
+
+.pagos-table__empty {
+  border: 1px solid rgba(147, 197, 253, 0.2);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+html[data-coreui-theme='dark'] .pagos-card__wrapper {
+  background: linear-gradient(180deg, #111827 0%, #1d1e2b 100%) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.3) !important;
+}
+
+html[data-coreui-theme='dark'] .pagos-search__input,
+html[data-coreui-theme='dark'] .pagos-search__input:focus,
+html[data-coreui-theme='dark'] .table-pago__head,
+html[data-coreui-theme='dark'] .table-pago__cell {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+html[data-coreui-theme='dark'] .pagos-search__input {
+  background: #14151f !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html[data-coreui-theme='dark'] .pagos-search__input:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.2) !important;
+}
+
+html[data-coreui-theme='dark'] .table-pago__wrapper {
+  background: #1d1e2b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-coreui-theme='dark'] .table-pago__head {
+  background: #14151f !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .table-pago__filter-toggle {
+  color: rgba(226, 232, 240, 0.7);
+}
+
+html[data-coreui-theme='dark'] .table-pago__filter-toggle:hover,
+html[data-coreui-theme='dark'] .table-pago__filter-toggle:focus-visible,
+html[data-coreui-theme='dark'] .table-pago__filter-toggle.is-active {
+  color: #93c5fd;
+}
+
+html[data-coreui-theme='dark'] .table-pago__filter-control .form-control,
+html[data-coreui-theme='dark'] .table-pago__filter-control .form-select {
+  border-color: rgba(255, 255, 255, 0.14);
+  background-color: #1d1e2b;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .table-pago__filter-control .form-control:focus,
+html[data-coreui-theme='dark'] .table-pago__filter-control .form-select:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.2);
+}
+
+html[data-coreui-theme='dark'] .table-pago__row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-coreui-theme='dark'] .table-pago__cell {
+  background-color: transparent !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .table-pago__empty-results {
+  color: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+html[data-coreui-theme='dark'] .pagos-table__empty {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 767.98px) {
+  .pagos-search__col {
+    justify-content: stretch;
+  }
+
+  .pagos-search__input {
+    width: 100%;
+  }
+
+  .table-pago__head,
+  .table-pago__cell {
+    padding: 0.8rem 0.7rem !important;
+    font-size: 0.8rem;
+  }
+}

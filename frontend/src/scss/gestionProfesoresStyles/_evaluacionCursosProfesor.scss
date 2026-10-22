@@ -142,6 +142,107 @@
   margin-top: 0.5rem;
 }
 
+.evaluacion-form__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.evaluacion-form__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.evaluacion-form__item:hover {
+  border-color: rgba(37, 99, 235, 0.2);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.08);
+}
+
+.evaluacion-form__item-content {
+  min-width: 0;
+}
+
+.evaluacion-form__item-meta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  min-width: 0;
+}
+
+.evaluacion-form__item-percent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.7rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  color: var(--brand-primary);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.evaluacion-form__item-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.evaluacion-form__item-name {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.evaluacion-form__item-status {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.42rem 0.72rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.evaluacion-form__item-status--success {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.18);
+  color: #047857;
+}
+
+.evaluacion-form__item-status--warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.2);
+  color: #b45309;
+}
+
+.evaluacion-form__item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.evaluacion-form__item-actions .btn {
+  min-width: 6.4rem;
+}
+
 .table-evaluacion__wrapper {
   width: 100%;
   overflow-x: auto;
@@ -212,13 +313,34 @@ html[data-coreui-theme='dark'] .evaluacion-cursos__course-name,
 html[data-coreui-theme='dark'] .evaluacion-profesor__meta p,
 html[data-coreui-theme='dark'] .evaluacion-form__field label,
 html[data-coreui-theme='dark'] .table-evaluacion__head,
-html[data-coreui-theme='dark'] .table-evaluacion__cell {
+html[data-coreui-theme='dark'] .table-evaluacion__cell,
+html[data-coreui-theme='dark'] .evaluacion-form__item-name {
   color: rgba(255, 255, 255, 0.9) !important;
 }
 
-html[data-coreui-theme='dark'] .evaluacion-cursos__item {
-  background: rgba(15, 23, 42, 0.72);
+html[data-coreui-theme='dark'] .evaluacion-cursos__item,
+html[data-coreui-theme='dark'] .evaluacion-form__item {
+  background: rgba(15, 23, 42, 0.8);
   border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.22);
+}
+
+html[data-coreui-theme='dark'] .evaluacion-form__item-percent {
+  background: rgba(96, 165, 250, 0.1);
+  border-color: rgba(96, 165, 250, 0.18);
+  color: rgba(191, 219, 254, 0.95);
+}
+
+html[data-coreui-theme='dark'] .evaluacion-form__item-status--success {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.25);
+  color: #86efac;
+}
+
+html[data-coreui-theme='dark'] .evaluacion-form__item-status--warning {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.25);
+  color: #fcd34d;
 }
 
 html[data-coreui-theme='dark'] .evaluacion-form__input {
@@ -255,6 +377,36 @@ html[data-coreui-theme='dark'] .table-evaluacion__cell {
   .evaluacion-profesor__panel,
   .evaluacion-form__panel {
     padding: 1rem;
+  }
+
+  .evaluacion-form__item {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .evaluacion-form__item-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .evaluacion-form__item-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .evaluacion-form__item-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .evaluacion-form__item-actions .btn {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
   }
 
   .evaluacion-cursos__item {

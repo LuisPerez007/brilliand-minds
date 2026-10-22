@@ -62,10 +62,25 @@ export const usePadreTutor = () => {
       nuevosErrores.apellidoPaterno = 'Apellido paterno es obligatorio'
     }
     if (!formulario.ci.trim()) nuevosErrores.ci = 'El CI es obligatorio'
-    if (!formulario.telefono.trim()) nuevosErrores.telefono = 'El teléfono es obligatorio'
+    if (!formulario.telefono.trim() || !/^\d{8}$/.test(formulario.telefono.trim()))
+      nuevosErrores.telefono = 'Inválido (8 dígitos)'
     if (!formulario.direccion.trim()) nuevosErrores.direccion = 'La dirección es obligatoria'
     setErrores(nuevosErrores)
-    return Object.keys(nuevosErrores).length === 0
+
+    const llavesConErrores = Object.keys(nuevosErrores)
+    if (llavesConErrores.length > 0) {
+      const primerError = llavesConErrores[0]
+      setTimeout(() => {
+        const elementoInvalido =
+          document.getElementsByName(primerError)[0] || document.getElementById(primerError)
+        if (elementoInvalido) {
+          elementoInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          elementoInvalido.focus()
+        }
+      }, 50)
+    }
+
+    return llavesConErrores.length === 0
   }
 
   const handleChange = (event) => {
@@ -173,10 +188,10 @@ export const usePadreTutor = () => {
     if (!padreTutorParaEliminar || accionEnProceso) return
     setAccionEnProceso('eliminar')
     try {
-      await deleteEliminarPadreTutor(padreTutorParaEliminar)
+      const mensaje = await deleteEliminarPadreTutor(padreTutorParaEliminar)
       await cargarPadresTutores()
       cancelarEliminacion()
-      mostrarFeedback('Padre/Tutor eliminado exitosamente.')
+      mostrarFeedback(`${mensaje.data?.message || 'Padre/Tutor eliminado exitosamente.'}`)
     } catch (error) {
       mostrarFeedback(error.response?.data?.message || 'Error al eliminar el padre/tutor', 'danger')
     } finally {

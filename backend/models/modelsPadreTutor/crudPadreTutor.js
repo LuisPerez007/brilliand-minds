@@ -3,7 +3,7 @@ import dataBase from '../../db/dataBase.js'
 export const obtenerPadresTutors = async () => {
   const informe = await dataBase.query(`
     SELECT * FROM padre_tutor
-    ORDER BY nombre ASC`)
+    ORDER BY id_tutor DESC`)
   return informe
 }
 
@@ -32,9 +32,17 @@ export const actualizarPadreTutor = async (id, data) => {
   return resultado
 }
 
-export const eliminarPadreTutor = async (id) => {
+export const cambiarEstadoPadreTutor = async (id, estado) => {
   const resultado = await dataBase.query(`
-    DELETE FROM padre_tutor
+    UPDATE padre_tutor
+    SET estado = $1
+    WHERE id_tutor = $2`, [estado, id])
+  return resultado
+}
+
+export const obtenerTipoEstadoPadreTutor = async (id) => {
+  const resultado = await dataBase.query(`
+    SELECT estado FROM padre_tutor
     WHERE id_tutor = $1`, [id])
   return resultado
 }

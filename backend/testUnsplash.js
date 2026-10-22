@@ -3,7 +3,7 @@ import 'dotenv/config'
 const probarUnsplash = async () => {
   try {
     const respuesta = await fetch(
-      'https://api.unsplash.com/photos/random?query=education',
+      'https://api.unsplash.com/photos/random?query=codigo',
       {
         headers: {
           Authorization: `Client-ID ${process.env.UNSPLASH_ACCESS_KEY}`

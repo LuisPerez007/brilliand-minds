@@ -1,6 +1,7 @@
 import api from '../api/api'
 
 export const getCursos = async () => await api.get('/admin/cursos')
+export const getCursosPorVencer = async () => await api.get('/admin/cursos/por-vencer')
 
 export const postCursos = async (data) => await api.post('/admin/cursos', data)
 

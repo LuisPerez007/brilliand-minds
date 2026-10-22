@@ -183,6 +183,15 @@ $sidebar-width: 15rem;
 @import 'gestionProfesoresStyles/mostrarCursosProfesor';
 @import 'gestionProfesoresStyles/mostrarEstudianteProfesor';
 @import 'gestionProfesoresStyles/evaluacionCursosProfesor';
+@import 'gestionAdministradorStyles/recibosAdministrador';
+@import 'gestionAdministradorStyles/padreTutor';
+@import 'gestionAdministradorStyles/Cursos';
+@import 'gestionAdministradorStyles/Profesor';
+@import 'gestionAdministradorStyles/ControlPagosEstudiante';
+@import 'gestionAdministradorStyles/PreinscripcionEstudiante';
+@import 'gestionAdministradorStyles/Inscripcioness';
+@import 'gestionAdministradorStyles/Estudiantes';
+@import 'gestionAdministradorStyles/dashboard';
 
 .wrapper {
   width: 100%;

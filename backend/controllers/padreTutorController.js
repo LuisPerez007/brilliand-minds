@@ -1,4 +1,5 @@
-import { obtenerPadresTutors, registrarPadreTutor, actualizarPadreTutor, eliminarPadreTutor } from '../models/modelsPadreTutor/crudPadreTutor.js'
+import { obtenerPadresTutors, registrarPadreTutor, actualizarPadreTutor } from '../models/modelsPadreTutor/crudPadreTutor.js'
+import dataBase from '../db/dataBase.js'
 
 export const getPadresTutors = async (req, res) => {
   try {
@@ -53,18 +54,61 @@ export const putPadreTutor = async (req, res) => {
 }
 
 export const deletePadreTutor = async (req, res) => {
+  const client = await dataBase.connect()
+
   try {
     if (!req.user || req.user.role !== 'administrador') {
-      return res.status(403).json({ message: 'Acceso denegado. Solo los administradores pueden acceder a esta información.' })
+      return res.status(403).json({
+        message: 'Acceso denegado. Solo los administradores pueden acceder a esta información.'
+      })
     }
+
     const { id } = req.params
-    const resultado = await eliminarPadreTutor(id)
+
+    await client.query('BEGIN')
+
+    const resultado = await client.query(
+      'SELECT estado FROM padre_tutor WHERE id_tutor = $1 FOR UPDATE',
+      [id]
+    )
+
     if (resultado.rowCount === 0) {
-      return res.status(404).json({ message: 'Padre/Tutor no encontrado.' })
+      await client.query('ROLLBACK')
+      return res.status(404).json({
+        message: 'Padre/Tutor no encontrado.'
+      })
     }
-    return res.status(200).json({ message: 'Padre/Tutor eliminado exitosamente.' })
+
+    const estadoActual = resultado.rows[0].estado
+    const nuevoEstado = estadoActual === 'Activo' ? 'Inactivo' : 'Activo'
+
+    await client.query(
+      'UPDATE padre_tutor SET estado = $1 WHERE id_tutor = $2',
+      [nuevoEstado, id]
+    )
+
+    await client.query(
+      `UPDATE usuarios usu
+       SET estado = $1
+       FROM estudiante es
+       WHERE es.id_tutor = $2
+         AND es.id_usuario = usu.id_usuarios`,
+      [nuevoEstado, id]
+    )
+
+    await client.query('COMMIT')
+
+    return res.status(200).json({
+      message: `Padre/Tutor y sus estudiantes actualizados a ${nuevoEstado}.`
+    })
   } catch (error) {
+    await client.query('ROLLBACK')
     console.error(error)
-    return res.status(500).json({ message: 'Error interno servidor' })
+
+    return res.status(500).json({
+      message: 'Error interno del servidor.'
+    })
+  } finally {
+    client.release()
   }
 }

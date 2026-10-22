@@ -43,3 +43,19 @@ export const EditarExamen = async (datos) => {
 
   return resultado.rowCount
 }
+
+export const examenesYaCalificados = async (idCurso) => {
+  const resultado = await dataBase.query(`
+        SELECT 
+        cal.id_evaluacion, eva.nombre_evaluacion, 
+        COUNT(*) FILTER (WHERE cal.nota > 50) AS aprobados,
+        COUNT(*) FILTER (WHERE cal.nota <= 50) AS reprobados
+    FROM calificacion cal
+    INNER JOIN evaluacion eva ON eva.id_evaluacion = cal.id_evaluacion
+    WHERE eva.id_curso = $1
+    GROUP BY cal.id_evaluacion, eva.nombre_evaluacion
+    HAVING COUNT(*) = COUNT(cal.nota);
+  `, [idCurso])
+
+  return resultado.rows
+}

@@ -1,0 +1,16 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "dotenv -e .env -- n8n"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv-cli": "^11.0.0",
+    "n8n": "^2.42.5"
+  }
+}

@@ -193,6 +193,7 @@ const PreinscripcionFormulario = ({
                           </CInputGroupText>
                           <CFormInput
                             className="preinscripcion-input"
+                            type="number"
                             name="telefono"
                             value={formulario.telefono}
                             onChange={handleChange}

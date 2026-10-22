@@ -54,13 +54,13 @@ const PadreTutor = () => {
   }
 
   return (
-    <>
+    <div className="tutor-page__container">
       <PageHeader
         eyebrow="Gestión académica"
         title="Padres y Tutores"
         description="Administra los padres y tutores registrados en el sistema."
         actions={
-          <CButton color="primary" onClick={abrirRegistro}>
+          <CButton color="primary" onClick={abrirRegistro} className="tutor-page__cta">
             Registrar Padre o Tutor
           </CButton>
         }
@@ -79,7 +79,12 @@ const PadreTutor = () => {
         accionEnProceso={accionEnProceso}
       />
 
-      <CModal visible={modalVisible} onClose={cancelarFormulario} size="xl">
+      <CModal
+        visible={modalVisible}
+        onClose={cancelarFormulario}
+        size="xl"
+        className="tutor-modal__wrapper"
+      >
         <CModalHeader>
           <CModalTitle>{editando ? 'Editar padre o tutor' : 'Registrar padre o tutor'}</CModalTitle>
         </CModalHeader>
@@ -106,7 +111,7 @@ const PadreTutor = () => {
           </CButton>
         </CModalFooter>
       </CModal>
-    </>
+    </div>
   )
 }
 

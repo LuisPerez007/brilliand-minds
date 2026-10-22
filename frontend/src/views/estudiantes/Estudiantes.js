@@ -19,6 +19,7 @@ import { usePadreTutor } from '../padreTutor/hooks/usePadreTutor'
 import PreinscripcionTable from '../preinscripciones/components/PreinscripcionTable'
 import { usePreinscripciones } from '../preinscripciones/hooks/usePreinscripciones'
 import { PageHeader } from '../../components'
+import { useHabilitarUsuario } from '../../hooks/useHabilitarUsuario'
 
 const Estudiantes = () => {
   const feedbackRef = useRef(null)
@@ -65,6 +66,8 @@ const Estudiantes = () => {
     buscarPadreTutor,
     asignarPadreTutor,
   } = useEstudiantes()
+
+  const { feedback1, ejecutarHabilitarUsuario } = useHabilitarUsuario()
   const {
     formulario: formularioPadreTutor,
     errores: erroresPadreTutor,
@@ -195,7 +198,7 @@ const Estudiantes = () => {
   }
 
   return (
-    <>
+    <div className="estudiantes-page__container">
       <PageHeader
         eyebrow={mostrarPreinscripciones ? 'Admisiones' : 'Gestión académica'}
         title={mostrarPreinscripciones ? 'Preinscripciones' : 'Estudiantes'}
@@ -206,15 +209,27 @@ const Estudiantes = () => {
         }
         actions={
           mostrarPreinscripciones ? (
-            <CButton color="secondary" onClick={() => setMostrarPreinscripciones(false)}>
+            <CButton
+              color="secondary"
+              className="estudiante-toolbar__button estudiante-toolbar__button--secondary"
+              onClick={() => setMostrarPreinscripciones(false)}
+            >
               ← Volver a Lista de Estudiantes
             </CButton>
           ) : (
-            <div className="d-flex gap-2">
-              <CButton color="primary" onClick={() => setModalRegistroVisible(true)}>
+            <div className="estudiante-toolbar__actions d-flex gap-2">
+              <CButton
+                color="primary"
+                className="estudiante-toolbar__button estudiante-toolbar__button--primary"
+                onClick={() => setModalRegistroVisible(true)}
+              >
                 Registrar Estudiante
               </CButton>
-              <CButton color="secondary" onClick={() => setMostrarPreinscripciones(true)}>
+              <CButton
+                color="secondary"
+                className="estudiante-toolbar__button estudiante-toolbar__button--secondary"
+                onClick={() => setMostrarPreinscripciones(true)}
+              >
                 Ver Preinscripciones
                 <CBadge color="danger" shape="rounded-pill" className="ms-2">
                   {preinscripciones.length}
@@ -224,13 +239,18 @@ const Estudiantes = () => {
           )
         }
       />
-      {feedback && (
+      {(feedback || feedback1) && !modalRegistroVisible && (
         <div ref={feedbackRef}>
-          <CAlert color={feedback.color} dismissible onClose={limpiarFeedback}>
-            {feedback.message}
+          <CAlert
+            color={feedback?.color || feedback1?.color}
+            dismissible
+            onClose={feedback ? limpiarFeedback : () => {}}
+          >
+            {feedback?.message || feedback1?.message}
           </CAlert>
         </div>
       )}
+
       {mostrarPreinscripciones ? (
         <>
           {feedbackPreinscripciones && !solicitudParaAprobar && (
@@ -271,6 +291,7 @@ const Estudiantes = () => {
           accionEnProceso={accionEnProceso}
           mostrarCursosPorEstudiante={mostrarCursosPorEstudiante}
           seleccionados={seleccionados}
+          ejecutarHabilitarUsuario={ejecutarHabilitarUsuario}
         />
       )}
       <CModal
@@ -306,6 +327,7 @@ const Estudiantes = () => {
               buscarPadreTutor={buscarPadreTutor}
               padreTutorSeleccionado={padreTutorSeleccionado}
               abrirRegistroPadreTutor={abrirRegistroPadreTutor}
+              feedback={feedback}
             />
           ) : (
             <PadreTutorFormulario
@@ -454,7 +476,7 @@ const Estudiantes = () => {
           </CModalFooter>
         </div>
       </CModal>
-    </>
+    </div>
   )
 }
 

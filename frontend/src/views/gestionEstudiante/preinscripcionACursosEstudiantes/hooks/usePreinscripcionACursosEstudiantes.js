@@ -4,6 +4,7 @@ import {
   getMostrarCursosNoInscritosDeunEstudiante,
   getMostrarDeudasEstudiante,
 } from '../../../../services/gestionEstudiante/cursosEstudiante'
+import { obtenerCursosDisponibles } from '../../../../services/serviciosPublicos/cursosDisponibles'
 
 export const usePreinscripcionACursosEstudiantes = () => {
   const [cursosNoInscritos, setCursosNoInscritos] = useState([])
@@ -19,8 +20,30 @@ export const usePreinscripcionACursosEstudiantes = () => {
 
   const cargarCursosNoInscritosEstudiantes = useCallback(async () => {
     try {
-      const informe = await getMostrarCursosNoInscritosDeunEstudiante()
-      setCursosNoInscritos(informe?.data?.datos || [])
+      const [informe, cursosPublicos] = await Promise.all([
+        getMostrarCursosNoInscritosDeunEstudiante(),
+        obtenerCursosDisponibles(),
+      ])
+
+      const mapaImagenes = {}
+      ;(cursosPublicos?.data || []).forEach((curso) => {
+        mapaImagenes[String(curso.id_curso)] = curso
+      })
+
+      const cursosConImagen = (informe?.data?.datos || []).map((curso) => {
+        const cursoPublico = mapaImagenes[String(curso.id_curso)]
+
+        return {
+          ...curso,
+          imagen: cursoPublico?.imagen || curso.imagen || null,
+          autorImagen: cursoPublico?.autorImagen || curso.autorImagen || null,
+          autorImagenUrl: cursoPublico?.autorImagenUrl || curso.autorImagenUrl || null,
+          unsplashUrl: cursoPublico?.unsplashUrl || curso.unsplashUrl || null,
+        }
+      })
+
+      console.log('Cursos no inscritos:', cursosConImagen)
+      setCursosNoInscritos(cursosConImagen)
     } catch (error) {
       console.error(error)
       mostrarFeedback(error.response?.data?.message || 'Error del servidor interno')

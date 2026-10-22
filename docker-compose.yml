@@ -1,28 +1,93 @@
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: development
+      PORT: "5000"
+    command:
+      - sh
+      - -c
+      - |
+        export DATABASE_URL="$$(node -e 'const url = new URL(process.env.DATABASE_URL); url.hostname = "host.docker.internal"; process.stdout.write(url.toString())')"
+        if [ -n "$${N8N_WEBHOOK_PAGO_URL:-}" ]; then
+          export N8N_WEBHOOK_PAGO_URL="$$(node -e 'const url = new URL(process.env.N8N_WEBHOOK_PAGO_URL); url.hostname = "host.docker.internal"; process.stdout.write(url.toString())')"
+        fi
+        exec npm run dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "5000:5000"
-    environment:
-      - NODE_ENV=development
-    volumes:
-      - ./backend:/app
-    depends_on:
-      - db
+    restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
     ports:
-      - "5173:5173"
+      - "3000:3000"
     depends_on:
-      - "backend"
+      backend:
+        condition: service_started
+    restart: unless-stopped
 
-  db:
-    image: postgres:latest
-    restart: always
+  chatbot:
+    build:
+      context: ./chatbot
+    image: academia-chatbot:2.42.5
+    env_file:
+      - ./chatbot/.env
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: brilliant_minds
+      N8N_PORT: "5679"
+      N8N_RUNNERS_BROKER_PORT: "5680"
+      N8N_USER_FOLDER: /home/node/.n8n-data
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "false"
     ports:
-      - "5432:5432"
+      - "5679:5679"
+    volumes:
+      - ./chatbot/.n8n-data:/home/node/.n8n-data
+    depends_on:
+      backend:
+        condition: service_started
+    restart: unless-stopped
+
+  chatbot-backend-proxy:
+    image: alpine/socat
+    network_mode: service:chatbot
+    command:
+      - TCP-LISTEN:5000,bind=127.0.0.1,fork,reuseaddr
+      - TCP:host.docker.internal:5000
+    depends_on:
+      chatbot:
+        condition: service_started
+    restart: unless-stopped
+
+
+  evolution-go:
+    image: evoapicloud/evolution-go:latest
+    environment:
+      SERVER_PORT: "8080"
+      CLIENT_NAME: academia
+      GLOBAL_API_KEY: ${EVOLUTION_API_KEY}
+      POSTGRES_AUTH_DB: postgresql://evolution:${EVOLUTION_DB_PASSWORD}@host.docker.internal:5432/evogo_auth?sslmode=disable
+      POSTGRES_USERS_DB: postgresql://evolution:${EVOLUTION_DB_PASSWORD}@host.docker.internal:5432/evogo_users?sslmode=disable
+      DATABASE_SAVE_MESSAGES: "false"
+      WADEBUG: INFO
+      LOGTYPE: console
+      WEBHOOK_FILES: "true"
+      CONNECT_ON_STARTUP: "true"
+      MINIO_ENABLED: "false"
+      WEBHOOK_URL: http://chatbot:5679/webhook/whatsapp
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - evolution-go-data:/app/dbdata
+      - evolution-go-logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  evolution-go-data:
+  evolution-go-logs:

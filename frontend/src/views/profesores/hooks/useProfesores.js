@@ -16,6 +16,7 @@ export const useProfesores = () => {
       setFeedback(null)
     }, 4000)
   }
+
   const [profesorParaEliminar, setProfesorParaEliminar] = useState(null)
   const [cargando, setCargando] = useState(true)
 
@@ -216,8 +217,8 @@ export const useProfesores = () => {
     if (!formulario.ci?.trim()) {
       nuevosErrores.ci = 'CI es obligatorio'
     }
-    if (!formulario.telefono?.trim()) {
-      nuevosErrores.telefono = 'Telefono es obligatorio'
+    if (!formulario.telefono?.trim() || !/^\d{8}$/.test(formulario.telefono?.trim())) {
+      nuevosErrores.telefono = 'Inválido (8 dígitos)'
     }
     if (formulario.email && !/\S+@\S+\.\S+/.test(formulario.email)) {
       nuevosErrores.email = 'Email inválido'
@@ -227,9 +228,24 @@ export const useProfesores = () => {
       nuevosErrores.especialidad = 'Especialidad es obligatoria'
     }
     setErrores(nuevosErrores)
-    return Object.keys(nuevosErrores).length === 0
+
+    const llavesConErrores = Object.keys(nuevosErrores)
+    if (llavesConErrores.length > 0) {
+      const primerError = llavesConErrores[0]
+      setTimeout(() => {
+        const elementoInvalido =
+          document.getElementsByName(primerError)[0] || document.getElementById(primerError)
+        if (elementoInvalido) {
+          elementoInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          elementoInvalido.focus()
+        }
+      }, 50)
+    }
+
+    return llavesConErrores.length === 0
   }
   return {
+    cargarProfesor,
     handleChange,
     descartar,
     editando,

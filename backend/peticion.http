@@ -148,15 +148,15 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-    "email": "administrador@gmail.com",
-    "password": "luis"
+    "email": "loayza@gmail.com",
+    "password": "9898989"
 }
 
 ### APLICANDO VERIFICACION CON TOKEN
 GET http://localhost:5000/perfil
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzgzNTI3MzA5LCJleHAiOjE3ODM1MzA5MDl9.o3TNLCHHqIqKOMleKWU7ZVC9rHmInqaqK16G2yg6L3A
 ### MOSTRANDO INSCRIPCIONES POR CURSO
-GET  http://localhost:5000/inscripciones/estudiante/26
+GET  http://localhost:5000/admin/inscripciones/estudiante/26
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzgzNTMzMzIzLCJleHAiOjE3ODM1MzY5MjN9.dXRZ5HaXU_g3MncWIzdlDlwoIMfnM1etKTj-6v2gGeY
 
 
@@ -326,9 +326,18 @@ Content-Type: application/json
     "password": "luis"
 }
 
+
+### probando habiliatar
+PUT http://localhost:5000/admin/habilitar-usuario/120
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzkwNTcxMzQ1LCJleHAiOjE3OTA1NzE5NDV9.iZ6gZPzIgP3ogdZh8LJ78AZ_Cc3v-5VE9AoAGcI1Gl4
+
 ### aplicando mostrar padres y tutores
 GET http://localhost:5000/admin/padres-tutores
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5NTA0Mjg2LCJleHAiOjE3ODk1MDc4ODZ9.g3XyiCdTxRLuWm0kVvQl_dmBsOYVUsoKOSi161ztvHw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzkwNDc0NTY0LCJleHAiOjE3OTA0NzUxNjR9.wPBJd1mew0qpnhQfURcbWPOK8qgwY0qfEFe19q2pQWE
+
+### mostrando cursos por vencer
+GET http://localhost:5000/admin/cursos/por-vencer
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzkwNTQ4OTgyLCJleHAiOjE3OTA1NDk1ODJ9.QLZtNuUcybC5XocluU-q5urnWE72i2JmuSB9AbBKY60
 
 ### Crear un nuevo Padre/Tutor (Como Administrador)
 PUT http://localhost:5000/admin/padres-tutores/actualizar/1
@@ -394,6 +403,125 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiO
 
 ### ELIMINAR INSCRIPCIONES POR CURSO
 DELETE http://localhost:5000/admin/inscripciones/eliminar-por-curso/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzg5Njk2ODUyLCJleHAiOjE3ODk3MDA0NTJ9.KzbkQ5IlkctXFKDIW_OyRQ3B2DsRbhuqWp26p0uyJfY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc5MDQ3Mjk5MCwiZXhwIjoxNzkwNDczNTkwfQ.BWK2pZiRTMnNfet2Xh-O9u2NysdxzPFT2EB914ddtHM
+
+### Mostrar exámenes ya calificados
+GET http://localhost:5000/docente/cursos/evaluacion/examen/ya-calificados/19
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTEsImVtYWlsIjoibG9heXphQGdtYWlsLmNvbSIsInJvbGUiOiJwcm9mZXNvciIsImlhdCI6MTc5MDQ3NTU5MSwiZXhwIjoxNzkwNDc2MTkxfQ.863Bf10uOL8JG1qzh0HiQPJCuZwmlYTLqD6cu74Wtno
+
+### APLICANDO LOGIN PROFESOR
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "email": "administrador@gmail.com",
+    "password": "luis"
+}
+
+####
+
+@baseUrl = http://localhost:5000/api/chatbot
+@apiKey = 0a0fdae84dc473fd1cf5646912f7a9d9abf9280642b8e0b2789ef3b702bed66a
+
+### 1. Identificar usuario por teléfono
+POST {{baseUrl}}/identificar
+Content-Type: application/json
+x-api-key: {{apiKey}}
+
+{
+    "telefono": "55555555"
+}
+
+### 2. Consultar pagos de un estudiante
+GET {{baseUrl}}/estudiantes/1/pagos?telefono=71234567
+x-api-key: {{apiKey}}
+
+### 3. Consultar inscripción de un estudiante
+GET {{baseUrl}}/estudiantes/1/inscripcion?telefono=71234567
+x-api-key: {{apiKey}}
+
+### 4. Consultar calificaciones de un estudiante
+GET {{baseUrl}}/estudiantes/1/calificaciones?telefono=71234567
+x-api-key: {{apiKey}}
+
+### 5. Prueba SIN clave (debe responder 401)
+POST {{baseUrl}}/identificar
+Content-Type: application/json
+
+{
+    "telefono": "71234567"
+}
+
+### 6. Prueba con clave INCORRECTA (debe responder 401)
+GET {{baseUrl}}/estudiantes/1/pagos?telefono=71234567
+x-api-key: clave-falsa
+
+#### mostrar estudiantes
+GET  http://localhost:5000/admin/estudiantes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzkxNDg0MDc3LCJleHAiOjE3OTE0ODQ2Nzd9.OykC4NmCmTCRuAJAljFbGedR7Ffs_10top9Ic90NkLI
+
+### Cursos activos
+GET {{baseUrl}}/cursos
+x-api-key: {{apiKey}}
 
 
+### Inscripción de un estudiante (id 67 = Dorian)
+GET {{baseUrl}}/estudiantes/67/inscripcion?telefono=55555555
+x-api-key: {{apiKey}}
+
+### Debe dar 403: estudiante que no pertenece a ese teléfono
+GET {{baseUrl}}/estudiantes/1/inscripcion?telefono=55555555
+x-api-key: {{apiKey}}
+
+### Calificaciones de un estudiante (id 60 = Juan 222, teléfono 69640048)
+GET {{baseUrl}}/estudiantes/60/calificaciones?telefono=69640048
+x-api-key: {{apiKey}}
+
+### Calificaciones de un estudiante con notas (id 37, tiene la calificación 39)
+GET {{baseUrl}}/estudiantes/37/calificaciones?telefono=69540048
+x-api-key: {{apiKey}}
+
+### Debe dar 403: estudiante que no pertenece a ese teléfono
+GET {{baseUrl}}/estudiantes/1/calificaciones?telefono=69640048
+x-api-key: {{apiKey}}
+
+### Debe dar 400: sin teléfono
+GET {{baseUrl}}/estudiantes/60/calificaciones
+x-api-key: {{apiKey}}
+
+### Debe dar 401 o 403: sin API Key
+GET {{baseUrl}}/estudiantes/60/calificaciones?telefono=69640048
+
+
+### probando chat
+POST http://localhost:5679/webhook-test/aviso-pago
+Content-Type: application/json
+x-api-key: BMn8K7xQ2vL9mR5pT1wZ6aH3yD0cN4sJ7uE2bV9kX6fG3pR8tY1wA5mD0zH7cL4v
+
+{
+  "telefono": "69540048",
+  "estudiante": "prueba 2",
+  "curso": "lenguaje",
+  "montoPagado": "100.00",
+  "fechaPago": "2026-10-09T19:00:00.000Z",
+  "idRecibo": 99
+}
+
+
+
+### probando
+POST http://localhost:5000/admin/inscripciones/registrar-recibos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbmlzdHJhZG9yQGdtYWlsLmNvbSIsInJvbGUiOiJhZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzkyMjgyNzI2LCJleHAiOjE3OTIyODMzMjZ9.lFgdE--UZEFAKG3zuqdBDJZXBI3T7gXfi-dOUy3H9MM
+Content-Type: application/json
+
+{
+  "idInscripcion": null,
+  "padreTutor": "Julio Perezz Molina",
+  "padreCi": "7654321",
+  "montoPagado": 100,
+  "idPadre": 12,
+  "idEstudiante": 56,
+  "estudiante": "prueba 2 prueba 2 prueba 2",
+  "idCurso": null,
+  "curso": "lenguaje"
+}

@@ -4,6 +4,7 @@ import useCursos from './hooks/useCursos'
 import CursoFormulario from './components/CursoFormulario'
 import CursoTable from './components/CursoTable'
 import { FeedbackAlert, PageHeader } from '../../components'
+import { useHabilitarUsuario } from '../../hooks/useHabilitarUsuario'
 
 const Cursos = () => {
   const [modalVisible, setModalVisible] = useState(false)
@@ -25,6 +26,7 @@ const Cursos = () => {
     feedback,
     limpiarFeedback,
     accionEnProceso,
+    cargarCursos,
   } = useCursos()
 
   const registrarCurso = async (event) => {
@@ -54,13 +56,17 @@ const Cursos = () => {
   }
 
   return (
-    <>
+    <div className="cursos-page__container">
       <PageHeader
         eyebrow="Gestión académica"
         title="Cursos"
         description="Organiza la oferta académica, sus profesores y cupos disponibles."
         actions={
-          <CButton color="primary" onClick={() => setModalVisible(true)}>
+          <CButton
+            color="primary"
+            onClick={() => setModalVisible(true)}
+            className="cursos-page__cta"
+          >
             Registrar Curso
           </CButton>
         }
@@ -74,8 +80,15 @@ const Cursos = () => {
         cancelarEliminacion={cancelarEliminacion}
         confirmarEliminacion={confirmarEliminacion}
         accionEnProceso={accionEnProceso}
+        cargarCursos={cargarCursos}
       />
-      <CModal visible={modalVisible} onClose={cancelarFormulario} portal={false} size="xl">
+      <CModal
+        visible={modalVisible}
+        onClose={cancelarFormulario}
+        portal={false}
+        size="xl"
+        className="curso-modal__wrapper"
+      >
         <CModalHeader>
           <CModalTitle>{editando ? 'Editar Curso' : 'Registrar Curso'}</CModalTitle>
         </CModalHeader>
@@ -103,7 +116,7 @@ const Cursos = () => {
           </CButton>
         </CModalFooter>
       </CModal>
-    </>
+    </div>
   )
 }
 

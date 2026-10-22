@@ -13,7 +13,7 @@ const ControlPagosEstudiante = () => {
     pagoEnProceso,
   } = useControlPagosEstudiante()
   return (
-    <>
+    <div className="pagos-page__container">
       <PageHeader
         eyebrow="Finanzas"
         title="Control de pagos"
@@ -27,7 +27,7 @@ const ControlPagosEstudiante = () => {
         marcarInscripcionComoPagada={marcarInscripcionComoPagada}
         pagoEnProceso={pagoEnProceso}
       />
-    </>
+    </div>
   )
 }
 

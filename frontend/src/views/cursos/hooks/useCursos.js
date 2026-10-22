@@ -1,5 +1,5 @@
 import { getCursos, postCursos, putCursos, deleteCursos } from '../../../services/cursosService'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getProfesor } from '../../../services/profesorService'
 import { capitalizarTexto } from '../../utils/capitalizarTexto'
 
@@ -10,10 +10,12 @@ const valoresIniciales = {
   unidad: '',
   precio: '',
   cupos: '',
+  fechaCreacion: '',
   idProfesor: '',
 }
 
 const useCursos = () => {
+  const fechaCreacionOriginal = useRef('')
   const [feedback, setFeedback] = useState(null)
   const [accionEnProceso, setAccionEnProceso] = useState(null)
   const mostrarFeedback = (message, color = 'success') => {
@@ -23,18 +25,6 @@ const useCursos = () => {
     }, 4000)
   }
   const [cursoParaEliminar, setCursoParaEliminar] = useState(null)
-
-  /// cargando los cursos para que se pueda seleeccionar
-  const [profesor, setProfesor] = useState([])
-  const cargarProfesor = async () => {
-    try {
-      const datosProfesor = await getProfesor()
-      setProfesor(datosProfesor.data)
-    } catch (error) {
-      console.error(error)
-      mostrarFeedback('Error al obtener profesores', 'danger')
-    }
-  }
 
   /// CARGANDO LOS CURSOS
 
@@ -50,6 +40,9 @@ const useCursos = () => {
       mostrarFeedback('Error al obtener cursos', 'danger')
     }
   }
+
+  /// cargando los cursos para que se pueda seleeccionar
+  const [profesor, setProfesor] = useState([])
 
   useEffect(() => {
     let componenteActivo = true
@@ -91,6 +84,7 @@ const useCursos = () => {
         unidad: formulario.unidad,
         precio: Number(formulario.precio),
         cupos: Number(formulario.cupos),
+        fechaCreacion: formulario.fechaCreacion,
         idProfesor: Number(formulario.idProfesor),
       }
       await postCursos(data)
@@ -132,9 +126,11 @@ const useCursos = () => {
   const [idEditar, setIdEditar] = useState(null)
 
   const seleccionarCurso = (curso) => {
+    const fechaCreacion = String(curso.fecha_creacion || curso.fechaCreacion || '').slice(0, 10)
     const unidad =
       curso.duracion && typeof curso.duracion === 'object' ? Object.keys(curso.duracion)[0] : ''
     const duracion = unidad ? curso.duracion[unidad] : ''
+    fechaCreacionOriginal.current = fechaCreacion
     setFormulario({
       nombre: curso.nombre,
       descripcion: curso.descripcion,
@@ -142,6 +138,7 @@ const useCursos = () => {
       unidad,
       precio: curso.costo,
       cupos: curso.cupo_total,
+      fechaCreacion,
       idProfesor: curso.id_profesor,
     })
     setEditando(true)
@@ -161,6 +158,7 @@ const useCursos = () => {
         unidad: formulario.unidad,
         precio: Number(formulario.precio),
         cupos: Number(formulario.cupos),
+        fechaCreacion: formulario.fechaCreacion,
         idProfesor: Number(formulario.idProfesor),
       }
       await putCursos(idEditar, data)
@@ -203,8 +201,8 @@ const useCursos = () => {
     setAccionEnProceso('eliminar')
 
     try {
-      await deleteCursos(cursoParaEliminar)
-      mostrarFeedback('Curso eliminado correctamente', 'success')
+      const mensaje = await deleteCursos(cursoParaEliminar)
+      mostrarFeedback(mensaje.data?.message || 'Curso eliminado correctamente', 'success')
       cargarCursos()
       cancelarEliminacion()
     } catch (error) {
@@ -220,6 +218,8 @@ const useCursos = () => {
   const [errores, setErrores] = useState({})
   const validarFormulario = () => {
     const nuevosErrores = {}
+    const fechaActual = new Date()
+    const fechaMinima = `${fechaActual.getFullYear()}-${String(fechaActual.getMonth() + 1).padStart(2, '0')}-${String(fechaActual.getDate()).padStart(2, '0')}`
     if (!formulario.nombre.trim()) {
       nuevosErrores.nombre = 'El nombre es obligatorio'
     }
@@ -238,14 +238,37 @@ const useCursos = () => {
     if (formulario.cupos === '' || isNaN(Number(formulario.cupos))) {
       nuevosErrores.cupos = 'Cupos inválido'
     }
+    if (!formulario.fechaCreacion) {
+      nuevosErrores.fechaCreacion = 'La fecha es obligatoria'
+    } else if (
+      formulario.fechaCreacion < fechaMinima &&
+      (!editando || formulario.fechaCreacion !== fechaCreacionOriginal.current)
+    ) {
+      nuevosErrores.fechaCreacion = 'La fecha no puede ser anterior a hoy'
+    }
     if (formulario.idProfesor === '') {
       nuevosErrores.idProfesor = 'Profesor inválido'
     }
     setErrores(nuevosErrores)
-    return Object.keys(nuevosErrores).length === 0
+
+    const llavesConErrores = Object.keys(nuevosErrores)
+    if (llavesConErrores.length > 0) {
+      const primerError = llavesConErrores[0]
+      setTimeout(() => {
+        const elementoInvalido =
+          document.getElementsByName(primerError)[0] || document.getElementById(primerError)
+        if (elementoInvalido) {
+          elementoInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          elementoInvalido.focus()
+        }
+      }, 50)
+    }
+
+    return llavesConErrores.length === 0
   }
 
   return {
+    cargarCursos,
     profesor,
     editando,
     formulario,

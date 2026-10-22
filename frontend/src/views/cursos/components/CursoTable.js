@@ -1,9 +1,13 @@
 import {
+  CNav,
+  CNavItem,
+  CNavLink,
   CBadge,
   CButton,
   CButtonGroup,
   CCol,
   CFormInput,
+  CFormSelect,
   CRow,
   CModal,
   CModalBody,
@@ -18,8 +22,10 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilFilter, cilSearch } from '@coreui/icons'
 import { useState } from 'react'
-import { SectionCard } from '../../../components'
+import { SectionCard, StatusBadge } from '../../../components'
 
 const CursoTable = ({
   cursos,
@@ -29,15 +35,138 @@ const CursoTable = ({
   cancelarEliminacion,
   confirmarEliminacion,
   accionEnProceso,
+  cargarCursos,
 }) => {
   const [searchTerm, setSearchTerm] = useState('')
+  const [filtroAbierto, setFiltroAbierto] = useState(null)
+  const [filtrosColumna, setFiltrosColumna] = useState({})
   const normalizarTexto = (texto) =>
     String(texto || '')
       .normalize('NFD')
       .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
-  const cursosFiltrados = cursos.filter((curso) =>
-    normalizarTexto(curso.nombre).includes(normalizarTexto(searchTerm)),
+  const profesoresDisponibles = [
+    ...new Set(cursos.map((curso) => curso.profesor_nombre || 'Sin asignar')),
+  ]
+  const estadosCurso = [...new Set(cursos.map((curso) => curso.estado || 'Sin estado'))]
+  const obtenerDuracionTexto = (curso) => {
+    const unidad =
+      curso.duracion && typeof curso.duracion === 'object' ? Object.keys(curso.duracion)[0] : null
+    const valor = unidad ? curso.duracion[unidad] : null
+    const unidades = {
+      days: 'días',
+      hours: 'horas',
+      months: 'meses',
+      weeks: 'semanas',
+    }
+    return valor ? `${valor} ${unidades[unidad] || unidad}` : 'Sin duración'
+  }
+  const coincideFecha = (valor, filtro) => {
+    if (!filtro) return true
+    const fecha = new Date(valor)
+    if (Number.isNaN(fecha.getTime())) return false
+    const anio = fecha.getFullYear()
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0')
+    const dia = String(fecha.getDate()).padStart(2, '0')
+    return `${anio}-${mes}-${dia}` === filtro
+  }
+  const cursosFiltrados = cursos.filter((curso) => {
+    const coincideBusquedaGlobal =
+      normalizarTexto(curso.nombre).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(curso.profesor_nombre).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(curso.cupo_total).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(curso.costo).includes(normalizarTexto(searchTerm))
+    const coincideCurso = normalizarTexto(curso.nombre).includes(
+      normalizarTexto(filtrosColumna.curso),
+    )
+    const coincideProfesor =
+      !filtrosColumna.profesor ||
+      normalizarTexto(curso.profesor_nombre || 'Sin asignar') ===
+        normalizarTexto(filtrosColumna.profesor)
+    const coincideDescripcion = normalizarTexto(curso.descripcion || 'Sin descripción').includes(
+      normalizarTexto(filtrosColumna.descripcion),
+    )
+    const coincideDuracion = normalizarTexto(obtenerDuracionTexto(curso)).includes(
+      normalizarTexto(filtrosColumna.duracion),
+    )
+    const coincidePrecio = String(curso.costo ?? '').includes(filtrosColumna.precio || '')
+    const coincideCupos = String(curso.cupo_total ?? '').includes(filtrosColumna.cupos || '')
+    const coincideInicio = coincideFecha(curso.fecha_creacion, filtrosColumna.inicio)
+    const coincideFin = coincideFecha(curso.fecha_fin, filtrosColumna.fin)
+    const coincideEstado =
+      !filtrosColumna.estado ||
+      normalizarTexto(curso.estado || 'Sin estado') === normalizarTexto(filtrosColumna.estado)
+
+    return (
+      coincideBusquedaGlobal &&
+      coincideCurso &&
+      coincideProfesor &&
+      coincideDescripcion &&
+      coincideDuracion &&
+      coincidePrecio &&
+      coincideCupos &&
+      coincideInicio &&
+      coincideFin &&
+      coincideEstado
+    )
+  })
+
+  const [pestañaActiva, setPestañaActiva] = useState('Activos')
+  const cursosVisibles = cursosFiltrados.filter((curso) =>
+    pestañaActiva === 'Activos' ? curso.estado === 'Activo' : curso.estado === 'Inactivo',
+  )
+
+  const actualizarFiltroColumna = (columna, valor) => {
+    setFiltrosColumna((filtrosActuales) => ({ ...filtrosActuales, [columna]: valor }))
+  }
+
+  const renderEncabezadoFiltrable = (titulo, columna, tipo = 'text') => (
+    <CTableHeaderCell scope="col" className="table-curso__head">
+      <div className="table-curso__heading">
+        <span>{titulo}</span>
+        <button
+          type="button"
+          className={`table-curso__filter-toggle${filtrosColumna[columna] ? ' is-active' : ''}`}
+          onClick={() => setFiltroAbierto(filtroAbierto === columna ? null : columna)}
+          aria-label={`${filtroAbierto === columna ? 'Cerrar' : 'Abrir'} filtro de ${titulo}`}
+          aria-expanded={filtroAbierto === columna}
+          title={`Filtrar ${titulo}`}
+        >
+          <CIcon icon={tipo === 'select' ? cilFilter : cilSearch} />
+        </button>
+      </div>
+      {filtroAbierto === columna && (
+        <div className="table-curso__filter-control">
+          {tipo === 'select' ? (
+            <CFormSelect
+              value={filtrosColumna[columna] || ''}
+              onChange={(event) => actualizarFiltroColumna(columna, event.target.value)}
+              aria-label={`Filtrar por ${titulo}`}
+              size="sm"
+            >
+              <option value="">
+                {columna === 'profesor' ? 'Todos los profesores' : 'Todos los estados'}
+              </option>
+              {(columna === 'profesor' ? profesoresDisponibles : estadosCurso).map((opcion) => (
+                <option key={opcion} value={opcion}>
+                  {String(opcion).charAt(0).toLocaleUpperCase() + String(opcion).slice(1)}
+                </option>
+              ))}
+            </CFormSelect>
+          ) : (
+            <CFormInput
+              type={tipo}
+              value={filtrosColumna[columna] || ''}
+              onChange={(event) => actualizarFiltroColumna(columna, event.target.value)}
+              aria-label={`Filtrar por ${titulo}`}
+              placeholder={`Filtrar ${titulo.toLocaleLowerCase()}`}
+              size="sm"
+              step={tipo === 'number' ? 'any' : undefined}
+            />
+          )}
+        </div>
+      )}
+    </CTableHeaderCell>
   )
 
   return (
@@ -45,111 +174,153 @@ const CursoTable = ({
       title="Cursos registrados"
       description={`${cursos.length} curso${cursos.length === 1 ? '' : 's'} en el sistema`}
     >
-      <CRow className="mb-3">
-        <CCol md={5} lg={4} className="ms-auto">
+      <CRow className="mb-3 curso-table__search-row">
+        <CCol md={5} lg={4} className="ms-auto curso-table__search-col">
           <CFormInput
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
-            placeholder="Buscar curso por nombre..."
+            placeholder="Buscar curso..."
             aria-label="Buscar curso por nombre"
+            className="curso-search__input"
           />
         </CCol>
+        <CCol xs="auto" className="d-flex justify-content-end">
+          <CNav variant="tabs" className="curso-table__nav-tabs">
+            <CNavItem>
+              <CNavLink
+                active={pestañaActiva === 'Activos'}
+                style={{ cursor: 'pointer' }}
+                onClick={() =>
+                  setPestañaActiva(pestañaActiva === 'Activos' ? 'Inactivos' : 'Activos')
+                }
+                className={
+                  pestañaActiva === 'Activos'
+                    ? 'curso-table__view-tab curso-table__view-tab--active'
+                    : 'curso-table__view-tab curso-table__view-tab--inactive'
+                }
+              >
+                {pestañaActiva === 'Activos' ? '🔴 Dados de Baja' : '🟢 Activos'}
+              </CNavLink>
+            </CNavItem>
+          </CNav>
+        </CCol>
       </CRow>
-      {cursosFiltrados.length === 0 ? (
+      {cursos.length === 0 ? (
         <div className="bm-table-empty">
-          <strong>
-            {cursos.length === 0 ? 'No hay cursos registrados' : 'No se encontraron coincidencias'}
-          </strong>
-          <span>
-            {cursos.length === 0
-              ? 'Los cursos que agregues aparecerán aquí.'
-              : 'Prueba con otro nombre.'}
-          </span>
+          <strong>No hay cursos registrados</strong>
+          <span>Los cursos que agregues aparecerán aquí.</span>
         </div>
       ) : (
-        <CTable align="middle" hover responsive className="bm-admin-table bm-course-table">
-          <CTableHead>
-            <CTableRow>
-              <CTableHeaderCell scope="col">Nro</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Curso</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Profesor</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Descripción</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Duración</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Precio</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Cupos</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Inicio</CTableHeaderCell>
-              <CTableHeaderCell scope="col">Fin</CTableHeaderCell>
-              <CTableHeaderCell scope="col" className="text-end">
-                Acciones
-              </CTableHeaderCell>
-            </CTableRow>
-          </CTableHead>
-          <CTableBody>
-            {cursosFiltrados.map((curs, index) => {
-              const unidad =
-                curs.duracion && typeof curs.duracion === 'object'
-                  ? Object.keys(curs.duracion)[0]
-                  : null
-              const valor = unidad ? curs.duracion[unidad] : null
-              const unidades = {
-                days: 'días',
-                hours: 'horas',
-                months: 'meses',
-                weeks: 'semanas',
-              }
-
-              return (
-                <CTableRow key={curs.id_curso}>
-                  <CTableDataCell className="text-body-secondary">#{index + 1}</CTableDataCell>
-                  <CTableDataCell>
-                    <strong>{curs.nombre}</strong>
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    {curs.profesor_nombre ? (
-                      curs.profesor_nombre
-                    ) : (
-                      <CBadge color="warning">Sin asignar</CBadge>
-                    )}
-                  </CTableDataCell>
-                  <CTableDataCell className="bm-table-description">
-                    {curs.descripcion || 'Sin descripción'}
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    {valor ? `${valor} ${unidades[unidad] || unidad}` : 'Sin duración'}
-                  </CTableDataCell>
-                  <CTableDataCell>{curs.costo ? `Bs. ${curs.costo}` : 'Sin precio'}</CTableDataCell>
-                  <CTableDataCell>{curs.cupo_total ?? '---'}</CTableDataCell>
-                  <CTableDataCell>
-                    {curs.fecha_creacion
-                      ? new Date(curs.fecha_creacion).toLocaleDateString()
-                      : '---'}
-                  </CTableDataCell>
-                  <CTableDataCell>
-                    {curs.fecha_fin ? new Date(curs.fecha_fin).toLocaleDateString() : '---'}
-                  </CTableDataCell>
-                  <CTableDataCell className="text-end">
-                    <CButtonGroup size="sm">
-                      <CButton
-                        color="primary"
-                        variant="outline"
-                        onClick={() => seleccionarCurso(curs)}
-                      >
-                        Editar
-                      </CButton>
-                      <CButton
-                        color="danger"
-                        variant="outline"
-                        onClick={() => eliminarCurso(curs.id_curso)}
-                      >
-                        Eliminar
-                      </CButton>
-                    </CButtonGroup>
+        <div className="table-responsive table-curso__wrapper">
+          <CTable align="middle" hover className="table-curso__table">
+            <CTableHead>
+              <CTableRow>
+                <CTableHeaderCell scope="col" className="table-curso__head">
+                  Nro
+                </CTableHeaderCell>
+                {renderEncabezadoFiltrable('Curso', 'curso')}
+                {renderEncabezadoFiltrable('Profesor', 'profesor', 'select')}
+                {renderEncabezadoFiltrable('Descripción', 'descripcion')}
+                {renderEncabezadoFiltrable('Duración', 'duracion', 'search')}
+                {renderEncabezadoFiltrable('Precio', 'precio', 'number')}
+                {renderEncabezadoFiltrable('Cupos', 'cupos', 'number')}
+                {renderEncabezadoFiltrable('Inicio', 'inicio', 'date')}
+                {renderEncabezadoFiltrable('Fin', 'fin', 'date')}
+                {renderEncabezadoFiltrable('Estado', 'estado', 'select')}
+                <CTableHeaderCell scope="col" className="table-curso__head text-end">
+                  Acciones
+                </CTableHeaderCell>
+              </CTableRow>
+            </CTableHead>
+            <CTableBody>
+              {cursosVisibles.length === 0 ? (
+                <CTableRow>
+                  <CTableDataCell colSpan={11} className="table-curso__empty-results">
+                    No se encontraron coincidencias
                   </CTableDataCell>
                 </CTableRow>
-              )
-            })}
-          </CTableBody>
-        </CTable>
+              ) : (
+                cursosVisibles.map((curs, index) => {
+                  const unidad =
+                    curs.duracion && typeof curs.duracion === 'object'
+                      ? Object.keys(curs.duracion)[0]
+                      : null
+                  const valor = unidad ? curs.duracion[unidad] : null
+                  const unidades = {
+                    days: 'días',
+                    hours: 'horas',
+                    months: 'meses',
+                    weeks: 'semanas',
+                  }
+
+                  return (
+                    <CTableRow key={curs.id_curso} className="table-curso__row">
+                      <CTableDataCell className="table-curso__cell text-body-secondary">
+                        #{index + 1}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell">
+                        <strong>{curs.nombre}</strong>
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell">
+                        {curs.profesor_nombre ? (
+                          curs.profesor_nombre
+                        ) : (
+                          <CBadge color="warning">Sin asignar</CBadge>
+                        )}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell bm-table-description">
+                        {curs.descripcion || 'Sin descripción'}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell">
+                        {valor ? `${valor} ${unidades[unidad] || unidad}` : 'Sin duración'}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell">
+                        {curs.costo ? `Bs. ${curs.costo}` : 'Sin precio'}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell">
+                        {curs.cupo_total ?? '---'}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell">
+                        {curs.fecha_creacion
+                          ? new Date(curs.fecha_creacion).toLocaleDateString()
+                          : '---'}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell">
+                        {curs.fecha_fin ? new Date(curs.fecha_fin).toLocaleDateString() : '---'}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell">
+                        <StatusBadge status={curs.estado || 'inactivo'}>
+                          {curs.estado || 'Sin estado'}
+                        </StatusBadge>
+                      </CTableDataCell>
+                      <CTableDataCell className="table-curso__cell text-end">
+                        <CButtonGroup size="sm">
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            onClick={() => seleccionarCurso(curs)}
+                            className="curso-table__action"
+                          >
+                            Editar
+                          </CButton>
+
+                          <CButton
+                            color="danger"
+                            variant="outline"
+                            onClick={() => eliminarCurso(curs.id_curso)}
+                            className="curso-table__action"
+                          >
+                            {curs.estado === 'Inactivo' ? 'Habilitar' : 'Eliminar'}
+                          </CButton>
+                        </CButtonGroup>
+                      </CTableDataCell>
+                    </CTableRow>
+                  )
+                })
+              )}
+            </CTableBody>
+          </CTable>
+        </div>
       )}
       <CModal
         visible={Boolean(cursoParaEliminar)}
@@ -160,7 +331,7 @@ const CursoTable = ({
         <CModalHeader>
           <CModalTitle>Eliminar curso</CModalTitle>
         </CModalHeader>
-        <CModalBody>Esta acción eliminará el curso seleccionado. ¿Deseas continuar?</CModalBody>
+        <CModalBody>Esta acción cambiará el estado del curso. ¿Deseas continuar?</CModalBody>
         <CModalFooter>
           <CButton
             color="secondary"
@@ -180,7 +351,7 @@ const CursoTable = ({
                 <CSpinner size="sm" className="me-1" /> Procesando
               </>
             ) : (
-              'Sí, eliminar'
+              'Sí, actualizar'
             )}
           </CButton>
         </CModalFooter>

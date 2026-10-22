@@ -1,0 +1,363 @@
+.preinscripciones-page__container {
+  width: 100%;
+}
+
+.preinscripcion-table__card {
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  border-radius: var(--radius-lg) !important;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.preinscripcion-search__row {
+  margin-bottom: 1rem !important;
+}
+
+.preinscripcion-search__col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.preinscripcion-form__input,
+.preinscripcion-search__input {
+  min-height: 2.9rem;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+.preinscripcion-form__input:focus,
+.preinscripcion-search__input:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15) !important;
+}
+
+.preinscripcion-table__wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-preinscripcion__table {
+  width: 100%;
+  min-width: 980px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-preinscripcion__head-cell {
+  padding: 0.9rem 1rem !important;
+  background: rgba(37, 99, 235, 0.06) !important;
+  color: var(--text-primary) !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.35) !important;
+}
+
+.table-preinscripcion__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+}
+
+.table-preinscripcion__filter-toggle {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: rgba(71, 85, 105, 0.75);
+  cursor: pointer;
+}
+
+.table-preinscripcion__filter-toggle svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.table-preinscripcion__filter-toggle:hover,
+.table-preinscripcion__filter-toggle:focus-visible,
+.table-preinscripcion__filter-toggle.is-active {
+  color: var(--brand-primary);
+}
+
+.table-preinscripcion__filter-toggle:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+.table-preinscripcion__filter-control {
+  min-width: 7.5rem;
+  margin-top: 0.45rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.table-preinscripcion__filter-control .form-control,
+.table-preinscripcion__filter-control .form-select {
+  min-height: 2rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.table-preinscripcion__row {
+  transition: background-color 0.2s ease;
+}
+
+.table-preinscripcion__row:hover {
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.table-preinscripcion__cell {
+  padding: 1rem !important;
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.3) !important;
+  vertical-align: middle;
+}
+
+.table-preinscripcion__empty-results {
+  padding: 1rem !important;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(148, 163, 184, 0.04);
+}
+
+.table-preinscripcion__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.table-preinscripcion__status--aprobada {
+  color: #166534;
+  background: rgba(34, 197, 94, 0.13);
+  border-color: rgba(34, 197, 94, 0.28);
+}
+
+.table-preinscripcion__status--rechazada {
+  color: #b91c1c;
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.28);
+}
+
+.table-preinscripcion__status--pendiente {
+  color: #92400e;
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.32);
+}
+
+.table-preinscripcion__status--otro {
+  color: var(--text-secondary);
+  background: rgba(148, 163, 184, 0.12);
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+.preinscripcion-table__action {
+  min-width: 5.4rem;
+}
+
+.preinscripcion-form__card {
+  margin-bottom: 1rem;
+  padding: 1.25rem 1.25rem 0.75rem;
+  border: 1px solid rgba(147, 197, 253, 0.45);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.preinscripcion-form__description {
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+}
+
+.preinscripcion-form__label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.preinscripcion-form__row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.preinscripcion-form__button {
+  white-space: nowrap;
+}
+
+.preinscripcion-form__selection {
+  margin-top: 1rem;
+  color: #166534;
+  font-weight: 600;
+}
+
+.preinscripcion-form__link {
+  color: var(--brand-primary);
+}
+
+.preinscripcion-modal__dialog .modal-content {
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg) !important;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+}
+
+.preinscripcion-modal__header,
+.preinscripcion-modal__footer {
+  border-color: rgba(147, 197, 253, 0.25) !important;
+}
+
+.preinscripcion-modal__body {
+  padding-top: 1.25rem;
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-table__card,
+html[data-coreui-theme='dark'] .preinscripcion-form__card,
+html[data-coreui-theme='dark'] .preinscripcion-modal__dialog .modal-content {
+  background: linear-gradient(180deg, #111827 0%, #1d1e2b 100%) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.3) !important;
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-form__input,
+html[data-coreui-theme='dark'] .preinscripcion-search__input,
+html[data-coreui-theme='dark'] .preinscripcion-form__input:focus,
+html[data-coreui-theme='dark'] .preinscripcion-search__input:focus {
+  background: #14151f !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-form__input:focus,
+html[data-coreui-theme='dark'] .preinscripcion-search__input:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.2) !important;
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-table__wrapper {
+  background: #1d1e2b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__head-cell {
+  background: #14151f !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__filter-toggle {
+  color: rgba(226, 232, 240, 0.7);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__filter-toggle:hover,
+html[data-coreui-theme='dark'] .table-preinscripcion__filter-toggle:focus-visible,
+html[data-coreui-theme='dark'] .table-preinscripcion__filter-toggle.is-active {
+  color: #93c5fd;
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__filter-control .form-control,
+html[data-coreui-theme='dark'] .table-preinscripcion__filter-control .form-select {
+  border-color: rgba(255, 255, 255, 0.14);
+  background-color: #1d1e2b;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__filter-control .form-control:focus,
+html[data-coreui-theme='dark'] .table-preinscripcion__filter-control .form-select:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.2);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__cell {
+  color: rgba(255, 255, 255, 0.9) !important;
+  background-color: transparent !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__empty-results {
+  color: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__status--aprobada {
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__status--rechazada {
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.16);
+  border-color: rgba(248, 113, 113, 0.3);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__status--pendiente {
+  color: #fcd34d;
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__status--otro {
+  color: rgba(255, 255, 255, 0.74);
+  background: rgba(148, 163, 184, 0.12);
+  border-color: rgba(148, 163, 184, 0.24);
+}
+
+html[data-coreui-theme='dark'] .table-preinscripcion__row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-form__description,
+html[data-coreui-theme='dark'] .preinscripcion-form__label {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .preinscripcion-form__selection {
+  color: #86efac;
+}
+
+@media (max-width: 767.98px) {
+  .preinscripcion-form__row {
+    flex-direction: column;
+  }
+
+  .preinscripcion-search__col {
+    justify-content: stretch;
+  }
+
+  .preinscripcion-form__input,
+  .preinscripcion-search__input,
+  .preinscripcion-form__button {
+    width: 100%;
+  }
+
+  .table-preinscripcion__head-cell,
+  .table-preinscripcion__cell {
+    padding: 0.8rem 0.7rem !important;
+    font-size: 0.8rem;
+  }
+}

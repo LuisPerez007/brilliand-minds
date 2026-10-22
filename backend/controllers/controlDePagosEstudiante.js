@@ -1,5 +1,7 @@
-import { mostrarRecibos, registrarRecibos, controlPagosDeEstudiantesACursos, marcarInscripcionComoPagada, verificarRecibo } from '../models/modelsInscripcion/controlPagosDeEstudianteACursos.js'
+import { mostrarRecibos, registrarRecibos, telefonoTutorActivo, controlPagosDeEstudiantesACursos, marcarInscripcionComoPagada, verificarRecibo } from '../models/modelsInscripcion/controlPagosDeEstudianteACursos.js'
 import { crearTokenRecibo, obtenerIdDesdeTokenRecibo } from '../utils/tokenVerificacionRecibo.js'
+
+import { avisarPagoAN8n } from '../services/n8nWebhook.js'
 
 export const getMostrarRecibos = async (req, res) => {
   try {
@@ -24,6 +26,23 @@ export const postRegistrarRecibos = async (req, res) => {
       return res.status(400).json({ message: 'No se pudo registrar el recibo' })
     }
     const recibo = informe.rows[0]
+
+    try {
+      const telefono = await telefonoTutorActivo(req.body.idPadre)
+      if (telefono) {
+        await avisarPagoAN8n({
+          telefono,
+          estudiante: req.body.estudiante,
+          curso: req.body.curso,
+          montoPagado: recibo.monto_pagado,
+          fechaPago: recibo.fecha_pago,
+          idRecibo: recibo.id_recibo
+        })
+      }
+    } catch (error) {
+      console.error('Error al preparar el aviso de pago:', error.message)
+    }
+
     return res.status(201).json({
       message: 'Recibo registrado correctamente',
       datos: { ...recibo, token_verificacion: crearTokenRecibo(recibo.id_recibo) }

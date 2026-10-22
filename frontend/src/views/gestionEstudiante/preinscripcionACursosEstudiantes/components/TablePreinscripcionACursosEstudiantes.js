@@ -1,6 +1,8 @@
 import { mostrarDuracion } from '../../../utils/duracion'
 import { cilClock, cilPeople, cilMoney } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import respaldoCursos from '../../../../assets/images/respaldoCursosWeb.jpg'
+
 const TablePreinscripcionACursosEstudiantes = ({
   cursosNoInscritos,
   crearInscripcionAunCursoParaEstudiante,
@@ -26,6 +28,12 @@ const TablePreinscripcionACursosEstudiantes = ({
             <div className="preinscripcion-cursos__grid">
               {cursosNoInscritos.map((curso) => (
                 <article key={curso.id_curso} className="preinscripcion-cursos__card">
+                  <img
+                    src={curso.imagen || respaldoCursos}
+                    alt={`Curso de ${curso.materia}`}
+                    className="preinscripcion-cursos__image"
+                  />
+
                   <div className="preinscripcion-cursos__card-header">
                     <h3 className="preinscripcion-cursos__course-title">{curso.materia}</h3>
                   </div>

@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import {
+  CNav,
+  CNavItem,
+  CNavLink,
   CAlert,
   CButton,
   CButtonGroup,
@@ -21,7 +24,8 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import { EmptyState, LoadingState, SectionCard } from '../../../components'
+import { SectionCard, StatusBadge, LoadingState, EmptyState } from '../../../components'
+
 import {
   getControlDePagosParaLosEstudiante,
   postRegistrarRecibos,
@@ -50,8 +54,20 @@ const EstudianteTable = ({
   crearInscripcion,
   mostrarCursosPorEstudiante,
   seleccionados,
+  ejecutarHabilitarUsuario,
 }) => {
   const [searchTerm, setSearchTerm] = useState('')
+  const [pestañaActiva, setPestañaActiva] = useState('Activos')
+  const [filtroAbierto, setFiltroAbierto] = useState(null)
+  const [filtrosColumna, setFiltrosColumna] = useState({
+    estudiante: '',
+    ci: '',
+    colegio: '',
+    telefono: '',
+    email: '',
+    registro: '',
+    estado: '',
+  })
   const normalizarTexto = (texto) =>
     String(texto || '')
       .normalize('NFD')
@@ -59,8 +75,124 @@ const EstudianteTable = ({
       .toLowerCase()
   const obtenerNombreCompleto = (estudiante) =>
     [estudiante.nombre, estudiante.a_paterno, estudiante.a_materno].filter(Boolean).join(' ')
-  const estudiantesFiltrados = estudiantes.filter((estudiante) =>
-    normalizarTexto(obtenerNombreCompleto(estudiante)).includes(normalizarTexto(searchTerm)),
+
+  const estadosDisponibles = Array.from(
+    new Set(
+      estudiantes
+        .map((estudiante) => estudiante.estado || 'Sin estado')
+        .filter((estado) => estado && estado !== 'Sin estado'),
+    ),
+  ).sort()
+
+  const coincideTexto = (valor, filtro) => {
+    if (!filtro) return true
+    return normalizarTexto(valor).includes(normalizarTexto(filtro))
+  }
+
+  const coincideFecha = (valor, filtro) => {
+    if (!filtro) return true
+    if (!valor) return false
+
+    const fecha = new Date(valor)
+    if (Number.isNaN(fecha.getTime())) return false
+
+    return fecha.toISOString().slice(0, 10) === filtro
+  }
+
+  const renderFilterHeader = (campo, etiqueta, tipo = 'text', opciones = []) => {
+    const isOpen = filtroAbierto === campo
+    const valorActual = filtrosColumna[campo] || ''
+
+    return (
+      <CTableHeaderCell scope="col" className="table-estudiante__head-cell">
+        <div className="table-estudiante__header">
+          <span>{etiqueta}</span>
+          <button
+            type="button"
+            className={`table-estudiante__filter-toggle ${isOpen ? 'is-open' : ''}`}
+            onClick={() => setFiltroAbierto(isOpen ? null : campo)}
+            aria-label={`Filtrar por ${etiqueta}`}
+          >
+            {tipo === 'select' ? '🔽' : '🔍'}
+          </button>
+        </div>
+        {isOpen && (
+          <div className="table-estudiante__filter-panel">
+            {tipo === 'date' ? (
+              <input
+                type="date"
+                className="table-estudiante__filter-input"
+                value={valorActual}
+                onChange={(event) =>
+                  setFiltrosColumna((prev) => ({ ...prev, [campo]: event.target.value }))
+                }
+              />
+            ) : tipo === 'select' ? (
+              <select
+                className="table-estudiante__filter-input"
+                value={valorActual}
+                onChange={(event) =>
+                  setFiltrosColumna((prev) => ({ ...prev, [campo]: event.target.value }))
+                }
+              >
+                <option value="">Todos</option>
+                {opciones.map((opcion) => (
+                  <option key={opcion} value={opcion}>
+                    {opcion}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type="text"
+                className="table-estudiante__filter-input"
+                value={valorActual}
+                placeholder="Buscar"
+                onChange={(event) =>
+                  setFiltrosColumna((prev) => ({ ...prev, [campo]: event.target.value }))
+                }
+              />
+            )}
+          </div>
+        )}
+      </CTableHeaderCell>
+    )
+  }
+
+  const estudiantesFiltrados = estudiantes.filter((estudiante) => {
+    const coincideBusquedaGlobal =
+      normalizarTexto(obtenerNombreCompleto(estudiante)).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(estudiante.ci).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(estudiante.telefono).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(estudiante.colegio).includes(normalizarTexto(searchTerm)) ||
+      normalizarTexto(estudiante.email).includes(normalizarTexto(searchTerm))
+
+    if (!coincideBusquedaGlobal) return false
+
+    const cumpleEstudiante = coincideTexto(
+      obtenerNombreCompleto(estudiante),
+      filtrosColumna.estudiante,
+    )
+    const cumpleCi = coincideTexto(estudiante.ci, filtrosColumna.ci)
+    const cumpleColegio = coincideTexto(estudiante.colegio, filtrosColumna.colegio)
+    const cumpleTelefono = coincideTexto(estudiante.telefono, filtrosColumna.telefono)
+    const cumpleEmail = coincideTexto(estudiante.email, filtrosColumna.email)
+    const cumpleRegistro = coincideFecha(estudiante.fecha_registro, filtrosColumna.registro)
+    const cumpleEstado =
+      !filtrosColumna.estado || (estudiante.estado || 'Sin estado') === filtrosColumna.estado
+
+    return (
+      cumpleEstudiante &&
+      cumpleCi &&
+      cumpleColegio &&
+      cumpleTelefono &&
+      cumpleEmail &&
+      cumpleRegistro &&
+      cumpleEstado
+    )
+  })
+  const estudiantesVisibles = estudiantesFiltrados.filter((estudiante) =>
+    pestañaActiva === 'Activos' ? estudiante.estado === 'Activo' : estudiante.estado !== 'Activo',
   )
   const [deudaEncontrada, setDeudaEncontrada] = useState(null)
   const [deudasPendientesEstudiante, setDeudasPendientesEstudiante] = useState([])
@@ -401,93 +533,161 @@ const EstudianteTable = ({
             ? 'Consultando lista de estudiantes...'
             : `${estudiantes.length} estudiante${estudiantes.length === 1 ? '' : 's'} en el sistema`
         }
+        className="estudiante-table__card text-body"
       >
-        <CRow className="mb-3">
-          <CCol md={5} lg={4} className="ms-auto">
+        <CRow className="mb-3 estudiante-search__row">
+          <CCol md={5} lg={4} className="ms-auto estudiante-search__col">
             <CFormInput
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
-              placeholder="Buscar estudiante por nombre..."
+              placeholder="Buscar estudiante..."
               aria-label="Buscar estudiante por nombre"
+              className="estudiante-form__input estudiante-search__input"
             />
+          </CCol>
+          <CCol xs="auto" className="d-flex justify-content-end">
+            <CNav variant="tabs" className="estudiante-table__nav-tabs">
+              <CNavItem>
+                <CNavLink
+                  active={pestañaActiva === 'Activos'}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() =>
+                    setPestañaActiva(pestañaActiva === 'Activos' ? 'Inactivos' : 'Activos')
+                  }
+                  className={
+                    pestañaActiva === 'Activos'
+                      ? 'estudiante-table__view-tab estudiante-table__view-tab--active'
+                      : 'estudiante-table__view-tab estudiante-table__view-tab--inactive'
+                  }
+                >
+                  {pestañaActiva === 'Activos' ? '🔴 Dados de Baja' : '🟢 Activos'}
+                </CNavLink>
+              </CNavItem>
+            </CNav>
           </CCol>
         </CRow>
         {cargando ? (
           <LoadingState label="Cargando estudiantes..." />
-        ) : estudiantesFiltrados.length === 0 ? (
+        ) : estudiantes.length === 0 ? (
           <EmptyState
-            title={
-              estudiantes.length === 0
-                ? 'No hay estudiantes registrados'
-                : 'No se encontraron coincidencias'
-            }
-            description={
-              estudiantes.length === 0
-                ? 'Los estudiantes que agregues aparecerán aquí.'
-                : 'Prueba con otro nombre.'
-            }
+            title="No hay estudiantes registrados"
+            description="Los estudiantes que agregues aparecerán aquí."
           />
         ) : (
-          <CTable align="middle" hover responsive className="bm-admin-table">
-            <CTableHead>
-              <CTableRow>
-                <CTableHeaderCell scope="col">Nro</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Estudiante</CTableHeaderCell>
-                <CTableHeaderCell scope="col">CI</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Colegio</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Teléfono</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Registro</CTableHeaderCell>
-                <CTableHeaderCell scope="col" className="text-end">
-                  Acciones
-                </CTableHeaderCell>
-              </CTableRow>
-            </CTableHead>
-            <CTableBody>
-              {estudiantesFiltrados.map((est, index) => (
-                <CTableRow key={est.id_estudiante}>
-                  <CTableDataCell className="text-body-secondary">#{index + 1}</CTableDataCell>
-                  <CTableDataCell>
-                    <strong>
-                      {est.nombre} {est.a_paterno} {est.a_materno}
-                    </strong>
-                  </CTableDataCell>
-                  <CTableDataCell>{est.ci}</CTableDataCell>
-                  <CTableDataCell>{est.colegio || 'Sin colegio'}</CTableDataCell>
-                  <CTableDataCell>{est.telefono}</CTableDataCell>
-                  <CTableDataCell>{est.email}</CTableDataCell>
-                  <CTableDataCell>
-                    {new Date(est.fecha_registro).toLocaleDateString()}
-                  </CTableDataCell>
-                  <CTableDataCell className="text-end">
-                    <CButtonGroup size="sm">
-                      <CButton
-                        color="info"
-                        variant="outline"
-                        onClick={() => abrirModalInscripcion(est)}
-                      >
-                        Inscribir
-                      </CButton>
-                      <CButton
-                        color="primary"
-                        variant="outline"
-                        onClick={() => seleccionarEstudiante(est)}
-                      >
-                        Editar
-                      </CButton>
-                      <CButton
-                        color="danger"
-                        variant="outline"
-                        onClick={() => eliminarEstudiante(est.id_estudiante)}
-                      >
-                        Eliminar
-                      </CButton>
-                    </CButtonGroup>
-                  </CTableDataCell>
+          <div className="table-responsive estudiantes-table__wrapper">
+            <CTable align="middle" hover className="table-estudiante__table">
+              <CTableHead>
+                <CTableRow>
+                  <CTableHeaderCell scope="col" className="table-estudiante__head-cell">
+                    Nro
+                  </CTableHeaderCell>
+                  {renderFilterHeader('estudiante', 'Estudiante')}
+                  {renderFilterHeader('ci', 'CI')}
+                  {renderFilterHeader('colegio', 'Colegio')}
+                  {renderFilterHeader('telefono', 'Teléfono')}
+                  {renderFilterHeader('email', 'Email')}
+                  {renderFilterHeader('registro', 'Registro', 'date')}
+                  {renderFilterHeader('estado', 'Estado', 'select', estadosDisponibles)}
+                  <CTableHeaderCell scope="col" className="text-end table-estudiante__head-cell">
+                    Acciones
+                  </CTableHeaderCell>
                 </CTableRow>
-              ))}
-            </CTableBody>
-          </CTable>
+              </CTableHead>
+              <CTableBody>
+                {estudiantesVisibles.length === 0 ? (
+                  <CTableRow>
+                    <CTableDataCell colSpan={9} className="table-estudiante__empty-results">
+                      No se encontraron coincidencias
+                    </CTableDataCell>
+                  </CTableRow>
+                ) : (
+                  estudiantesVisibles.map((est, index) => (
+                    <CTableRow key={est.id_estudiante} className="table-estudiante__row">
+                      <CTableDataCell className="text-body-secondary table-estudiante__cell">
+                        #{index + 1}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-estudiante__cell">
+                        <strong>
+                          {est.nombre} {est.a_paterno} {est.a_materno}
+                        </strong>
+                      </CTableDataCell>
+                      <CTableDataCell className="table-estudiante__cell">{est.ci}</CTableDataCell>
+                      <CTableDataCell className="table-estudiante__cell">
+                        {est.colegio || 'Sin colegio'}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-estudiante__cell">
+                        {est.telefono}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-estudiante__cell">
+                        {est.email}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-estudiante__cell">
+                        {new Date(est.fecha_registro).toLocaleDateString()}
+                      </CTableDataCell>
+                      <CTableDataCell className="table-estudiante__cell">
+                        <StatusBadge status={est.estado || 'inactivo'}>
+                          {est.estado || 'Sin estado'}
+                        </StatusBadge>
+                      </CTableDataCell>
+                      <CTableDataCell className="text-end table-estudiante__cell">
+                        <CButtonGroup size="sm">
+                          {pestañaActiva === 'Inactivos' ? (
+                            <CButton
+                              color="info"
+                              variant="outline"
+                              className="estudiante-table__action"
+                            >
+                              Bloqueado
+                            </CButton>
+                          ) : (
+                            <CButton
+                              color="info"
+                              variant="outline"
+                              onClick={() => abrirModalInscripcion(est)}
+                              className="estudiante-table__action"
+                            >
+                              Inscribir
+                            </CButton>
+                          )}
+
+                          <CButton
+                            color="primary"
+                            variant="outline"
+                            onClick={() => seleccionarEstudiante(est)}
+                            className="estudiante-table__action"
+                          >
+                            Editar
+                          </CButton>
+                          {pestañaActiva === 'Inactivos' ? (
+                            <CButton
+                              color="danger"
+                              variant="outline"
+                              onClick={() => {
+                                ejecutarHabilitarUsuario(est.id_cuenta)
+                                cargarEstudiantes()
+                              }}
+                              className="estudiante-table__action"
+                            >
+                              Habilitar
+                            </CButton>
+                          ) : (
+                            <CButton
+                              color="danger"
+                              variant="outline"
+                              onClick={() => eliminarEstudiante(est.id_estudiante)}
+                              className="estudiante-table__action"
+                            >
+                              Eliminar
+                            </CButton>
+                          )}
+                        </CButtonGroup>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))
+                )}
+              </CTableBody>
+            </CTable>
+          </div>
         )}
       </SectionCard>
       <CModal
@@ -543,7 +743,7 @@ const EstudianteTable = ({
             multiple
             value={cursosSeleccionados}
             onChange={handleCursos}
-            className="bm-multi-select"
+            className="estudiante-form__input estudiante-form__select bm-multi-select"
             aria-describedby="estudiante-cursos-ayuda"
           >
             {cursos.map((curs) => (
@@ -564,7 +764,7 @@ const EstudianteTable = ({
                 ¡Inscripción registrada! Total a recaudar: Bs. {totalSeleccionado.toFixed(2)}.
                 ¿Desea registrar el pago completo en efectivo en ventanilla en este momento?
               </p>
-              <div className="mb-3 small text-body-secondary">
+              <div className="mb-3 small text-primary-emphasis">
                 Se generará un único recibo consolidado con el total general y el resumen de cursos.
               </div>
               {errorPagoInscripcion && <CAlert color="danger">{errorPagoInscripcion}</CAlert>}
@@ -616,7 +816,7 @@ const EstudianteTable = ({
           <CModalTitle>Eliminar estudiante</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          Esta acción eliminará el registro del estudiante. ¿Deseas continuar?
+          Esta acción actualizará el registro del estudiante. ¿Deseas continuar?
         </CModalBody>
         <CModalFooter>
           <CButton

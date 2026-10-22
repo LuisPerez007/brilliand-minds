@@ -16,6 +16,11 @@ import padresTutorRoutes from './routes/padresTutorRoutes.js'
 
 import publicRoutes from './routes/publicRoutes/publicRoutes.js'
 
+import habilitacionEstados from './routes/gestionAdministrador/habilitacionEstados.js'
+
+import chatbotRoutes from './routes/chatbot/chatbot.routes.js'
+import { verificarApiKey } from './middlewares/validacionChatbot/apiKey.middleware.js'
+
 import { verificarToken } from './middlewares/veriificarToken.js'
 import { requireRole } from './middlewares/requireRole.js'
 
@@ -42,10 +47,13 @@ app.use('/admin', verificarToken, requireRole('administrador'), cursosRoutes)
 app.use('/admin', verificarToken, requireRole('administrador'), profesorRoutes)
 app.use('/admin', verificarToken, requireRole('administrador'), inscripcionRoutes)
 app.use('/admin', verificarToken, requireRole('administrador'), padresTutorRoutes)
+app.use('/admin', verificarToken, requireRole('administrador'), habilitacionEstados)
 
 app.use('/docente', verificarToken, requireRole('profesor'), gestionProfesorRoutes)
 app.use('/estudiante', verificarToken, requireRole('estudiante'), gestionEstudianteRoutes)
 app.use('/estudiante', verificarToken, requireRole('estudiante'), inscripcionRoutes)
+
+app.use('/api/chatbot', verificarApiKey, chatbotRoutes)
 
 app.listen(puerto, () => {
   console.log(

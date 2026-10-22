@@ -19,3 +19,6 @@ export const postCalificarExamenEstudiante = (datos) =>
   apiDocente.post(`/cursos/evaluacion/examen/listarCalificaciones/calificarExamen`, datos)
 export const putCalificarExamenEstudiante = (datos) =>
   apiDocente.put(`/cursos/evaluacion/examen/listarCalificaciones/editarExamen`, datos)
+
+export const getExamenesYaCalificados = (idCurso) =>
+  apiDocente.get(`/cursos/evaluacion/examen/ya-calificados/${idCurso}`)

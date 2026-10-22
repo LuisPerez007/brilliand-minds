@@ -380,8 +380,8 @@ export const useEstudiantes = () => {
     if (!formulario.direccion.trim()) {
       nuevosErrores.direccion = 'Dirección obligatorio'
     }
-    if (!formulario.telefono.trim()) {
-      nuevosErrores.telefono = 'Teléfono obligatorio'
+    if (!formulario.telefono.trim() || !/^\d{8}$/.test(formulario.telefono.trim())) {
+      nuevosErrores.telefono = 'Inválido (8 dígitos)'
     }
     if (!formulario.idTutor) {
       nuevosErrores.idTutor = 'Debe asociar un padre o tutor'
@@ -390,7 +390,21 @@ export const useEstudiantes = () => {
       nuevosErrores.email = 'Email inválido'
     }
     setErrores(nuevosErrores)
-    return Object.keys(nuevosErrores).length === 0
+
+    const llavesConErrores = Object.keys(nuevosErrores)
+    if (llavesConErrores.length > 0) {
+      const primerError = llavesConErrores[0]
+      setTimeout(() => {
+        const elementoInvalido =
+          document.getElementsByName(primerError)[0] || document.getElementById(primerError)
+        if (elementoInvalido) {
+          elementoInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          elementoInvalido.focus()
+        }
+      }, 50)
+    }
+
+    return llavesConErrores.length === 0
   }
 
   ///Descartar

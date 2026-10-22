@@ -3,7 +3,12 @@ import { postUsuario } from '../models/modelsUsuarios/crearUsuario.js'
 
 export const getProfesor = async (req, res) => {
   try {
-    const dataBaseProfesores = await dataBase.query('SELECT * FROM profesor')
+    const dataBaseProfesores = await dataBase.query(`
+      SELECT pro.*, usu.estado, usu.id_usuarios AS id_cuenta
+      FROM profesor pro
+      JOIN usuarios usu ON usu.id_usuarios = pro.id_usuario
+      ORDER BY fecha_registro DESC
+      `)
     console.log(dataBaseProfesores.rows)
     res.json(dataBaseProfesores.rows)
   } catch (error) {
@@ -15,8 +20,9 @@ export const getProfesor = async (req, res) => {
 export const postProfesor = async (req, res) => {
   try {
     const { nombre, apellidoPaterno, apellidoMaterno, ci, telefono, email, especialidad } = req.body
+    const emailFinal = (email && email.trim() !== '') ? email.trim() : null
     const datos = {
-      usuario: email || telefono,
+      usuario: emailFinal || telefono,
       password: ci,
       role: 'profesor'
     }
@@ -27,7 +33,7 @@ export const postProfesor = async (req, res) => {
     `INSERT INTO profesor 
     (nombre, a_paterno, a_materno, ci, telefono, email, especialidad, id_usuario) 
     VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-    [nombre, apellidoPaterno, apellidoMaterno, ci, telefono, email, especialidad, idUsuario])
+    [nombre, apellidoPaterno, apellidoMaterno, ci, telefono, emailFinal, especialidad, idUsuario])
     console.log(result.rows)
     res.status(201).json({
       message: 'Profesor creado con éxito',
@@ -52,11 +58,12 @@ export const putProfesor = async (req, res) => {
     const { id } = req.params
     const idProfesor = parseInt(id)
     const { nombre, apellidoPaterno, apellidoMaterno, ci, telefono, email, especialidad } = req.body
+    const emailFinal = (email && email.trim() !== '') ? email.trim() : null
     const actualizarProfesor = await dataBase.query(`
     UPDATE profesor 
     SET  nombre = $1, a_paterno = $2, a_materno = $3, ci = $4, telefono = $5, email = $6, especialidad = $7 
     WHERE id_profesor = $8 RETURNING *`,
-    [nombre, apellidoPaterno, apellidoMaterno, ci, telefono, email, especialidad, idProfesor]
+    [nombre, apellidoPaterno, apellidoMaterno, ci, telefono, emailFinal, especialidad, idProfesor]
     )
     if (actualizarProfesor.rowCount === 0) {
       return res.status(404).json({ message: 'El profesor no existe' })
@@ -91,16 +98,10 @@ export const deleteProfesor = async (req, res) => {
     }
 
     const idUsuario = profesor.rows[0].id_usuario
-
-    await client.query(
-      `DELETE FROM profesor
-       WHERE id_profesor = $1`,
-      [idProfesor]
-    )
-
     if (idUsuario) {
       await client.query(
-        `DELETE FROM usuarios
+        `UPDATE usuarios
+         SET estado = 'Inactivo'
          WHERE id_usuarios = $1`,
         [idUsuario]
       )

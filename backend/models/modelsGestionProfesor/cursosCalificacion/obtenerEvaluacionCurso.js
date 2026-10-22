@@ -15,7 +15,8 @@ export const obtenerEvaluacionCurso = async (idUsuario, idCurso) => {
     JOIN usuarios usu ON usu.id_usuarios = pro.id_usuario
     JOIN evaluacion eva ON eva.id_curso = cur.id_curso
     WHERE usu.id_usuarios = $1
-    AND cur.id_curso = $2;
+    AND cur.id_curso = $2
+    ORDER BY eva.id_evaluacion DESC;
     `, [idUsuario, idCurso])
 
   return datos

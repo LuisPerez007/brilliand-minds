@@ -1,0 +1,417 @@
+.estudiantes-page__container {
+  width: 100%;
+}
+
+.estudiante-table__card,
+.estudiante-form__card {
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  border-radius: var(--radius-lg) !important;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.estudiante-search__row {
+  margin-bottom: 1rem !important;
+}
+
+.estudiante-search__col {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.estudiante-form__input,
+.estudiante-search__input,
+.estudiante-form__select {
+  min-height: 2.9rem;
+  border-radius: var(--radius-md) !important;
+  border: 1px solid rgba(147, 197, 253, 0.45) !important;
+  background: rgba(255, 255, 255, 0.92) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+.estudiante-form__input:focus,
+.estudiante-search__input:focus,
+.estudiante-form__select:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15) !important;
+}
+
+.estudiante-form__textarea {
+  min-height: 6rem !important;
+}
+
+.estudiantes-table__wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(147, 197, 253, 0.25);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: var(--shadow-sm);
+}
+
+.table-estudiante__table {
+  width: 100%;
+  min-width: 980px;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-estudiante__head-cell {
+  padding: 0.9rem 1rem !important;
+  background: rgba(37, 99, 235, 0.06) !important;
+  color: var(--text-primary) !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.35) !important;
+  vertical-align: top;
+}
+
+.table-estudiante__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  min-height: 1.5rem;
+}
+
+.table-estudiante__filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text-primary);
+  font-size: 0.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.table-estudiante__filter-toggle:hover,
+.table-estudiante__filter-toggle.is-open {
+  border-color: var(--brand-primary);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.table-estudiante__filter-panel {
+  margin-top: 0.55rem;
+}
+
+.table-estudiante__filter-input {
+  width: 100%;
+  min-width: 7.5rem;
+  min-height: 2rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid rgba(147, 197, 253, 0.5);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
+  font-size: 0.72rem;
+}
+
+.table-estudiante__filter-input:focus {
+  outline: none;
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+}
+
+.table-estudiante__row {
+  transition: background-color 0.2s ease;
+}
+
+.table-estudiante__row:hover {
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.table-estudiante__cell {
+  padding: 1rem !important;
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(147, 197, 253, 0.3) !important;
+  vertical-align: middle;
+}
+
+.table-estudiante__empty-results {
+  padding: 1rem !important;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(148, 163, 184, 0.04);
+}
+
+.estudiante-table__action {
+  min-width: 5.25rem;
+}
+
+.estudiante-form__form {
+  display: block;
+}
+
+.estudiante-form__grid {
+  margin-bottom: 1.25rem;
+}
+
+.estudiante-form__label {
+  display: block;
+  margin-bottom: 0.55rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.estudiante-form__tutor-panel {
+  margin-top: 0.35rem;
+  padding: 1rem;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  border-radius: var(--radius-md);
+  background: rgba(37, 99, 235, 0.02);
+}
+
+.estudiante-form__tutor-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.estudiante-form__selected-tutor {
+  margin-top: 0.9rem;
+  color: #166534;
+  font-weight: 600;
+}
+
+.estudiante-form__button {
+  white-space: nowrap;
+}
+
+.estudiante-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.25rem;
+}
+
+.estudiante-form__link {
+  color: var(--brand-primary);
+}
+
+html[data-coreui-theme='dark'] .estudiante-table__card,
+html[data-coreui-theme='dark'] .estudiante-form__card {
+  background: linear-gradient(180deg, #111827 0%, #1d1e2b 100%) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 25px rgba(2, 6, 23, 0.3) !important;
+}
+
+html[data-coreui-theme='dark'] .estudiante-form__input,
+html[data-coreui-theme='dark'] .estudiante-search__input,
+html[data-coreui-theme='dark'] .estudiante-form__select,
+html[data-coreui-theme='dark'] .estudiante-form__input:focus,
+html[data-coreui-theme='dark'] .estudiante-search__input:focus,
+html[data-coreui-theme='dark'] .estudiante-form__select:focus {
+  background: #14151f !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+html[data-coreui-theme='dark'] .estudiante-form__input:focus,
+html[data-coreui-theme='dark'] .estudiante-search__input:focus,
+html[data-coreui-theme='dark'] .estudiante-form__select:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.2) !important;
+}
+
+html[data-coreui-theme='dark'] .estudiantes-table__wrapper {
+  background: #1d1e2b;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-coreui-theme='dark'] .table-estudiante__filter-toggle {
+  background: rgba(15, 23, 42, 0.72);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .table-estudiante__filter-toggle:hover,
+html[data-coreui-theme='dark'] .table-estudiante__filter-toggle.is-open {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+html[data-coreui-theme='dark'] .table-estudiante__filter-input {
+  background: #14151f;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .table-estudiante__head-cell {
+  background: #14151f !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .table-estudiante__cell {
+  color: rgba(255, 255, 255, 0.9) !important;
+  background-color: transparent !important;
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html[data-coreui-theme='dark'] .table-estudiante__empty-results {
+  color: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+html[data-coreui-theme='dark'] .table-estudiante__row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html[data-coreui-theme='dark'] .estudiante-form__tutor-panel {
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-coreui-theme='dark'] .estudiante-form__label,
+html[data-coreui-theme='dark'] .estudiante-form__selected-tutor {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html[data-coreui-theme='dark'] .estudiante-form__selected-tutor {
+  color: #86efac;
+}
+
+@media (max-width: 767.98px) {
+  .estudiante-form__tutor-row {
+    flex-direction: column;
+  }
+
+  .estudiante-search__col {
+    justify-content: stretch;
+  }
+
+  .estudiante-form__input,
+  .estudiante-search__input,
+  .estudiante-form__select,
+  .estudiante-form__button {
+    width: 100%;
+  }
+
+  .table-estudiante__head-cell,
+  .table-estudiante__cell {
+    padding: 0.8rem 0.7rem !important;
+    font-size: 0.8rem;
+  }
+}
+
+/* ==========================================================================
+   1. CONTENEDOR PRINCIPAL Y NAVEGACIÓN (CNav y CNavItem)
+   ========================================================================== */
+.estudiante-table__nav-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+}
+
+.estudiante-table__nav-tabs .nav-item {
+  display: flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   2. ESTILOS BASE DE LA PESTAÑA (CNavLink)
+   ========================================================================== */
+.estudiante-table__view-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.6rem;
+  padding: 0.6rem 1rem !important;
+  border: 1px solid transparent;
+  border-radius: 999px !important;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.estudiante-table__view-tab:hover {
+  color: var(--text-primary);
+  background: rgba(148, 163, 184, 0.08);
+}
+
+/* ==========================================================================
+   3. ESTADOS DINÁMICOS (Activo / Inactivo)
+   ========================================================================== */
+.estudiante-table__view-tab--active {
+  color: #0f172a !important;
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.18), rgba(16, 185, 129, 0.12));
+  border-color: rgba(34, 197, 94, 0.25);
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.15);
+}
+
+.estudiante-table__view-tab--inactive {
+  color: rgba(15, 23, 42, 0.72);
+  background: transparent;
+}
+
+.estudiante-table__view-tab--inactive:hover {
+  color: var(--text-primary);
+  background: rgba(148, 163, 184, 0.06);
+}
+
+/* ==========================================================================
+   4. ADAPTACIÓN A MODO OSCURO (Dark Theme)
+   ========================================================================== */
+html[data-coreui-theme='dark'] .estudiante-table__nav-tabs {
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(148, 163, 184, 0.2);
+  box-shadow: 0 8px 18px rgba(2, 6, 23, 0.24);
+}
+
+html[data-coreui-theme='dark'] .estudiante-table__view-tab {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+html[data-coreui-theme='dark'] .estudiante-table__view-tab--active {
+  color: #084f96 !important;
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.26), rgba(5, 150, 105, 0.18));
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+html[data-coreui-theme='dark'] .estudiante-table__view-tab--inactive {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+html[data-coreui-theme='dark'] .estudiante-table__view-tab--inactive:hover {
+  background: rgba(148, 163, 184, 0.08);
+}
+
+/* ==========================================================================
+   5. DISEÑO RESPONSIVO (Pantallas móviles)
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  .estudiante-table__nav-tabs {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .estudiante-table__view-tab {
+    flex: 1;
+    min-width: 0;
+    padding: 0.65rem 0.8rem !important;
+    font-size: 0.75rem;
+  }
+}
+
